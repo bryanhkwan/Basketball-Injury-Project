@@ -3,707 +3,199 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The moment players get hurt · Basketball injury research</title>
-<meta name="description" content="1 in 7 NBA injuries traced to the half-minute before the player left the game: the plays that come right before injuries, tested across 7 NBA seasons and checked in college basketball.">
+<title>Basketball Injury Project</title>
+<meta name="description" content="A model that reads seven seasons of official NBA injury reports and ranks who is most likely to get hurt next, checked against what happened in 2025-26, plus why and when players get hurt.">
 <meta name="author" content="Bryan Kwan">
-<meta property="og:type" content="article">
-<meta property="og:title" content="The moment players get hurt">
-<meta property="og:description" content="1 in 7 NBA injuries traced to the half-minute before the player left the game: the plays that come right before injuries, tested across 7 NBA seasons and checked in college basketball.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Basketball Injury Project">
+<meta property="og:description" content="A model that reads seven seasons of official NBA injury reports and ranks who is most likely to get hurt next, checked against what happened in 2025-26, plus why and when players get hurt.">
 <meta property="og:url" content="https://bryanhkwan.github.io/Basketball-Injury-Project/">
-<meta property="og:image" content="https://bryanhkwan.github.io/Basketball-Injury-Project/assets/social-card.png">
-<meta property="og:image:width" content="2400">
-<meta property="og:image:height" content="1260">
+<meta property="og:image" content="https://bryanhkwan.github.io/Basketball-Injury-Project/assets/social-site.jpg">
+<meta property="og:image:width" content="2672">
+<meta property="og:image:height" content="1400">
+<meta property="og:image:alt" content="The Basketball Injury Project overview: its title, the risk board for opening night of 2025-26, an NBA arena and two statements about the model">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#071b32">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#071b32" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23ffd200'/%3E%3Cg fill='none' stroke='%23071b32' stroke-width='3.5'%3E%3Cpath d='M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap">
-<style>
-/* The public report page (docs/index.html). Light by default, dark when the reader's system is dark.
-   Series colors are validated with the dataviz palette checks: NBA blue and college gold in each mode. */
-:root {
-  color-scheme: light;
-  --paper: #f7f8fa;
-  --surface: #ffffff;
-  --ink: #12263b;
-  --ink-2: #53616f;
-  --line: #d8dde3;
-  --grid: #e8ebef;
-  --navy: #071b32;
-  --gold: #ffd200;
-  --gold-ink: #806200;
-  --nba: #2a78d6;
-  --college: #eda100;
-  --normal: #b7bfc9;
-  --ref: #53616f;
-  --good: #006300;
-  --lead: #8a5a00;
-  --hover: rgba(18, 38, 59, 0.04);
-  --tip-bg: #ffffff;
-  --tip-line: rgba(18, 38, 59, 0.14);
-  --shadow: 0 1px 2px rgba(7, 27, 50, 0.05), 0 10px 28px rgba(7, 27, 50, 0.06);
-  --hero-ink: #f4f7fa;
-  --hero-ink-2: #c6d7e5;
-  --display: "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif;
-  --body: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --paper: #030b1a;
-    --surface: #0c1e36;
-    --ink: #f4f7fb;
-    --ink-2: #99abc4;
-    --line: #1d3350;
-    --grid: #15293f;
-    --gold-ink: #ffd200;
-    --nba: #3987e5;
-    --college: #c98500;
-    --normal: #5b6b7d;
-    --ref: #99abc4;
-    --good: #3ccf6e;
-    --lead: #fab219;
-    --hover: rgba(244, 247, 251, 0.04);
-    --tip-bg: #0f2540;
-    --tip-line: rgba(244, 247, 251, 0.16);
-    --shadow: none;
-  }
-}
-
-* { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 400 17px/1.65 var(--body); }
-a { color: inherit; text-underline-offset: 3px; }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--nba); outline-offset: 3px; border-radius: 4px; }
-.wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
-.measure { max-width: 720px; }
-.skip { position: absolute; left: -9999px; }
-.skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--gold); color: #091428; padding: 8px 12px; border-radius: 8px; }
-
-/* ---- hero ---------------------------------------------------------------------------------------------- */
-.hero { position: relative; overflow: hidden; color: var(--hero-ink); padding: 76px 0 60px;
-  background: radial-gradient(1100px 620px at 88% -12%, #11335c 0%, rgba(17, 51, 92, 0) 62%), var(--navy); }
-.court { position: absolute; right: -230px; top: -70px; width: 720px; max-width: none; opacity: 0.085; pointer-events: none; }
-.court * { fill: none; stroke: #ffffff; stroke-width: 3; }
-.hero .wrap { position: relative; }
-.kicker { margin: 0; font: 700 13.5px/1.4 var(--body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
-.hero h1 { margin: 16px 0 22px; max-width: 11ch; font: 800 clamp(52px, 9.5vw, 112px)/0.9 var(--display); text-transform: uppercase; letter-spacing: 0.004em; }
-.dek { margin: 0; max-width: 700px; font-size: clamp(18px, 2.1vw, 21px); line-height: 1.55; color: var(--hero-ink-2); }
-.byline { margin: 18px 0 0; font-size: 15px; color: var(--hero-ink-2); }
-.byline b { color: var(--hero-ink); font-weight: 600; }
-.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; margin: 40px 0 0; padding: 0; list-style: none; }
-.metrics li { padding: 18px 20px; border: 1px solid rgba(255, 255, 255, 0.11); border-radius: 14px; background: rgba(255, 255, 255, 0.035); }
-.metrics strong { display: block; font: 700 40px/1.05 var(--body); color: #ffffff; }
-.metrics span { display: block; margin-top: 8px; font-size: 15px; line-height: 1.4; color: var(--hero-ink-2); }
-.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-.button { display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px; border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 999px; font: 600 15px/1 var(--body); color: var(--hero-ink); text-decoration: none; }
-.button:hover { border-color: rgba(255, 255, 255, 0.6); }
-.button.primary { background: var(--gold); border-color: var(--gold); color: #091428; }
-.button.primary:hover { background: #ffe15c; }
-.button.dark { border-color: var(--line); color: var(--ink); }
-.button.dark:hover { border-color: var(--ink-2); }
-.button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-
-/* ---- sections ---------------------------------------------------------------------------------------- */
-main section { padding: 72px 0 0; scroll-margin-top: 16px; }
-.eyebrow { margin: 0; font: 700 13px/1 var(--body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold-ink); }
-h2 { margin: 12px 0 18px; font: 700 clamp(36px, 5vw, 54px)/1 var(--display); letter-spacing: 0.002em; color: var(--ink); text-wrap: balance; }
-h3 { margin: 0; font: 700 19px/1.3 var(--body); }
-p { margin: 0 0 16px; }
-.lead { font-size: 19px; line-height: 1.6; }
-.muted { color: var(--ink-2); }
-strong, b { font-weight: 700; }
-
-.flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 28px 0 8px; padding: 0; list-style: none; counter-reset: flow; }
-.flow li { position: relative; padding: 20px 20px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); }
-.flow li.key { border-color: color-mix(in srgb, var(--college) 70%, var(--line)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--college) 20%, transparent); }
-.flow .step { display: block; font: 700 12.5px/1 var(--body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
-.flow strong { display: block; margin: 10px 0 6px; font: 700 26px/1.05 var(--display); }
-.flow p { margin: 0; font-size: 15.5px; line-height: 1.5; color: var(--ink-2); }
-.flow li + li::before { content: ""; position: absolute; left: -11px; top: 50%; width: 8px; height: 8px; border-top: 2px solid var(--ink-2); border-right: 2px solid var(--ink-2); transform: translate(-50%, -50%) rotate(45deg); }
-
-.steps { margin: 28px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: steps; }
-.steps li { display: grid; grid-template-columns: 44px minmax(0, 1fr); align-content: start; gap: 0 16px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); counter-increment: steps; }
-.steps li::before { content: counter(steps); display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--navy); color: var(--gold); font: 700 16px/1 var(--body); }
-.steps h3 { grid-column: 2; margin-bottom: 6px; }
-.steps p { grid-column: 2; margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.6; }
-
-@media (min-width: 960px) {
-  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .conclusions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .todo ul { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 32px; }
-}
-.figure + .measure { margin-top: 28px; }
-
-/* ---- figures ----------------------------------------------------------------------------------------- */
-.figure { margin: 28px 0 8px; padding: 26px 26px 20px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
-.figure .sub { margin: 4px 0 16px; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
-.legend { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0 0 12px; padding: 0; list-style: none; font-size: 14px; color: var(--ink-2); }
-.legend li { display: inline-flex; align-items: center; gap: 8px; }
-.sw { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
-.sw.dot { border-radius: 50%; }
-.sw.ref { width: 18px; height: 0; border-top: 2px dashed var(--ref); border-radius: 0; }
-.note { margin: 14px 0 0; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-.chart { position: relative; }
-.chart:empty { min-height: 220px; }
-
-details.data { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
-details.data summary { cursor: pointer; width: fit-content; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-details.data summary:hover { color: var(--ink); }
-.table-wrap { overflow-x: auto; }
-table { width: 100%; margin-top: 12px; border-collapse: collapse; font-size: 14px; line-height: 1.45; font-variant-numeric: tabular-nums; }
-caption { text-align: left; padding: 0 0 8px; color: var(--ink-2); font-size: 13.5px; }
-th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-thead th { font-weight: 600; color: var(--ink-2); white-space: nowrap; }
-td.num, th.num { text-align: right; white-space: nowrap; }
-
-/* verdict tags: icon + label, never color alone */
-.tag { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 3px 10px 3px 8px; border: 1px solid currentColor; border-radius: 999px; font-size: 12.5px; font-weight: 700; line-height: 1.4; white-space: nowrap; }
-.tag.solid { color: var(--good); }
-.tag.lead, .tag.passed { color: var(--lead); }
-.tag.not, .tag.same { color: var(--ink-2); }
-.chip { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
-
-/* paired bar rows: a label, one or two bars on a shared scale, an optional ratio */
-.rows { display: grid; }
-.row { display: grid; grid-template-columns: minmax(0, 16rem) minmax(0, 1fr) 6.75rem; gap: 10px 24px; align-items: center; padding: 16px 10px; border-top: 1px solid var(--line); border-radius: 10px; outline: none; }
-.row.no-ratio { grid-template-columns: minmax(0, 16rem) minmax(0, 1fr); }
-.row:first-child { border-top-color: transparent; }
-.row:hover, .row:focus-visible { background: var(--hover); }
-.row:focus-visible { box-shadow: inset 0 0 0 2px var(--nba); }
-.row-head { display: grid; gap: 6px; min-width: 0; }
-.row-label { font-weight: 600; line-height: 1.35; }
-.bars { display: grid; gap: 6px; min-width: 0; }
-.bar-line { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr); gap: 10px; align-items: center; font-size: 13.5px; color: var(--ink-2); }
-.track { position: relative; height: 18px; }
-.bar { position: absolute; left: 0; top: 0; bottom: 0; min-width: 3px; border-radius: 0 4px 4px 0; }
-.bar-val { position: absolute; top: 50%; transform: translateY(-50%); padding-left: 8px; font-weight: 600; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.ratio strong { display: block; font: 700 28px/1 var(--body); }
-.ratio span { font-size: 13px; color: var(--ink-2); }
-
-/* the fade: small multiples on one shared scale */
-.fade { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); gap: 14px; }
-.panel { padding: 16px 16px 12px; border: 1px solid var(--line); border-radius: 14px; outline: none; }
-.panel:hover, .panel:focus-visible { background: var(--hover); }
-.panel:focus-visible { box-shadow: inset 0 0 0 2px var(--nba); }
-.panel h3 { min-height: 2.6em; margin-bottom: 10px; font-size: 15px; line-height: 1.3; }
-.plot { position: relative; height: 180px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; border-bottom: 1px solid var(--ink-2); }
-.col { position: relative; justify-self: center; width: min(26px, 70%); min-height: 2px; border-radius: 4px 4px 0 0; background: var(--nba); }
-.col-val { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); font-size: 13px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.ref-line { position: absolute; left: 0; right: 0; border-top: 2px dashed var(--ref); pointer-events: none; }
-.ticks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 6px; font-size: 12.5px; text-align: center; color: var(--ink-2); }
-
-/* the college check: estimates with their likely ranges on a log scale */
-.forest { display: grid; }
-.f-row { display: grid; grid-template-columns: minmax(0, 17rem) minmax(0, 1fr); gap: 8px 24px; align-items: center; padding: 14px 10px; border-top: 1px solid var(--line); border-radius: 10px; outline: none; }
-.f-row:first-child { border-top-color: transparent; }
-.f-row:hover, .f-row:focus-visible { background: var(--hover); }
-.f-row:focus-visible { box-shadow: inset 0 0 0 2px var(--nba); }
-.f-plot { position: relative; height: 46px; }
-.f-grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid var(--grid); }
-.f-ref { position: absolute; top: -10px; bottom: -10px; border-left: 2px dashed var(--ref); }
-.f-est { position: absolute; left: 0; right: 0; height: 0; }
-.f-est.nba { top: 30%; color: var(--nba); }
-.f-est.college { top: 72%; color: var(--college); }
-.f-whisker { position: absolute; top: -1px; height: 2px; border-radius: 1px; background: currentColor; }
-.f-dot { position: absolute; top: 0; width: 13px; height: 13px; border-radius: 50%; background: currentColor; transform: translate(-50%, -50%); box-shadow: 0 0 0 2px var(--surface); }
-.f-axis-row { padding-top: 4px; border-top: 0; }
-.f-axis-row:hover { background: none; }
-.f-axis { position: relative; height: 22px; }
-.f-tick { position: absolute; top: 0; transform: translateX(-50%); font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-.f-axis-label { margin: 2px 0 0; font-size: 12.5px; color: var(--ink-2); }
-
-.callouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
-.callouts li { padding: 16px 18px; border-left: 3px solid var(--college); border-radius: 0 10px 10px 0; background: color-mix(in srgb, var(--college) 9%, var(--surface)); }
-.callouts strong { display: block; font: 700 30px/1.1 var(--body); }
-.callouts span { display: block; margin-top: 6px; font-size: 14.5px; line-height: 1.45; color: var(--ink-2); }
-
-/* examples */
-.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; margin-top: 24px; }
-.card { display: grid; align-content: start; gap: 8px; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-.card h3 { font: 700 26px/1.05 var(--display); }
-.card .meta { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ink-2); }
-.card .play { margin: 0; font-size: 13.5px; font-weight: 700; }
-.card p.story { margin: 0; font-size: 15.5px; line-height: 1.55; }
-
-/* conclusions */
-.conclusions { margin: 28px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; counter-reset: c; }
-.conclusions li { position: relative; padding: 22px 24px 20px 76px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); counter-increment: c; }
-.conclusions li::before { content: counter(c); position: absolute; left: 22px; top: 20px; font: 800 40px/1 var(--display); color: var(--gold-ink); }
-.conclusions h3 { margin-bottom: 6px; font-size: 20px; }
-.conclusions p { margin: 0; color: var(--ink-2); font-size: 16px; line-height: 1.6; }
-.todo { margin: 28px 0 0; padding: 26px 28px; border-radius: 18px; background: var(--navy); color: var(--hero-ink); }
-.todo h3 { font: 700 30px/1.05 var(--display); color: #ffffff; }
-.todo ul { margin: 14px 0 0; padding-left: 20px; display: grid; gap: 10px; color: var(--hero-ink-2); }
-.todo li::marker { color: var(--gold); }
-.todo b { color: #ffffff; }
-.limits { margin: 20px 0 0; padding-left: 20px; display: grid; gap: 10px; }
-.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 22px 0 18px; }
-.credits { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
-
-footer { margin-top: 80px; padding: 28px 0 40px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
-
-/* tooltip: values lead, labels follow */
-.tip { position: fixed; z-index: 20; max-width: 300px; padding: 10px 12px; border: 1px solid var(--tip-line); border-radius: 10px; background: var(--tip-bg); color: var(--ink); box-shadow: 0 8px 28px rgba(7, 27, 50, 0.18); font-size: 13.5px; line-height: 1.4; pointer-events: none; }
-.tip-title { margin-bottom: 6px; font-weight: 600; color: var(--ink-2); }
-.tip-row { display: flex; justify-content: space-between; gap: 18px; }
-.tip-row b { flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
-
-@media (max-width: 760px) {
-  body { font-size: 16.5px; }
-  .hero { padding: 56px 0 44px; }
-  .court { width: 520px; right: -170px; top: -40px; }
-  .flow { grid-template-columns: minmax(0, 1fr); }
-  .flow li + li::before { left: 50%; top: -11px; transform: translate(-50%, -50%) rotate(135deg); }
-  .row, .row.no-ratio, .f-row { grid-template-columns: minmax(0, 1fr); }
-  .ratio { display: flex; align-items: baseline; gap: 8px; }
-  .figure { padding: 20px 16px 16px; }
-  .conclusions li { padding: 20px 18px 18px 60px; }
-  .conclusions li::before { left: 18px; font-size: 34px; }
-}
-@media print {
-  .hero { background: #ffffff; color: #000000; }
-  .court, .actions, details.data summary::marker { display: none; }
-  .figure, .flow li, .steps li, .card, .conclusions li { box-shadow: none; break-inside: avoid; }
-}
-
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/app.css">
+<script>document.documentElement.classList.add('js')</script>
+<script src="assets/charts.js" defer></script>
+<script src="assets/site.js" defer></script>
+<script src="assets/overview.js" defer></script>
 </head>
-<body>
-<a class="skip" href="#main">Skip to the report</a>
+<body class="page">
+<a class="skip" href="#main">Skip to the content</a>
 
-<header class="hero">
-  <svg class="court" viewBox="-10 -10 520 490" aria-hidden="true" focusable="false">
-    <rect x="0" y="0" width="500" height="470"/>
-    <rect x="170" y="0" width="160" height="190"/>
-    <circle cx="250" cy="190" r="60"/>
-    <line x1="220" y1="40" x2="280" y2="40"/>
-    <circle cx="250" cy="52.5" r="7.5"/>
-    <path d="M210 52.5 A40 40 0 0 0 290 52.5"/>
-    <path d="M30 0 V140 A237.5 237.5 0 0 0 470 140 V0"/>
-    <path d="M190 470 A60 60 0 0 1 310 470"/>
-  </svg>
-  <div class="wrap">
-    <p class="kicker">Basketball injury research · NBA 2019-20 to 2025-26 · NCAA Division I</p>
-    <h1>The moment players get hurt</h1>
-    <p class="dek">Play-by-play never says why a player got hurt. It does record the second a player left the game for good. I used that moment to find the plays that come right before injuries across seven NBA seasons, then tested them in college basketball against a plan I wrote down before seeing any college results.</p>
-    <p class="byline">By <b>Bryan Kwan</b> · October 2026</p>
-    <ul class="metrics" aria-label="Headline numbers">
-      <li><strong>6,536</strong><span>new NBA injuries checked, 2019-20 to 2025-26</span></li>
-      <li><strong>1 in 7</strong><span>traced to the moment the player left a game</span></li>
-      <li><strong>3</strong><span>plays that held up in every check</span></li>
-      <li><strong>5 of 5</strong><span>pointed the same way in college</span></li>
-    </ul>
-    <div class="actions">
-      <a class="button primary" href="#conclusions">Read the conclusions</a>
-      <a class="button" href="https://github.com/bryanhkwan/Basketball-Injury-Project" target="_blank" rel="noopener">Source code ↗</a>
+<header class="board" id="top">
+  <div class="board-top">
+    <a class="tile mark" href="./" aria-label="Basketball Injury Project, home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#ffd200"/><g fill="none" stroke="#071b32" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg>
+    </a>
+    <nav class="tile links" aria-label="Main">
+      <ul>
+        <li><a href="dashboard.html#board">Risk board</a></li>
+        <li><a href="dashboard.html#players">Players</a></li>
+        <li><a href="dashboard.html#when">Why they get hurt</a></li>
+        <li><a href="moments.html">Injury moments</a></li>
+      </ul>
+    </nav>
+    <a class="tile action" href="dashboard.html">All dashboards <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="board-grid">
+    <div class="tile name"><h1>Basketball <br>Injury Project</h1></div>
+    <div class="tile live">
+      <section class="sheet live-sheet" data-ui id="live" data-day="2025-10-21" aria-labelledby="live-title">
+        <div class="sheet-head">
+          <div>
+            <h2 class="sheet-title" id="live-title">Risk board, before tip-off</h2>
+            <p class="sheet-meta" id="live-date">Tuesday, October 21, 2025 · 1 of 205 nights in 2025-26</p>
+          </div>
+          <div class="stepper">
+            <button type="button" class="step" id="live-prev" aria-label="Previous night" disabled>‹</button>
+            <label class="sr-only" for="live-night">Night of the 2025-26 season</label>
+            <select id="live-night" disabled><option>Tue, Oct 21</option></select>
+            <button type="button" class="step" id="live-next" aria-label="Next night" disabled>›</button>
+          </div>
+        </div>
+        <table class="board-table" aria-describedby="live-sum">
+          <thead><tr><th scope="col" class="n">#</th><th scope="col">Player</th><th scope="col" class="n">Chance</th><th scope="col">Next 5 games</th></tr></thead>
+          <tbody id="live-rows"><tr><td class="n rank">1</td><td class="who"><b>Al Horford</b><span class="sub">GSW vs LAL</span></td><td class="n chance">43%</td><td class="outcome none">No new injury</td></tr><tr><td class="n rank">2</td><td class="who"><b>Alex Caruso</b><span class="sub">OKC vs HOU</span></td><td class="n chance">33%</td><td class="outcome hurt"><span class="dot" aria-hidden="true"></span><span class="what">Concussion protocol<span class="sub">missed 3 games</span></span></td></tr><tr><td class="n rank">3</td><td class="who"><b>Luka Dončić</b><span class="sub">LAL vs GSW</span></td><td class="n chance">29%</td><td class="outcome hurt"><span class="dot" aria-hidden="true"></span><span class="what">Left finger sprain lower left leg contusion<span class="sub">missed 3 games</span></span></td></tr><tr><td class="n rank">4</td><td class="who"><b>Luguentz Dort</b><span class="sub">OKC vs HOU</span></td><td class="n chance">25%</td><td class="outcome none">No new injury</td></tr><tr><td class="n rank">5</td><td class="who"><b>Jimmy Butler III</b><span class="sub">GSW vs LAL</span></td><td class="n chance">24%</td><td class="outcome none">No new injury</td></tr></tbody>
+        </table>
+        <p class="sheet-foot"><span id="live-sum" aria-live="polite">3 of these 12 had a new injury within 5 games.</span><a id="live-link" href="dashboard.html#board/2025-10-21">See all 12 on the board</a></p>
+      </section>
+    </div>
+    <figure class="tile photo shutter" id="hero-photo">
+      <img src="assets/img/arena.jpg" width="1600" height="1200" alt="An NBA game at TD Garden in Boston, seen from the upper deck" fetchpriority="high">
+    </figure>
+    <div class="tile-pair">
+      <p class="tile dark">A model that reads every NBA injury report since 2018 and ranks who gets hurt next.</p>
+      <p class="tile gold">Pick a night on the board to see who it flagged before tip-off, and what happened.</p>
     </div>
   </div>
 </header>
 
 <main id="main">
-  <section id="question" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">The question</p>
-      <h2>Play-by-play says when, not why.</h2>
-      <p class="lead">Injury reports say what got hurt, like an ankle or a hamstring, but almost never how. Play-by-play logs every shot, foul and substitution to the second, and it has no line for “rolled an ankle.”</p>
-      <p>So I looked for a footprint instead. When a player leaves a competitive game early, never comes back, plays well under their usual minutes and then misses the next game with a new injury, the injury most likely happened in the seconds before they left. I call that an <b>injury exit</b>.</p>
-    </div>
-    <ol class="flow" aria-label="What an injury exit is">
-      <li class="key"><span class="step">The half-minute before</span><strong>What was happening?</strong><p>Shots, drives, fouls, steals, rebounds and turnovers by the player, and what the other team did.</p></li>
-      <li><span class="step">The exit</span><strong>Leaves for good</strong><p>Taken out of a competitive game early, well under their usual minutes, and never returns.</p></li>
-      <li><span class="step">The next game</span><strong>Misses it, injured</strong><p>Listed with a new injury on the NBA’s official report, or on a public injury page in college.</p></li>
-    </ol>
-  </section>
-
-  <section id="approach" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">The method</p>
-      <h2>Compare every player with themselves.</h2>
-    </div>
-    <ol class="steps">
-      <li><h3>Find the injury exits.</h3><p>For each of the 6,536 new injuries on the NBA’s official injury reports, 2019-20 to 2025-26, I read the play-by-play of the team’s game before it. 981 of them, about 1 in 7, ended in an injury exit. Players leave early for other reasons too: among new injuries right after a game the player played in, 17% followed an early exit like this, against 4% of games followed by a normal one, so about 79% of traced exits are tied to the injury rather than chance.</p></li>
-      <li><h3>Compare each one with the same player’s normal substitutions.</h3><p>For each injury exit I listed what happened in the 30 seconds before it, then did the same for that player’s ordinary substitutions that season. Comparing players only with themselves takes position, role and playing style out of the picture. In statistics terms, it’s a case-crossover design with Mantel–Haenszel odds ratios.</p></li>
-      <li><h3>Try to break every result.</h3><p>With 240 comparisons, some will look real by chance. A result had to survive a false-discovery correction (Benjamini–Hochberg), point the same way in 2019-22 and 2022-26, and hold up at the same kind of stop in play, against random moments on the floor, against other injuries, under tighter and looser definitions of an injury exit, and against early exits that weren’t followed by an injury.</p></li>
-      <li><h3>Then test it somewhere new.</h3><p>Before seeing any college results, I wrote down five NBA patterns and the bar the four main ones had to clear, saved a fingerprint of that plan, and only then ran it on Division I men’s basketball.</p></li>
-    </ol>
-  </section>
-
-  <section id="nba" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">NBA results</p>
-      <h2>Three plays held up.</h2>
-      <p>The share of injury exits with each play in the 30 seconds before, against the same players’ normal substitutions. Hover over a row, or tab to it, for the details.</p>
-    </div>
-    <figure class="figure" aria-labelledby="fig-nba-title">
-      <h3 id="fig-nba-title">What was happening in the half-minute before NBA players left hurt</h3>
-      <p class="sub">NBA, 2019-20 to 2025-26. <b>Solid</b>: held up in every check. <b>A lead</b>: points the same way but only just clears the multiple-testing bar. <b>Not proven</b>: leans the same way but didn’t clear it.</p>
-      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>Before injury exits</li><li><span class="sw" style="background: var(--normal)"></span>Before the same players’ normal substitutions</li></ul>
-      <div class="chart" id="chart-nba"></div>
-      <p class="note">Times as often = the share before injury exits divided by the share before normal substitutions. The odds ratio in each row’s details compares every player only with themselves, so the two differ a little.</p>
-      <details class="data"><summary>Show the numbers</summary><div class="table-wrap"><table><caption>NBA, 2019-20 to 2025-26: the 30 seconds before injury exits against the same players&#x27; normal substitutions.</caption><thead><tr><th scope="col">Pattern</th><th scope="col" class="num">Exits with the play</th><th scope="col" class="num">Before injury exits</th><th scope="col" class="num">Before normal subs</th><th scope="col" class="num">Times as often</th><th scope="col" class="num">Odds ratio (likely range)</th><th scope="col">Verdict</th></tr></thead><tbody><tr><td>Ankle injury right after being fouled</td><td class="num">23 of 251</td><td class="num">9.2%</td><td class="num">2.2%</td><td class="num">4.1×</td><td class="num">4.8 (3.1 to 7.5)</td><td>Solid</td></tr><tr><td>Any injury right after a steal by the player</td><td class="num">39 of 981</td><td class="num">4.0%</td><td class="num">1.6%</td><td class="num">2.4×</td><td class="num">2.5 (1.8 to 3.5)</td><td>Solid</td></tr><tr><td>Hand, wrist, finger or arm injury after the other team attacked the rim</td><td class="num">37 of 71</td><td class="num">52.1%</td><td class="num">32.4%</td><td class="num">1.6×</td><td class="num">2.2 (1.4 to 3.6)</td><td>Solid</td></tr><tr><td>Pulled muscle or Achilles injury right after a drive or cut to the basket</td><td class="num">22 of 198</td><td class="num">11.1%</td><td class="num">6.3%</td><td class="num">1.8×</td><td class="num">1.9 (1.2 to 3.0)</td><td>A lead</td></tr><tr><td>Ankle injury right after a rebound</td><td class="num">35 of 251</td><td class="num">13.9%</td><td class="num">10.0%</td><td class="num">1.4×</td><td class="num">1.5 (1.1 to 2.2)</td><td>Not proven</td></tr></tbody></table></div></details>
-    </figure>
-    <div class="measure">
-      <p><b>Being fouled</b> and sent to the line holds up only for ankle injuries. For other injuries the rise disappears in the toughest check, which compares injury exits with random moments that end at the next dead ball, the way a hurt player gets off the floor. <b>The steal</b> result counts all injuries together, and most kinds lean the same way; it fits the sprint, finish or scramble that follows a steal. <b>Rim defense</b> is specific to hand, wrist, finger and arm injuries: the player was on defense for a layup, dunk or tip-in, though the play-by-play doesn’t say who contested it.</p>
-    </div>
-  </section>
-
-  <section id="timing" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Timing</p>
-      <h2>It happens in the last few seconds.</h2>
-      <p>If these plays only marked a long, tiring shift, they would show up as often two minutes before the exit as 15 seconds before. They don’t. The link is strongest in the last 15 to 30 seconds and almost gone two minutes out, which points to the play itself.</p>
-    </div>
-    <figure class="figure" aria-labelledby="fig-fade-title">
-      <h3 id="fig-fade-title">How much more often each play came before an injury exit, by how far back you look</h3>
-      <p class="sub">NBA, 2019-20 to 2025-26. Times as often as before the same players’ normal substitutions, on one shared scale.</p>
-      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>Times as often</li><li><span class="sw ref"></span>No difference</li></ul>
-      <div class="chart fade" id="chart-fade"></div>
-      <details class="data"><summary>Show the numbers</summary><div class="table-wrap"><table><caption>NBA: the same comparison, looking back 15 seconds to 2 minutes before the exit.</caption><thead><tr><th scope="col">Pattern</th><th scope="col">Looking back</th><th scope="col" class="num">Before injury exits</th><th scope="col" class="num">Before normal subs</th><th scope="col" class="num">Times as often</th><th scope="col" class="num">Odds ratio</th></tr></thead><tbody><tr><td>Ankle injury, after being fouled</td><td>15 s</td><td class="num">6.8%</td><td class="num">1.0%</td><td class="num">7.0×</td><td class="num">8.1</td></tr><tr><td>Ankle injury, after being fouled</td><td>30 s</td><td class="num">9.2%</td><td class="num">2.2%</td><td class="num">4.1×</td><td class="num">4.8</td></tr><tr><td>Ankle injury, after being fouled</td><td>1 min</td><td class="num">12.0%</td><td class="num">4.7%</td><td class="num">2.5×</td><td class="num">3.1</td></tr><tr><td>Ankle injury, after being fouled</td><td>2 min</td><td class="num">13.1%</td><td class="num">9.5%</td><td class="num">1.4×</td><td class="num">1.6</td></tr><tr><td>Any injury, after a steal</td><td>15 s</td><td class="num">2.4%</td><td class="num">1.0%</td><td class="num">2.5×</td><td class="num">2.6</td></tr><tr><td>Any injury, after a steal</td><td>30 s</td><td class="num">4.0%</td><td class="num">1.6%</td><td class="num">2.4×</td><td class="num">2.5</td></tr><tr><td>Any injury, after a steal</td><td>1 min</td><td class="num">5.8%</td><td class="num">3.1%</td><td class="num">1.8×</td><td class="num">1.9</td></tr><tr><td>Any injury, after a steal</td><td>2 min</td><td class="num">7.5%</td><td class="num">6.2%</td><td class="num">1.2×</td><td class="num">1.2</td></tr><tr><td>Hand or arm injury, after a rim attack</td><td>15 s</td><td class="num">33.8%</td><td class="num">20.1%</td><td class="num">1.7×</td><td class="num">2.0</td></tr><tr><td>Hand or arm injury, after a rim attack</td><td>30 s</td><td class="num">52.1%</td><td class="num">32.4%</td><td class="num">1.6×</td><td class="num">2.2</td></tr><tr><td>Hand or arm injury, after a rim attack</td><td>1 min</td><td class="num">64.8%</td><td class="num">51.5%</td><td class="num">1.3×</td><td class="num">1.7</td></tr><tr><td>Hand or arm injury, after a rim attack</td><td>2 min</td><td class="num">73.2%</td><td class="num">73.1%</td><td class="num">1.0×</td><td class="num">1.0</td></tr><tr><td>Pulled muscle or Achilles, after a drive</td><td>15 s</td><td class="num">8.6%</td><td class="num">3.4%</td><td class="num">2.5×</td><td class="num">2.6</td></tr><tr><td>Pulled muscle or Achilles, after a drive</td><td>30 s</td><td class="num">11.1%</td><td class="num">6.3%</td><td class="num">1.8×</td><td class="num">1.9</td></tr><tr><td>Pulled muscle or Achilles, after a drive</td><td>1 min</td><td class="num">16.2%</td><td class="num">12.1%</td><td class="num">1.3×</td><td class="num">1.4</td></tr><tr><td>Pulled muscle or Achilles, after a drive</td><td>2 min</td><td class="num">22.2%</td><td class="num">22.1%</td><td class="num">1.0×</td><td class="num">1.0</td></tr></tbody></table></div></details>
-    </figure>
-  </section>
-
-  <section id="college" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">The college test</p>
-      <h2>Then I tried to break it in college.</h2>
-      <p>College basketball is the harder test. There’s no league-wide injury report to download, so I rebuilt seven seasons of Covers’ public injury page from 191 saved copies on the Internet Archive’s Wayback Machine, matched them to the NCAA’s own play-by-play, and found 328 injury exits.</p>
-      <p>The plan came first: five NBA patterns, the bar the four main ones had to clear (a Holm-adjusted p below 0.05), and the fifth as a side check with no bar. Here’s how each one came out next to the NBA.</p>
-    </div>
-    <figure class="figure" aria-labelledby="fig-college-title">
-      <h3 id="fig-college-title">NBA patterns, checked in Division I men’s basketball</h3>
-      <p class="sub">Each dot is an odds ratio against the same players’ normal substitutions, and the line through it is the likely range (95%). Right of the dashed line means the play came more often before injury exits.</p>
-      <ul class="legend"><li><span class="sw dot" style="background: var(--nba)"></span>NBA</li><li><span class="sw dot" style="background: var(--college)"></span>College</li><li><span class="sw ref"></span>No difference</li></ul>
-      <div class="chart forest" id="chart-college"></div>
-      <details class="data"><summary>Show the numbers</summary><div class="table-wrap"><table><caption>Division I men&#x27;s basketball under the plan fixed in advance; the bar was a Holm-adjusted p below 0.05 for the four main checks.</caption><thead><tr><th scope="col">Pattern</th><th scope="col" class="num">College exits with the play</th><th scope="col">College: injury exits vs normal subs</th><th scope="col" class="num">College odds ratio (likely range)</th><th scope="col" class="num">Holm-adjusted p</th><th scope="col" class="num">NBA odds ratio (likely range)</th><th scope="col" class="num">Chance of clearing the bar at the NBA&#x27;s size</th><th scope="col">Verdict</th></tr></thead><tbody><tr><td>Ankle injury, after drawing a foul</td><td class="num">9 of 70</td><td>12.9% vs 6.1%</td><td class="num">2.2 (1.1 to 4.5)</td><td class="num">0.085</td><td class="num">4.8 (3.1 to 7.5)</td><td class="num">97% to 99%</td><td>Same direction, not proven</td></tr><tr><td>Any injury, after a steal</td><td class="num">10 of 328</td><td>3.0% vs 2.0%</td><td class="num">1.6 (0.8 to 3.0)</td><td class="num">0.178</td><td class="num">2.5 (1.8 to 3.5)</td><td class="num">72% to 86%</td><td>Same direction, not proven</td></tr><tr><td>Hand or arm injury, after a rim attack</td><td class="num">11 of 25</td><td>44.0% vs 24.6%</td><td class="num">2.5 (1.1 to 5.6)</td><td class="num">0.085</td><td class="num">2.2 (1.4 to 3.6)</td><td class="num">31% to 48%</td><td>Same direction, not proven</td></tr><tr><td>Pulled muscle or Achilles, after a drive or fast-break finish</td><td class="num">3 of 25</td><td>12.0% vs 1.7%</td><td class="num">8.4 (2.1 to 33.1)</td><td class="num">0.010</td><td class="num">1.9 (1.2 to 3.0)</td><td class="num">4% to 16%</td><td>Passed, on 3 players</td></tr><tr><td>Ankle injury, after a rebound</td><td class="num">10 of 70</td><td>14.3% vs 9.4%</td><td class="num">1.8 (0.9 to 3.5)</td><td class="num">No bar set</td><td class="num">1.5 (1.1 to 2.2)</td><td class="num">No bar set</td><td>Same direction, side check</td></tr></tbody></table></div></details>
-    </figure>
-    <ul class="callouts">
-      <li><strong>5 of 5</strong><span>leaned the same way as in the NBA.</span></li>
-      <li><strong>1 of 4</strong><span>main checks cleared the bar: pulled muscles after a drive or fast-break finish, on just 3 players, so it’s fragile.</span></li>
-      <li><strong>1.9×</strong><span>the odds with all five combined (likely 1.3 to 2.8), and 1.9× without the fragile one. A check added after the plan.</span></li>
-    </ul>
-    <div class="measure">
-      <p style="margin-top: 22px">So college supports the NBA patterns as a group but doesn’t firmly establish any single one. The ankle check isn’t quite the same measure in both, either: the NBA’s play-by-play can only count fouls with free throws, while the college link came mostly from fouls with no free throws, at the whistle.</p>
-    </div>
-  </section>
-
-  <section id="signs" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Signs</p>
-      <h2>How a hurt player leaves.</h2>
-      <p>Some patterns aren’t causes. They’re the footprint of an injury that just happened, and together they could flag an exit worth a look on film.</p>
-    </div>
-    <figure class="figure" aria-labelledby="fig-signs-title">
-      <h3 id="fig-signs-title">How injury exits differ from normal substitutions</h3>
-      <p class="sub">The share of each with the sign. The college signs were spotted after the plan, so treat them as leads.</p>
-      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>NBA injury exits</li><li><span class="sw" style="background: var(--college)"></span>College injury exits</li><li><span class="sw" style="background: var(--normal)"></span>Normal substitutions</li></ul>
-      <div class="chart" id="chart-signs"></div>
-      <details class="data"><summary>Show the numbers</summary><div class="table-wrap"><table><caption>How injury exits differ from normal substitutions. The college signs were found after the plan.</caption><thead><tr><th scope="col">League</th><th scope="col">Sign</th><th scope="col" class="num">Injury exits</th><th scope="col" class="num">Normal substitutions</th><th scope="col" class="num">Times as often</th><th scope="col" class="num">Odds ratio</th></tr></thead><tbody><tr><td>NBA</td><td>Left at the team&#x27;s own timeout</td><td class="num">32.0%</td><td class="num">14.2%</td><td class="num">2.3×</td><td class="num">—</td></tr><tr><td>NBA</td><td>Committed a take foul to stop play</td><td class="num">1.5%</td><td class="num">0.2%</td><td class="num">6.9×</td><td class="num">6.2</td></tr><tr><td>NBA</td><td>Lost the ball or traveled</td><td class="num">3.8%</td><td class="num">1.6%</td><td class="num">2.3×</td><td class="num">2.5</td></tr><tr><td>College</td><td>Left at a stop with no foul, timeout, turnover or violation logged</td><td class="num">39.9%</td><td class="num">18.1%</td><td class="num">2.2×</td><td class="num">3.1</td></tr><tr><td>College</td><td>The only player the team took out</td><td class="num">65.5%</td><td class="num">45.2%</td><td class="num">1.5×</td><td class="num">2.3</td></tr><tr><td>College</td><td>A teammate shot the free throws for a foul the player drew</td><td class="num">2.4%</td><td class="num">&lt;0.1%</td><td class="num">69×</td><td class="num">44.6</td></tr></tbody></table></div></details>
-    </figure>
-    <div class="measure">
-      <p>In college, 40% of injury exits came at a stop with no foul, timeout, turnover or violation logged, against 18% of normal substitutions: often the referees stopping play for a hurt player. In the NBA, 32% of injury exits came at the team’s own timeout, against 14%.</p>
-    </div>
-  </section>
-
-  <section id="coverage" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Coverage</p>
-      <h2>What the play-by-play can see.</h2>
-      <p>Sudden injuries show up most. In the NBA, broken bones, concussions and sprains are traced most often, and soreness that builds up over time least. Most injuries never end a player’s night early, so they leave no trace here at all.</p>
-    </div>
-    <figure class="figure" aria-labelledby="fig-traced-title">
-      <h3 id="fig-traced-title">Share of each kind of new injury traced to an injury exit</h3>
-      <p class="sub">NBA 2019-20 to 2025-26, and Division I men’s basketball over the same seasons.</p>
-      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>NBA</li><li><span class="sw" style="background: var(--college)"></span>College</li></ul>
-      <div class="chart" id="chart-traced"></div>
-      <details class="data"><summary>Show the numbers</summary><div class="table-wrap"><table><caption>New injuries traced to an injury exit, by body part.</caption><thead><tr><th scope="col">Kind of injury</th><th scope="col" class="num">NBA traced</th><th scope="col" class="num">NBA share</th><th scope="col" class="num">College traced</th><th scope="col" class="num">College share</th></tr></thead><tbody><tr><td>Head and face</td><td class="num">66 of 265</td><td class="num">25%</td><td class="num">22 of 117</td><td class="num">19%</td></tr><tr><td>Ankle</td><td class="num">251 of 1,322</td><td class="num">19%</td><td class="num">70 of 261</td><td class="num">27%</td></tr><tr><td>Pulled muscle or Achilles</td><td class="num">198 of 1,233</td><td class="num">16%</td><td class="num">25 of 99</td><td class="num">25%</td></tr><tr><td>Shoulder</td><td class="num">41 of 258</td><td class="num">16%</td><td class="num">22 of 94</td><td class="num">23%</td></tr><tr><td>Hand, wrist, finger and arm</td><td class="num">71 of 516</td><td class="num">14%</td><td class="num">25 of 159</td><td class="num">16%</td></tr><tr><td>Back and hip</td><td class="num">118 of 930</td><td class="num">13%</td><td class="num">17 of 118</td><td class="num">14%</td></tr><tr><td>Foot and toe</td><td class="num">72 of 585</td><td class="num">12%</td><td class="num">42 of 211</td><td class="num">20%</td></tr><tr><td>Knee</td><td class="num">136 of 1,135</td><td class="num">12%</td><td class="num">56 of 280</td><td class="num">20%</td></tr></tbody></table></div></details>
-    </figure>
-  </section>
-
-  <section id="examples" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Examples</p>
-      <h2>What it looks like on the court.</h2>
-      <p>Real injury exits, read from the play-by-play two minutes before to 30 seconds after each one. Anything only news reports show is marked “reports say.”</p>
-    </div>
-    <div class="cards">
-      <article class="card"><span class="chip">College</span><h3>Jaylen Clark</h3><p class="meta">UCLA vs Arizona · Mar 4, 2023 · Achilles (out for the season)</p><p class="play">Steal, then a fast-break finish</p><p class="story">Stole the ball and scored on the break. Arizona called timeout the same second, and Clark was the only player UCLA took out.</p></article>
-      <article class="card"><span class="chip">College</span><h3>Myles Cale</h3><p class="meta">Seton Hall vs Ohio State · Nov 22, 2021 · Groin</p><p class="play">Steal, then a fast-break finish</p><p class="story">Stole the ball and scored on a fast-break layup to put Seton Hall up 24-19. Reports say Cale landed awkwardly and stayed down; play stopped seconds later when the arena lights went out, and Seton Hall took Cale and Bryce Aiken out.</p></article>
-      <article class="card"><span class="chip">College</span><h3>Cooper Flagg</h3><p class="meta">Duke vs Georgia Tech · Mar 13, 2025 · Ankle sprain</p><p class="play">Rebound</p><p class="story">Went up for a defensive rebound and, reports say, came down on an opponent&#x27;s foot. Called for traveling in the same second, Flagg was the only player Duke took out.</p></article>
-      <article class="card"><span class="chip">College</span><h3>Jayden Stone</h3><p class="meta">Detroit Mercy at Loyola Marymount · Dec 18, 2023 · Ankle</p><p class="play">Fouled</p><p class="story">Drew a shooting foul and came out at that whistle, the only player Detroit Mercy took out. Teammate Tyree Davis, already on the floor, shot the free throws.</p></article>
-      <article class="card"><span class="chip">NBA</span><h3>Julius Randle</h3><p class="meta">Knicks vs Heat · Mar 29, 2023 · Ankle sprain</p><p class="play">Rebound, then fouled</p><p class="story">Grabbed an offensive rebound and was fouled by Bam Adebayo. Randle stayed in through a Knicks timeout to shoot the free throws, then came out three seconds later when teammate Josh Hart fouled on purpose to stop play.</p></article>
-      <article class="card"><span class="chip">NBA</span><h3>Kevin Huerter</h3><p class="meta">Kings vs Grizzlies · Mar 18, 2024 · Dislocated shoulder</p><p class="play">Steal, then fouled</p><p class="story">Stole the ball and was fouled on a shot by Desmond Bane. Huerter came out at a Kings timeout, and teammate Alex Len shot the free throws in Huerter&#x27;s place.</p></article>
-      <article class="card"><span class="chip">NBA</span><h3>Jalen Johnson</h3><p class="meta">Hawks at Wizards · Nov 25, 2023 · Broken wrist</p><p class="play">Steal, then fouled</p><p class="story">Stole the ball from Kyle Kuzma and was fouled by Kuzma on the shot. Johnson stayed in to shoot the free throws, then came out when teammate Onyeka Okongwu fouled on purpose to stop play.</p></article>
-      <article class="card"><span class="chip">NBA</span><h3>Luka Dončić</h3><p class="meta">Mavericks vs Timberwolves · Dec 25, 2024 · Calf strain</p><p class="play">No play of Dončić&#x27;s own</p><p class="story">Checked back in with 3:08 left in the second quarter and came out 37 seconds later at a Dallas timeout. No play in that stretch was credited to Dončić, so the play-by-play can&#x27;t show the moment.</p></article>
-    </div>
-  </section>
-
-  <section id="conclusions" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Conclusions</p>
-      <h2>What I found.</h2>
-    </div>
-    <ol class="conclusions">
-      <li><h3>Play-by-play can find the moment, about 1 in 7 times.</h3><p>981 of 6,536 new NBA injuries ended in an injury exit, and about 79% of those are tied to the injury rather than chance. That’s enough to study what was happening when players got hurt, even though no line in the data says so.</p></li>
-      <li><h3>Contact plays carry the signal.</h3><p>Three plays held up in every check: being fouled before ankle injuries (4.1× as often), a steal before injuries of any kind (2.4× as often), and defending a rim attack before hand and arm injuries (52% of exits against 32% of normal substitutions). Pulled muscles after a drive are a lead, and ankle injuries after a rebound aren’t proven.</p></li>
-      <li><h3>It’s the play, not the shift.</h3><p>The link is strongest in the last 15 to 30 seconds before the exit and almost gone two minutes out. That points to the play itself rather than fatigue building up over a long stretch.</p></li>
-      <li><h3>College points the same way, but doesn’t prove it.</h3><p>All five patterns leaned the same way in Division I, and one of the four main checks cleared the bar I set in advance, on just 3 players. Combined, the five patterns give an odds ratio of 1.9 (likely 1.3 to 2.8), and that holds without the fragile one.</p></li>
-      <li><h3>How a player leaves is a signal too.</h3><p>Being the only player taken out, leaving at a stop with nothing logged, a teammate shooting the player’s free throws, or the team spending its own timeout all come with injury exits more often than with normal substitutions. Together they could flag the exits worth a look on film.</p></li>
-      <li><h3>The scale is small.</h3><p>The three solid patterns account for about 60 injury exits in seven seasons beyond what you’d expect by chance, about 9 a season across the whole league. Most injuries happen out of view, in practice or building up over time, so prevention needs film, trainer records and load data, not just box scores.</p></li>
-    </ol>
-    <div class="todo">
-      <h3>What a team could do with this</h3>
-      <ul>
-        <li><b>Use injury exits as a film trigger.</b> Pull the 30 seconds before every early exit and log what happened: a landing, contact, a hard cut, a collision.</li>
-        <li><b>Start prevention work where the data points.</b> Contact on fouled drives and landings, the sprint and finish after a steal, and contesting at the rim are the places to look first.</li>
-        <li><b>Build the data the public can’t see.</b> Athletic trainers’ injury logs (with the department’s approval), practice load and tracking data are what can turn these patterns into causes.</li>
+  <section class="record" aria-labelledby="record-title">
+    <div class="grid record-grid">
+      <figure class="record-photo" data-rise>
+        <img src="assets/img/taping.jpg" width="1400" height="1057" alt="A physical therapy technician tapes a patient’s ankle" loading="lazy" decoding="async">
+      </figure>
+      <h2 class="record-claim" id="record-title" data-rise>Its riskiest picks got hurt</h2>
+      <p class="record-figure" data-rise aria-label="5.3 times">5.3<span class="unit" aria-hidden="true">×</span></p>
+      <p class="record-caption" data-rise>as often as the players it rated safest, night after night through 2025-26, a season the model never trained on.</p>
+      <ul class="record-bars" data-rise aria-label="Share with a new injury within five games, 2025-26">
+        <li style="--i:0"><span>Each night&#x27;s top 15</span><b>26.1%</b><span class="bar"><span style="width:100.0%"></span></span></li>
+        <li style="--i:1"><span>All players</span><b>15.6%</b><span class="bar"><span style="width:59.8%"></span></span></li>
+        <li style="--i:2"><span>Each night&#x27;s lowest 15</span><b>5.0%</b><span class="bar"><span style="width:19.0%"></span></span></li>
       </ul>
+      <p class="record-source" data-rise>Share of players with a new injury within five games. Across every game, the model’s ranking scores AUC 0.70, and its riskiest tenth of player-games got hurt 2.3 times as often as average.</p>
     </div>
   </section>
 
-  <section id="limits" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">Limits</p>
-      <h2>What the data can’t see.</h2>
-      <ul class="limits">
-        <li>The play-by-play only records who made each play and who was on the floor. It can’t show landings, collisions, cuts without the ball, or rebounds someone else won.</li>
-        <li>Most injuries never end a player’s night early, and injuries in practice or that build up over time don’t show up at all.</li>
-        <li>Injury exits are inferred, not observed: about 1 in 5 traced NBA exits are likely coincidence.</li>
-        <li>College injuries come from saved copies of a public injury page, which are sparse in 2022-23 and 2024-25. Old-format NCAA play-by-play, mostly from 2019-21, can’t show fouls drawn or drives.</li>
-        <li>The NBA patterns came out of many comparisons. The false-discovery correction and the college test guard against chance, but these are associations, not proof of cause.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section id="work" class="wrap">
-    <div class="measure">
-      <p class="eyebrow">The work</p>
-      <h2>Inspect the work.</h2>
-      <p>The code, the college test plan written before the results (with its SHA-256 fingerprint), a hand-read sample of college cases, and every result, including changes made after seeing the data, are on GitHub.</p>
-      <div class="links">
-        <a class="button dark" href="https://github.com/bryanhkwan/Basketball-Injury-Project" target="_blank" rel="noopener">Source code ↗</a>
-        <a class="button dark" href="https://github.com/bryanhkwan/Basketball-Injury-Project/blob/HEAD/README.md" target="_blank" rel="noopener">Full results ↗</a>
-        <a class="button dark" href="https://github.com/bryanhkwan/Basketball-Injury-Project/blob/HEAD/docs/ncaa_moments_plan.md" target="_blank" rel="noopener">College test plan ↗</a>
-        <a class="button dark" href="https://github.com/bryanhkwan/Basketball-Injury-Project/blob/HEAD/docs/ncaa_moments_hand_read.md" target="_blank" rel="noopener">Hand-read sample ↗</a>
+  <section class="outputs" aria-labelledby="outputs-title">
+    <h2 class="sr-only" id="outputs-title">Five dashboards</h2>
+    <div class="grid">
+      <div class="output-index">
+        <div class="output-names" role="tablist" aria-label="Dashboards">
+          <button type="button" role="tab" id="out-board" aria-controls="stage" aria-selected="true" data-rise style="--i:0">Risk board</button>
+          <button type="button" role="tab" id="out-players" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:1">Player timelines</button>
+          <button type="button" role="tab" id="out-model" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:2">Model check</button>
+          <button type="button" role="tab" id="out-why" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:3">Why players get hurt</button>
+          <button type="button" role="tab" id="out-moments" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:4">Injury moments</button>
+        </div>
+        <p class="output-text" id="output-text" aria-live="polite">Every night of the 2025-26 season, the twelve players the model rated most at risk before tip-off, and what happened to each of them in their next five games.</p>
+        <a class="button" id="output-link" href="dashboard.html#board">Open the risk board <span aria-hidden="true">→</span></a>
       </div>
-      <p class="credits">Data: the NBA’s official injury reports, 2019-20 to 2025-26; NBA and NCAA play-by-play and box scores from the sportsdataverse data releases; Covers’ college injury page through the Internet Archive’s Wayback Machine. Not affiliated with the NBA, the NCAA or Covers.</p>
+      <div class="stage" id="stage" role="tabpanel" aria-labelledby="out-board" data-rise>
+        <div class="sheet out-sheet" data-ui id="out-sheet">
+          <noscript><p>The dashboards need JavaScript. The numbers are also in the <a href="https://github.com/bryanhkwan/Basketball-Injury-Project">repository</a>.</p></noscript>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="kinds" aria-labelledby="kinds-title">
+    <div class="grid">
+      <h2 class="kinds-title" id="kinds-title" data-rise>What comes before each kind of injury</h2>
+      <a class="button kinds-action" href="dashboard.html#when" data-rise>Every comparison <span aria-hidden="true">→</span></a>
+      <div class="kinds-body">
+        <div class="kind-tabs" role="tablist" aria-label="Kind of injury" aria-orientation="vertical" data-rise><button type="button" role="tab" id="kind-any" aria-controls="panel-any" aria-selected="true"><b>Any injury</b><span>6,773 injuries</span></button><button type="button" role="tab" id="kind-muscle" aria-controls="panel-muscle" aria-selected="false" tabindex="-1"><b>Pulled muscles</b><span>1,294 injuries</span></button><button type="button" role="tab" id="kind-sprain" aria-controls="panel-sprain" aria-selected="false" tabindex="-1"><b>Sprained ankles</b><span>1,111 injuries</span></button><button type="button" role="tab" id="kind-contact" aria-controls="panel-contact" aria-selected="false" tabindex="-1"><b>Knocks</b><span>1,557 injuries</span></button><button type="button" role="tab" id="kind-knee" aria-controls="panel-knee" aria-selected="false" tabindex="-1"><b>Knees</b><span>1,012 injuries</span></button><button type="button" role="tab" id="kind-back" aria-controls="panel-back" aria-selected="false" tabindex="-1"><b>Backs</b><span>537 injuries</span></button><button type="button" role="tab" id="kind-other" aria-controls="panel-other" aria-selected="false" tabindex="-1"><b>Other aches</b><span>1,262 injuries</span></button></div>
+        <div class="kind-panels" data-rise><div class="kind-panel" role="tabpanel" id="panel-any" aria-labelledby="kind-any"><div class="kind-side"><p class="side-figure num">163</p><p class="side-note">games a team loses to new injuries each season, about 32 injuries. These are the findings that held in both halves of the seasons.</p></div><ol class="bands"><li class="band up"><span class="figure num">2.5×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.7×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.7×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">Much more likely</span></li><li class="band down"><span class="figure num">44% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.3×</span><span class="what"><b>Age 30 or older</b><span class="note">compared with everyone else</span></span><span class="verdict">Slightly more likely</span></li><li class="band up"><span class="figure num">1.3×</span><span class="what"><b>Played overtime in the last two weeks</b><span class="note">compared with no recent overtime</span></span><span class="verdict">Slightly more likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-muscle" aria-labelledby="kind-muscle" hidden><div class="kind-side"><p class="side-figure num">32</p><p class="side-note">games a team loses to pulled muscles each season. 32% of them kept the player out five games or more, and 32% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">2.8×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">2.1×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.8×</span><span class="what"><b>Age 30 or older</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band down"><span class="figure num">63% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>Guards</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>First three games back from an injury</b><span class="note">compared with games 4 to 10 after a return</span></span><span class="verdict">More likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-sprain" aria-labelledby="kind-sprain" hidden><div class="kind-side"><p class="side-figure num">26</p><p class="side-note">games a team loses to sprained ankles and feet each season. 29% of them kept the player out five games or more, and 37% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">2.0×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.6×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>First three games back from an injury</b><span class="note">compared with games 4 to 10 after a return</span></span><span class="verdict">More likely</span></li><li class="band down"><span class="figure num">35% less</span><span class="what"><b>Playing at altitude (Denver, Utah)</b><span class="note">compared with other arenas</span></span><span class="verdict">Less likely</span></li><li class="band down"><span class="figure num">31% less</span><span class="what"><b>Played far fewer minutes than usual last game</b><span class="note">compared with a usual last game</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.3×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">Slightly more likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-contact" aria-labelledby="kind-contact" hidden><div class="kind-side"><p class="side-figure num">37</p><p class="side-note">games a team loses to knocks and collisions each season. 25% of them kept the player out five games or more, and 23% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">2.1×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.8×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.6×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>Long stretches on the floor lately (10+ minutes)</b><span class="note">compared with shorter stretches</span></span><span class="verdict">More likely</span></li><li class="band down"><span class="figure num">35% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.3×</span><span class="what"><b>Played overtime in the last two weeks</b><span class="note">compared with no recent overtime</span></span><span class="verdict">More likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-knee" aria-labelledby="kind-knee" hidden><div class="kind-side"><p class="side-figure num">33</p><p class="side-note">games a team loses to knee problems each season. 27% of them kept the player out five games or more, and 49% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">2.7×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">2.1×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.6×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band down"><span class="figure num">60% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>First three games back from an injury</b><span class="note">compared with games 4 to 10 after a return</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.3×</span><span class="what"><b>Attacks the rim the most (top quarter)</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-back" aria-labelledby="kind-back" hidden><div class="kind-side"><p class="side-figure num">8</p><p class="side-note">games a team loses to back problems each season. 16% of them kept the player out five games or more, and 36% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">3.1×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.6×</span><span class="what"><b>Big men (6&#x27;10&quot; or taller)</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.6×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">More likely</span></li><li class="band down"><span class="figure num">51% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.5×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li></ol></div><div class="kind-panel" role="tabpanel" id="panel-other" aria-labelledby="kind-other" hidden><div class="kind-side"><p class="side-figure num">26</p><p class="side-note">games a team loses to other aches and pains each season. 22% of them kept the player out five games or more, and 40% hit the same body part again within a year.</p></div><ol class="bands"><li class="band up"><span class="figure num">3.1×</span><span class="what"><b>Two or more injuries in the past year</b><span class="note">compared with everyone else</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">2.3×</span><span class="what"><b>Late in the regular season (game 60 on)</b><span class="note">compared with the first 40 games</span></span><span class="verdict">Much more likely</span></li><li class="band up"><span class="figure num">1.7×</span><span class="what"><b>Plays 30+ minutes a game</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band up"><span class="figure num">1.5×</span><span class="what"><b>Age 30 or older</b><span class="note">compared with everyone else</span></span><span class="verdict">More likely</span></li><li class="band down"><span class="figure num">46% less</span><span class="what"><b>First or second NBA season</b><span class="note">compared with everyone else</span></span><span class="verdict">Less likely</span></li><li class="band up"><span class="figure num">1.4×</span><span class="what"><b>Played overtime in the last two weeks</b><span class="note">compared with no recent overtime</span></span><span class="verdict">More likely</span></li></ol></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="how-title">
+    <div class="grid">
+      <div class="how-side" data-rise>
+        <p class="side-figure num">1,595</p>
+        <p class="side-note">official NBA injury reports read, one for every game day from December 2018 to June 2026.</p>
+      </div>
+      <h2 class="how-title" id="how-title" data-rise>From reports <br>to a ranking</h2>
+      <p class="how-text" data-rise>Every game day the league publishes an injury report: who is out, and why. I matched every line to a player and a game, then asked one question before every game, for every player: how likely is a new injury in the next five games?</p>
+      <svg class="how-diagram" id="how-diagram" viewBox="0 0 1200 267" role="img" aria-label="Scattered report lines are pulled into one table of player-games, then laid out as an ordered ranking"></svg>
+      <div class="how-steps">
+        <div data-rise style="--i:0"><h3>Read</h3><p>134,220 report lines, 99.8% of them matched to a player.</p></div>
+        <div data-rise style="--i:1"><h3>Match</h3><p>6,773 new injuries across 187,799 player-games, with what each player had been doing beforehand.</p></div>
+        <div data-rise style="--i:2"><h3>Rank</h3><p>A chance of a new injury for every player before every game, checked on two seasons the model never saw.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" aria-labelledby="about-title">
+    <div class="grid">
+      <ul class="about-facts" data-rise>
+        <li><b>Built with</b>Python, pandas and scikit-learn</li>
+        <li><b>Seasons</b>2019-20 to 2025-26, tested on 2024-25 and 2025-26</li>
+        <li><b>Code and method</b><a href="https://github.com/bryanhkwan/Basketball-Injury-Project">github.com/bryanhkwan</a></li>
+      </ul>
+      <div class="about-body">
+        <h2 id="about-title" data-rise>Who made this</h2>
+        <p class="about-lead" data-rise><span class="dropcap" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#071b32"/><g fill="none" stroke="#ffd200" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg></span><b>Bryan Kwan</b> built this to find out what public data can say about NBA injuries before they happen, and what it can’t.</p>
+        <p class="about-more" data-rise>Everything here comes from public sources: the league’s official injury reports, box scores and play-by-play. The model was tested on two seasons it never saw, misses included. On an average night about 1.9 players per team sit out with a new injury, and most of those injuries never show up in a box score.</p>
+        <p class="about-more" data-rise>It ranks risk; it can’t say why any one player got hurt, and it isn’t medical advice. College results appear only as totals. Not affiliated with the NBA or the NCAA.</p>
+      </div>
     </div>
   </section>
 </main>
 
-<footer>
-  <div class="wrap"><span>Bryan Kwan · Sports analytics</span><span>Built with Python · Updated October 2026</span></div>
+<footer class="foot">
+  <p class="foot-name">Basketball Injury Project</p>
+  <div class="grid foot-grid">
+    <ul class="foot-places">
+      <li><a href="dashboard.html">Dashboards</a></li>
+      <li><a href="moments.html">The report</a></li>
+      <li><a href="https://github.com/bryanhkwan/Basketball-Injury-Project">GitHub ↗</a></li>
+    </ul>
+    <div class="foot-links">
+      <div><h2>Dashboards</h2><ul>
+        <li><a href="dashboard.html#board">Risk board</a></li>
+        <li><a href="dashboard.html#players">Players</a></li>
+        <li><a href="dashboard.html#model">Model check</a></li>
+        <li><a href="dashboard.html#factors">What raises risk</a></li>
+      </ul></div>
+      <div><h2>Studies</h2><ul>
+        <li><a href="dashboard.html#when">When and who</a></li>
+        <li><a href="dashboard.html#types">Injury types</a></li>
+        <li><a href="moments.html">The moment of injury</a></li>
+        <li><a href="https://github.com/bryanhkwan/Basketball-Injury-Project/blob/HEAD/docs/ncaa_moments_plan.md">College test plan</a></li>
+      </ul></div>
+      <div><h2>Project</h2><ul>
+        <li><a href="https://github.com/bryanhkwan/Basketball-Injury-Project#readme">How it works</a></li>
+        <li><a href="https://github.com/bryanhkwan/Basketball-Injury-Project#data-sources-and-terms">Data sources</a></li>
+        <li><a href="#top">Back to top</a></li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="grid foot-legal">
+    <p>© 2026 Bryan Kwan · Updated October 2026 · Not affiliated with the NBA or the NCAA. Pictures: <a href="https://commons.wikimedia.org/wiki/File:Game_Basketball_TD_Garden.jpg">“Game Basketball TD Garden”</a> by EgorovaSvetlana, <a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:Kinesio_taping.jpg">“Kinesio taping”</a> by U.S. Air Force photo by Airman 1st Class Alystria Maurer, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, both via Wikimedia Commons and shown in greyscale.</p>
+    <a class="top" href="#top">Back to top ↑</a>
+  </div>
 </footer>
-
-<script type="application/json" id="report-data">{"nba": [{"key": "ankle:fouled", "label": "Ankle injury right after being fouled", "tag": {"cls": "solid", "icon": "✓", "text": "Solid"}, "ratio": 4.107801498408881, "bars": [{"name": "Injury exits", "value": 0.09163346613545817, "text": "9.2%", "series": "nba"}, {"name": "Normal subs", "value": 0.022307179685033846, "text": "2.2%", "series": "normal"}], "tip": [["Injury exits with the play", "23 of 251"], ["Before injury exits", "9.2%"], ["Before normal substitutions", "2.2%"], ["Odds ratio (likely range)", "4.8 (3.1 to 7.5)"]], "aria": "Ankle injury right after being fouled: 9.2% of injury exits against 2.2% of normal substitutions, 4.1× as often. Solid."}, {"key": "any:steal", "label": "Any injury right after a steal by the player", "tag": {"cls": "solid", "icon": "✓", "text": "Solid"}, "ratio": 2.4428996937709706, "bars": [{"name": "Injury exits", "value": 0.039755351681957186, "text": "4.0%", "series": "nba"}, {"name": "Normal subs", "value": 0.016273837105685262, "text": "1.6%", "series": "normal"}], "tip": [["Injury exits with the play", "39 of 981"], ["Before injury exits", "4.0%"], ["Before normal substitutions", "1.6%"], ["Odds ratio (likely range)", "2.5 (1.8 to 3.5)"]], "aria": "Any injury right after a steal by the player: 4.0% of injury exits against 1.6% of normal substitutions, 2.4× as often. Solid."}, {"key": "hand:opp_rim", "label": "Hand, wrist, finger or arm injury after the other team attacked the rim", "tag": {"cls": "solid", "icon": "✓", "text": "Solid"}, "ratio": 1.6061531759949068, "bars": [{"name": "Injury exits", "value": 0.5211267605633803, "text": "52.1%", "series": "nba"}, {"name": "Normal subs", "value": 0.32445645182040395, "text": "32.4%", "series": "normal"}], "tip": [["Injury exits with the play", "37 of 71"], ["Before injury exits", "52.1%"], ["Before normal substitutions", "32.4%"], ["Odds ratio (likely range)", "2.2 (1.4 to 3.6)"]], "aria": "Hand, wrist, finger or arm injury after the other team attacked the rim: 52.1% of injury exits against 32.4% of normal substitutions, 1.6× as often. Solid."}, {"key": "muscle:drive", "label": "Pulled muscle or Achilles injury right after a drive or cut to the basket", "tag": {"cls": "lead", "icon": "◐", "text": "A lead"}, "ratio": 1.7707087185064347, "bars": [{"name": "Injury exits", "value": 0.1111111111111111, "text": "11.1%", "series": "nba"}, {"name": "Normal subs", "value": 0.06274951376804176, "text": "6.3%", "series": "normal"}], "tip": [["Injury exits with the play", "22 of 198"], ["Before injury exits", "11.1%"], ["Before normal substitutions", "6.3%"], ["Odds ratio (likely range)", "1.9 (1.2 to 3.0)"]], "aria": "Pulled muscle or Achilles injury right after a drive or cut to the basket: 11.1% of injury exits against 6.3% of normal substitutions, 1.8× as often. A lead."}, {"key": "ankle:rebound", "label": "Ankle injury right after a rebound", "tag": {"cls": "not", "icon": "○", "text": "Not proven"}, "ratio": 1.3974121090331117, "bars": [{"name": "Injury exits", "value": 0.1394422310756972, "text": "13.9%", "series": "nba"}, {"name": "Normal subs", "value": 0.09978604749044229, "text": "10.0%", "series": "normal"}], "tip": [["Injury exits with the play", "35 of 251"], ["Before injury exits", "13.9%"], ["Before normal substitutions", "10.0%"], ["Odds ratio (likely range)", "1.5 (1.1 to 2.2)"]], "aria": "Ankle injury right after a rebound: 13.9% of injury exits against 10.0% of normal substitutions, 1.4× as often. Not proven."}], "fade": [{"key": "ankle:fouled", "label": "Ankle injury, after being fouled", "points": [{"when": "15 s", "ratio": 7.021905106845346, "injury_share": 0.06772908366533864, "normal_share": 0.009645400021044508, "odds": 8.102615029773977}, {"when": "30 s", "ratio": 4.107801498408881, "injury_share": 0.09163346613545817, "normal_share": 0.022307179685033846, "odds": 4.802675477451829}, {"when": "1 min", "ratio": 2.539261731019291, "injury_share": 0.11952191235059761, "normal_share": 0.047069552102697206, "odds": 3.071778370229695}, {"when": "2 min", "ratio": 1.3786164646306278, "injury_share": 0.13147410358565736, "normal_share": 0.09536670057170916, "odds": 1.5669894415024028}], "aria": "Ankle injury, after being fouled, times as often: 15 s 7.0×, 30 s 4.1×, 1 min 2.5×, 2 min 1.4×"}, {"key": "any:steal", "label": "Any injury, after a steal", "points": [{"when": "15 s", "ratio": 2.524545678231221, "injury_share": 0.024464831804281346, "normal_share": 0.009690785956157548, "odds": 2.6161203237647435}, {"when": "30 s", "ratio": 2.4428996937709706, "injury_share": 0.039755351681957186, "normal_share": 0.016273837105685262, "odds": 2.5033752633802258}, {"when": "1 min", "ratio": 1.8451865962664522, "injury_share": 0.0581039755351682, "normal_share": 0.031489484940295846, "odds": 1.9056901696997388}, {"when": "2 min", "ratio": 1.2171268479250987, "injury_share": 0.07543323139653414, "normal_share": 0.06197647478167884, "odds": 1.2491328980483953}], "aria": "Any injury, after a steal, times as often: 15 s 2.5×, 30 s 2.4×, 1 min 1.8×, 2 min 1.2×"}, {"key": "hand:opp_rim", "label": "Hand or arm injury, after a rim attack", "points": [{"when": "15 s", "ratio": 1.6778371377691434, "injury_share": 0.3380281690140845, "normal_share": 0.20146661520648398, "odds": 2.006186304987547}, {"when": "30 s", "ratio": 1.6061531759949068, "injury_share": 0.5211267605633803, "normal_share": 0.32445645182040395, "odds": 2.225767032630511}, {"when": "1 min", "ratio": 1.2580634946325466, "injury_share": 0.647887323943662, "normal_share": 0.5149877782066127, "odds": 1.7390708623353186}, {"when": "2 min", "ratio": 1.0017422854919416, "injury_share": 0.7323943661971831, "normal_share": 0.7311205454779365, "odds": 1.0101763544974243}], "aria": "Hand or arm injury, after a rim attack, times as often: 15 s 1.7×, 30 s 1.6×, 1 min 1.3×, 2 min 1.0×"}, {"key": "muscle:drive", "label": "Pulled muscle or Achilles, after a drive", "points": [{"when": "15 s", "ratio": 2.4925780839599563, "injury_share": 0.08585858585858586, "normal_share": 0.03444569556761183, "odds": 2.625830468365278}, {"when": "30 s", "ratio": 1.7707087185064347, "injury_share": 0.1111111111111111, "normal_share": 0.06274951376804176, "odds": 1.9112875024580227}, {"when": "1 min", "ratio": 1.3345970269047194, "injury_share": 0.16161616161616163, "normal_share": 0.12109734875626983, "odds": 1.4345607312075266}, {"when": "2 min", "ratio": 1.0057395825290196, "injury_share": 0.2222222222222222, "normal_share": 0.2209540382843689, "odds": 1.0264488000668304}], "aria": "Pulled muscle or Achilles, after a drive, times as often: 15 s 2.5×, 30 s 1.8×, 1 min 1.3×, 2 min 1.0×"}], "college": [{"key": "H1", "label": "Ankle injury, after drawing a foul", "tag": {"cls": "same", "icon": "○", "text": "Same direction, not proven"}, "college": {"or": 2.2192382238745343, "lo": 1.0878471661743079, "hi": 4.527307187484691}, "nba": {"or": 4.802675477451829, "lo": 3.0715855518063897, "hi": 7.509376298554436}, "extra": [["College exits with the play", "9 of 70"], ["Chance of clearing the bar at the NBA's size", "97% to 99%"]], "aria": "Ankle injury, after drawing a foul: college odds ratio 2.2 (1.1 to 4.5), NBA 4.8 (3.1 to 7.5). Same direction, not proven."}, {"key": "H2", "label": "Any injury, after a steal", "tag": {"cls": "same", "icon": "○", "text": "Same direction, not proven"}, "college": {"or": 1.5607601338479473, "lo": 0.816297869745363, "hi": 2.984170712302536}, "nba": {"or": 2.5033752633802258, "lo": 1.8058416735797116, "hi": 3.4703417254078497}, "extra": [["College exits with the play", "10 of 328"], ["Chance of clearing the bar at the NBA's size", "72% to 86%"]], "aria": "Any injury, after a steal: college odds ratio 1.6 (0.8 to 3.0), NBA 2.5 (1.8 to 3.5). Same direction, not proven."}, {"key": "H3", "label": "Hand or arm injury, after a rim attack", "tag": {"cls": "same", "icon": "○", "text": "Same direction, not proven"}, "college": {"or": 2.462444921371949, "lo": 1.087489703212444, "hi": 5.575809106861913}, "nba": {"or": 2.225767032630511, "lo": 1.3892448185941642, "hi": 3.565994141016868}, "extra": [["College exits with the play", "11 of 25"], ["Chance of clearing the bar at the NBA's size", "31% to 48%"]], "aria": "Hand or arm injury, after a rim attack: college odds ratio 2.5 (1.1 to 5.6), NBA 2.2 (1.4 to 3.6). Same direction, not proven."}, {"key": "H4", "label": "Pulled muscle or Achilles, after a drive or fast-break finish", "tag": {"cls": "passed", "icon": "◐", "text": "Passed, on 3 players"}, "college": {"or": 8.35141394237596, "lo": 2.1052253365749043, "hi": 33.12999973218305}, "nba": {"or": 1.9112875024580227, "lo": 1.2114244880635594, "hi": 3.0154747184378894}, "extra": [["College exits with the play", "3 of 25"], ["Chance of clearing the bar at the NBA's size", "4% to 16%"]], "aria": "Pulled muscle or Achilles, after a drive or fast-break finish: college odds ratio 8.4 (2.1 to 33.1), NBA 1.9 (1.2 to 3.0). Passed, on 3 players."}, {"key": "H5", "label": "Ankle injury, after a rebound", "tag": {"cls": "same", "icon": "○", "text": "Same direction, side check"}, "college": {"or": 1.7546588051157639, "lo": 0.8789949108822978, "hi": 3.5026682000694227}, "nba": {"or": 1.5208341346683405, "lo": 1.0570582137064408, "hi": 2.1880880685486384}, "extra": [["College exits with the play", "10 of 70"], ["Chance of clearing the bar at the NBA's size", "No bar set"]], "aria": "Ankle injury, after a rebound: college odds ratio 1.8 (0.9 to 3.5), NBA 1.5 (1.1 to 2.2). Same direction, side check."}], "signs": [{"key": "nba:own_timeout", "chip": "NBA", "label": "Left at the team's own timeout", "ratio": 2.258997882851094, "tip": [["Injury exits", "32.0%"], ["Normal substitutions", "14.2%"]], "bars": [{"name": "Injury exits", "value": 0.3201, "text": "32.0%", "series": "nba"}, {"name": "Normal subs", "value": 0.1417, "text": "14.2%", "series": "normal"}], "aria": "NBA, Left at the team's own timeout: 32.0% of injury exits against 14.2% of normal substitutions."}, {"key": "nba:take_foul", "chip": "NBA", "label": "Committed a take foul to stop play", "ratio": 6.932937942112253, "tip": [["Injury exits", "1.5%"], ["Normal substitutions", "0.2%"], ["Odds ratio, same players", "6.2"], ["Same, early exits with no injury after", "1.5"]], "bars": [{"name": "Injury exits", "value": 0.01529051987767584, "text": "1.5%", "series": "nba"}, {"name": "Normal subs", "value": 0.0022054892176082697, "text": "0.2%", "series": "normal"}], "aria": "NBA, Committed a take foul to stop play: 1.5% of injury exits against 0.2% of normal substitutions."}, {"key": "nba:tov_handle", "chip": "NBA", "label": "Lost the ball or traveled", "ratio": 2.336816349846532, "tip": [["Injury exits", "3.8%"], ["Normal substitutions", "1.6%"], ["Odds ratio, same players", "2.5"], ["Same, early exits with no injury after", "1.5"]], "bars": [{"name": "Injury exits", "value": 0.03771661569826707, "text": "3.8%", "series": "nba"}, {"name": "Normal subs", "value": 0.01614017109249688, "text": "1.6%", "series": "normal"}], "aria": "NBA, Lost the ball or traveled: 3.8% of injury exits against 1.6% of normal substitutions."}, {"key": "college:unlogged", "chip": "College", "label": "Left at a stop with no foul, timeout, turnover or violation logged", "ratio": 2.2050121572782837, "tip": [["Injury exits", "39.9%"], ["Normal substitutions", "18.1%"], ["Odds ratio, same players", "3.1"], ["Same, early exits with no injury after", "1.0"]], "bars": [{"name": "Injury exits", "value": 0.39939024390243905, "text": "39.9%", "series": "college"}, {"name": "Normal subs", "value": 0.18112836366191246, "text": "18.1%", "series": "normal"}], "aria": "College, Left at a stop with no foul, timeout, turnover or violation logged: 39.9% of injury exits against 18.1% of normal substitutions."}, {"key": "college:lone_sub", "chip": "College", "label": "The only player the team took out", "ratio": 1.450490971211018, "tip": [["Injury exits", "65.5%"], ["Normal substitutions", "45.2%"], ["Odds ratio, same players", "2.3"], ["Same, early exits with no injury after", "1.3"]], "bars": [{"name": "Injury exits", "value": 0.6554878048780488, "text": "65.5%", "series": "college"}, {"name": "Normal subs", "value": 0.4519075388182393, "text": "45.2%", "series": "normal"}], "aria": "College, The only player the team took out: 65.5% of injury exits against 45.2% of normal substitutions."}, {"key": "college:replaced_at_line", "chip": "College", "label": "A teammate shot the free throws for a foul the player drew", "ratio": 69.42926829268293, "tip": [["Injury exits", "2.4%"], ["Normal substitutions", "<0.1%"], ["Odds ratio, same players", "44.6"], ["Same, early exits with no injury after", "4.2"]], "bars": [{"name": "Injury exits", "value": 0.024390243902439025, "text": "2.4%", "series": "college"}, {"name": "Normal subs", "value": 0.00035129628328532284, "text": "<0.1%", "series": "normal"}], "aria": "College, A teammate shot the free throws for a foul the player drew: 2.4% of injury exits against <0.1% of normal substitutions."}], "traced": [{"key": "head", "label": "Head and face", "bars": [{"name": "NBA", "value": 0.2490566037735849, "text": "25%", "series": "nba"}, {"name": "College", "value": 0.18803418803418803, "text": "19%", "series": "college"}], "tip": [["NBA injuries traced", "66 of 265 (25%)"], ["College injuries traced", "22 of 117 (19%)"]], "aria": "Head and face: NBA 25%, College 19% traced."}, {"key": "ankle", "label": "Ankle", "bars": [{"name": "NBA", "value": 0.18986384266263237, "text": "19%", "series": "nba"}, {"name": "College", "value": 0.2681992337164751, "text": "27%", "series": "college"}], "tip": [["NBA injuries traced", "251 of 1,322 (19%)"], ["College injuries traced", "70 of 261 (27%)"]], "aria": "Ankle: NBA 19%, College 27% traced."}, {"key": "muscle", "label": "Pulled muscle or Achilles", "bars": [{"name": "NBA", "value": 0.16058394160583941, "text": "16%", "series": "nba"}, {"name": "College", "value": 0.25252525252525254, "text": "25%", "series": "college"}], "tip": [["NBA injuries traced", "198 of 1,233 (16%)"], ["College injuries traced", "25 of 99 (25%)"]], "aria": "Pulled muscle or Achilles: NBA 16%, College 25% traced."}, {"key": "shoulder", "label": "Shoulder", "bars": [{"name": "NBA", "value": 0.15891472868217055, "text": "16%", "series": "nba"}, {"name": "College", "value": 0.23404255319148937, "text": "23%", "series": "college"}], "tip": [["NBA injuries traced", "41 of 258 (16%)"], ["College injuries traced", "22 of 94 (23%)"]], "aria": "Shoulder: NBA 16%, College 23% traced."}, {"key": "hand", "label": "Hand, wrist, finger and arm", "bars": [{"name": "NBA", "value": 0.1375968992248062, "text": "14%", "series": "nba"}, {"name": "College", "value": 0.15723270440251572, "text": "16%", "series": "college"}], "tip": [["NBA injuries traced", "71 of 516 (14%)"], ["College injuries traced", "25 of 159 (16%)"]], "aria": "Hand, wrist, finger and arm: NBA 14%, College 16% traced."}, {"key": "back_hip", "label": "Back and hip", "bars": [{"name": "NBA", "value": 0.12688172043010754, "text": "13%", "series": "nba"}, {"name": "College", "value": 0.1440677966101695, "text": "14%", "series": "college"}], "tip": [["NBA injuries traced", "118 of 930 (13%)"], ["College injuries traced", "17 of 118 (14%)"]], "aria": "Back and hip: NBA 13%, College 14% traced."}, {"key": "foot", "label": "Foot and toe", "bars": [{"name": "NBA", "value": 0.12307692307692308, "text": "12%", "series": "nba"}, {"name": "College", "value": 0.1990521327014218, "text": "20%", "series": "college"}], "tip": [["NBA injuries traced", "72 of 585 (12%)"], ["College injuries traced", "42 of 211 (20%)"]], "aria": "Foot and toe: NBA 12%, College 20% traced."}, {"key": "knee", "label": "Knee", "bars": [{"name": "NBA", "value": 0.1198237885462555, "text": "12%", "series": "nba"}, {"name": "College", "value": 0.2, "text": "20%", "series": "college"}], "tip": [["NBA injuries traced", "136 of 1,135 (12%)"], ["College injuries traced", "56 of 280 (20%)"]], "aria": "Knee: NBA 12%, College 20% traced."}], "forest_domain": [0.5, 40.0]}</script>
-<script>
-/* Charts for the public report page. The data is embedded in the page (#report-data) by report_site.py, so the page
-   works from a file, from GitHub Pages, or offline. Every chart also has a table of its numbers below it. */
-(() => {
-  const data = JSON.parse(document.getElementById('report-data').textContent);
-
-  const el = (tag, cls, text) => {
-    const node = document.createElement(tag);
-    if (cls) node.className = cls;
-    if (text != null) node.textContent = text;
-    return node;
-  };
-  const pct = (v, digits = 1) => (v == null ? '—' : v > 0 && v < 0.0005 ? '<0.1%' : `${(v * 100).toFixed(digits)}%`);
-  const times = (v) => (v == null ? '—' : v >= 10 ? `${v.toFixed(0)}×` : `${v.toFixed(1)}×`);
-  const num = (v, digits = 1) => (v == null ? '—' : v.toFixed(digits));
-  const range = (e) => `${num(e.or)} (${num(e.lo)} to ${num(e.hi)})`;
-
-  // ---- one tooltip for the page: hover or keyboard focus shows it, values lead and labels follow ----------
-  const tip = el('div', 'tip');
-  tip.setAttribute('role', 'tooltip');
-  tip.id = 'chart-tip';
-  tip.hidden = true;
-  document.body.append(tip);
-
-  function placeTip(x, y) {
-    const pad = 14;
-    const w = tip.offsetWidth;
-    const h = tip.offsetHeight;
-    let left = x + pad;
-    let top = y + pad;
-    if (left + w > window.innerWidth - 8) left = Math.max(8, x - w - pad);
-    if (top + h > window.innerHeight - 8) top = Math.max(8, y - h - pad);
-    tip.style.left = `${left}px`;
-    tip.style.top = `${top}px`;
-  }
-
-  function showTip(title, lines, x, y) {
-    tip.replaceChildren(el('div', 'tip-title', title));
-    for (const [label, value] of lines) {
-      const row = el('div', 'tip-row');
-      row.append(el('span', null, label), el('b', null, value));
-      tip.append(row);
-    }
-    tip.hidden = false;
-    placeTip(x, y);
-  }
-
-  function hideTip() { tip.hidden = true; }
-
-  // a focused mark keeps its tooltip while the page scrolls (focusing scrolls it into view); a hovered one hides it
-  let focused = null;
-  function showForNode(f) {
-    const r = f.node.getBoundingClientRect();
-    showTip(f.title, f.lines, r.left + Math.min(r.width, 320), r.top + 8);
-  }
-
-  function bindTip(node, title, lines) {
-    node.tabIndex = 0;
-    node.setAttribute('aria-describedby', 'chart-tip');
-    node.addEventListener('pointermove', (e) => showTip(title, lines, e.clientX, e.clientY));
-    node.addEventListener('pointerleave', () => { if (focused?.node === node) showForNode(focused); else hideTip(); });
-    node.addEventListener('focus', () => { focused = { node, title, lines }; showForNode(focused); });
-    node.addEventListener('blur', () => { focused = null; hideTip(); });
-  }
-  window.addEventListener('scroll', () => {
-    if (focused && document.activeElement === focused.node) showForNode(focused);
-    else hideTip();
-  }, { passive: true });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') hideTip(); });
-
-  function tag(t) {
-    if (!t) return null;
-    const node = el('span', `tag ${t.cls}`);
-    const icon = el('span', null, t.icon);
-    icon.setAttribute('aria-hidden', 'true');
-    node.append(icon, document.createTextNode(t.text));
-    return node;
-  }
-
-  // ---- paired bars: every row on one shared scale, the value at each bar's tip ---------------------------
-  function pairRows(container, rows, { withRatio = true } = {}) {
-    if (!container) return;
-    const top = Math.max(...rows.flatMap((r) => r.bars.map((b) => b.value || 0))) / 0.8 || 1;
-    container.replaceChildren();
-    for (const r of rows) {
-      const row = el('div', withRatio ? 'row' : 'row no-ratio');
-      row.setAttribute('role', 'group');
-      row.setAttribute('aria-label', r.aria);
-      const head = el('div', 'row-head');
-      if (r.chip) head.append(el('span', 'chip', r.chip));
-      head.append(el('span', 'row-label', r.label));
-      const t = tag(r.tag);
-      if (t) head.append(t);
-      const bars = el('div', 'bars');
-      for (const b of r.bars) {
-        const line = el('div', 'bar-line');
-        const track = el('div', 'track');
-        const bar = el('div', 'bar');
-        const w = (100 * (b.value || 0)) / top;
-        bar.style.width = `${w}%`;
-        bar.style.background = `var(--${b.series})`;
-        const val = el('span', 'bar-val', b.text);
-        val.style.left = `${w}%`;
-        track.append(bar, val);
-        line.append(el('span', null, b.name), track);
-        bars.append(line);
-      }
-      row.append(head, bars);
-      if (withRatio) {
-        const ratio = el('div', 'ratio');
-        ratio.append(el('strong', null, r.ratio == null ? '—' : times(r.ratio)), el('span', null, 'as often'));
-        row.append(ratio);
-      }
-      bindTip(row, r.label, r.tip);
-      container.append(row);
-    }
-  }
-
-  // ---- the fade: how strongly each play is tied to injury exits, looking further back -----------------------
-  function fadePanels(container, groups) {
-    if (!container) return;
-    const top = Math.max(1, ...groups.flatMap((g) => g.points.map((p) => p.ratio))) / 0.84;
-    container.replaceChildren();
-    for (const g of groups) {
-      const panel = el('div', 'panel');
-      panel.setAttribute('role', 'group');
-      panel.setAttribute('aria-label', g.aria);
-      panel.append(el('h3', null, g.label));
-      const plot = el('div', 'plot');
-      for (const p of g.points) {
-        const col = el('div', 'col');
-        col.style.height = `${(100 * p.ratio) / top}%`;
-        col.append(el('span', 'col-val', times(p.ratio)));
-        plot.append(col);
-      }
-      const ref = el('div', 'ref-line');
-      ref.style.bottom = `${100 / top}%`;
-      plot.append(ref);
-      const ticks = el('div', 'ticks');
-      for (const p of g.points) ticks.append(el('span', null, p.when));
-      panel.append(plot, ticks);
-      bindTip(panel, g.label, g.points.map((p) => [p.when, `${times(p.ratio)} · ${pct(p.injury_share)} vs ${pct(p.normal_share)}`]));
-      container.append(panel);
-    }
-  }
-
-  // ---- the college check: NBA and college estimates with their likely ranges, on a log scale ----------------
-  function forest(container, rows, [lo, hi]) {
-    if (!container) return;
-    const x = (v) => (100 * (Math.log(v) - Math.log(lo))) / (Math.log(hi) - Math.log(lo));
-    const ticks = [0.5, 1, 2, 4, 8, 16, 32].filter((t) => t >= lo && t <= hi);
-    container.replaceChildren();
-    const estimate = (series, e) => {
-      const est = el('div', `f-est ${series}`);
-      const whisker = el('div', 'f-whisker');
-      const a = x(Math.max(e.lo, lo));
-      const b = x(Math.min(e.hi, hi));
-      whisker.style.left = `${a}%`;
-      whisker.style.width = `${b - a}%`;
-      const dot = el('div', 'f-dot');
-      dot.style.left = `${x(e.or)}%`;
-      est.append(whisker, dot);
-      return est;
-    };
-    for (const r of rows) {
-      const row = el('div', 'f-row');
-      row.setAttribute('role', 'group');
-      row.setAttribute('aria-label', r.aria);
-      const head = el('div', 'row-head');
-      head.append(el('span', 'row-label', r.label));
-      const t = tag(r.tag);
-      if (t) head.append(t);
-      const plot = el('div', 'f-plot');
-      for (const tk of ticks) {
-        const grid = el('div', tk === 1 ? 'f-ref' : 'f-grid');
-        grid.style.left = `${x(tk)}%`;
-        plot.append(grid);
-      }
-      plot.append(estimate('nba', r.nba), estimate('college', r.college));
-      row.append(head, plot);
-      bindTip(row, r.label, [['College', range(r.college)], ['NBA', range(r.nba)], ...r.extra]);
-      container.append(row);
-    }
-    const axisRow = el('div', 'f-row f-axis-row');
-    axisRow.setAttribute('aria-hidden', 'true');
-    const axisCell = el('div');
-    const axis = el('div', 'f-axis');
-    for (const tk of ticks) {
-      const label = el('span', 'f-tick', tk < 1 ? String(tk) : `${tk}`);
-      label.style.left = `${x(tk)}%`;
-      axis.append(label);
-    }
-    axisCell.append(axis, el('p', 'f-axis-label', 'Odds ratio against the same players’ normal substitutions (log scale; 1 = no difference)'));
-    axisRow.append(el('div'), axisCell);
-    container.append(axisRow);
-  }
-
-  pairRows(document.getElementById('chart-nba'), data.nba);
-  fadePanels(document.getElementById('chart-fade'), data.fade);
-  forest(document.getElementById('chart-college'), data.college, data.forest_domain);
-  pairRows(document.getElementById('chart-signs'), data.signs);
-  pairRows(document.getElementById('chart-traced'), data.traced, { withRatio: false });
-})();
-
-</script>
 </body>
 </html>

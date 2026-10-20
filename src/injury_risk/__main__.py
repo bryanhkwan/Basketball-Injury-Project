@@ -39,7 +39,8 @@ def main(argv=None) -> None:
                                            "-> outputs/college_moments/*")
     sub.add_parser("moments-dashboard", help="export the injury-moment dashboard's datasets (NBA and college results) "
                                              "-> outputs/moments_dashboard/*.json")
-    sub.add_parser("report-site", help="the public report page for GitHub Pages, from the dashboard's datasets -> docs/index.html")
+    sub.add_parser("report-site", help="the injury-moment report page, from the dashboard's datasets -> docs/moments.html")
+    sub.add_parser("site", help="the whole public site for GitHub Pages: data, overview, dashboards and the report -> docs/")
     sub.add_parser("linkedin", help="three LinkedIn images and the report's link preview, rendered with headless Chrome "
                                     "-> outputs/linkedin/*.png, docs/assets/social-card.png")
     args = parser.parse_args(argv)
@@ -92,6 +93,9 @@ def main(argv=None) -> None:
     elif args.step == "report-site":
         from . import report_site
         report_site.build()
+    elif args.step == "site":
+        from . import site_build
+        site_build.build()
     elif args.step == "linkedin":
         from . import linkedin
         linkedin.export()

@@ -10,19 +10,24 @@ venv/
 Thumbs.db
 desktop.ini
 
+# Working files from the design and browser-testing tools
+.taste-skill/
+.playwright-cli/
+
 # Downloads and caches: the NBA injury report PDFs, play-by-play files and saved web pages. The fetch steps rebuild
 # them, and they are other people's data, so they are never republished here.
-data/
+/data/
 
 # Large intermediate files the analysis rebuilds
 outputs/**/*.parquet
 outputs/*.log
 
-# Per-player listings (named players and their injuries), kept local
+# Full per-player exports, kept local: the NBA dashboards' (the site publishes a compact copy in docs/data/) and the
+# NCAA injury listings (named college players, never published)
 outputs/dashboard/
 outputs/ncaa_injuries/
 
-# Pages and stores for the private dashboards; the public report is docs/index.html
+# Pages and stores of the earlier private dashboards; the public site is docs/
 outputs/**/page.html
 outputs/**/store/
 

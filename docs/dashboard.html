@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboards · Basketball Injury Project</title>
+<meta name="description" content="Interactive NBA injury dashboards: each night’s risk board for 2025-26 with what happened, player risk timelines, the model’s accuracy on unseen seasons, and why and when players get hurt.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Dashboards · Basketball Injury Project">
+<meta property="og:description" content="Each night’s NBA injury-risk board for 2025-26 with what happened, player timelines, the model check, and why players get hurt.">
+<meta property="og:url" content="https://bryanhkwan.github.io/Basketball-Injury-Project/dashboard.html">
+<meta property="og:image" content="https://bryanhkwan.github.io/Basketball-Injury-Project/assets/social-site.jpg">
+<meta property="og:image:width" content="2672">
+<meta property="og:image:height" content="1400">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#eef2f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#051426" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23ffd200'/%3E%3Cg fill='none' stroke='%23071b32' stroke-width='3.5'%3E%3Cpath d='M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/charts.js" defer></script>
+<script src="assets/site.js" defer></script>
+<script src="assets/dashboard.js" defer></script>
+</head>
+<body class="app-body">
+<a class="skip" href="#work">Skip to the dashboard</a>
+<div class="app">
+  <nav class="side" id="side" aria-label="Dashboards">
+    <a class="product" href="./">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#ffd200"/><g fill="none" stroke="#071b32" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg>
+      <span><b>Basketball Injury Project</b><small>NBA, 2019-20 to 2025-26</small></span>
+    </a>
+    <button type="button" class="menu-toggle close" id="menu-close" aria-label="Close the menu"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14"/></svg></button>
+    <p class="group-label">Injury risk model</p>
+    <a class="nav-item" href="#board" data-view="board"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 3.5h11M2.5 8h11M2.5 12.5h7"/></svg>Risk board</a>
+    <a class="nav-item" href="#players" data-view="players"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5.5" r="2.75"/><path d="M2.75 13.5c.6-2.6 2.7-4 5.25-4s4.65 1.4 5.25 4"/></svg>Players</a>
+    <a class="nav-item" href="#model" data-view="model"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><circle cx="8" cy="8" r="2"/></svg>Model check</a>
+    <a class="nav-item" href="#factors" data-view="factors"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 13.5V9M6.2 13.5V5.5M9.8 13.5V7.5M13.5 13.5V2.5"/></svg>What raises risk</a>
+    <p class="group-label">Why players get hurt</p>
+    <a class="nav-item" href="#when" data-view="when"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3.25l2 1.5"/></svg>When and who</a>
+    <a class="nav-item" href="#types" data-view="types"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>Injury types</a>
+    <p class="group-label">Studies</p>
+    <a class="nav-item" href="moments.html"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z"/><path d="M9.5 2.5v3h3"/></svg>Injury moments</a>
+    <div class="bottom">
+      <a class="nav-item" href="./"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 7.5 8 3l5.5 4.5v6h-11z"/></svg>Overview</a>
+      <a class="nav-item" href="https://github.com/bryanhkwan/Basketball-Injury-Project" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6.5 3.5h-3v9h9v-3M9 2.5h4.5V7M13.5 2.5 7.5 8.5"/></svg>Code on GitHub</a>
+    </div>
+  </nav>
+
+  <header class="topbar">
+    <button type="button" class="menu-toggle" id="menu-open" aria-label="Open the menu" aria-controls="side" aria-expanded="false"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3 5h12M3 9h12M3 13h12"/></svg></button>
+    <span class="crumb" id="crumb">Risk board</span>
+    <div class="search" role="search">
+      <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5 13 13"/></svg>
+      <label class="sr-only" for="find">Find a player</label>
+      <input id="find" name="player" type="search" placeholder="Find a player, e.g. Jayson Tatum…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="find-results" aria-autocomplete="list">
+      <kbd aria-hidden="true">/</kbd>
+      <div class="results" id="find-results" role="listbox" aria-label="Players" hidden></div>
+    </div>
+    <a class="top-link" href="moments.html">The report</a>
+  </header>
+
+  <main class="work" id="work" tabindex="-1">
+    <section class="view" id="view-board" aria-labelledby="board-title" hidden></section>
+    <section class="view" id="view-players" aria-labelledby="players-title" hidden></section>
+    <section class="view" id="view-model" aria-labelledby="model-title" hidden></section>
+    <section class="view" id="view-factors" aria-labelledby="factors-title" hidden></section>
+    <section class="view" id="view-when" aria-labelledby="when-title" hidden></section>
+    <section class="view" id="view-types" aria-labelledby="types-title" hidden></section>
+    <noscript><div class="view"><h1>Dashboards</h1><p class="prose">These dashboards need JavaScript. The overview page and the report work without it, and every number is in the repository.</p></div></noscript>
+  </main>
+</div>
+</body>
+</html>

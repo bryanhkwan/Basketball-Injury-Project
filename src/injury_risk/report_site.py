@@ -1,6 +1,7 @@
-"""The project's public report page (docs/index.html): one self-contained file for GitHub Pages, built from the
+"""The injury-moment report (docs/moments.html): one self-contained page of the public site, built from the
 injury-moment results. Every number on it comes from outputs/moments_dashboard (written by moments_dashboard.py) and
-the NBA and college summary.json files. The page's text, styles and chart code are in site/."""
+the NBA and college summary.json files. The page's text, styles and chart code are in site/. The rest of the site is
+built by site_build.py."""
 from __future__ import annotations
 
 import html
@@ -17,6 +18,7 @@ AUTHOR = "Bryan Kwan"
 REPO_URL = "https://github.com/bryanhkwan/Basketball-Injury-Project"   # change both if the repository gets another name
 SITE_URL = "https://bryanhkwan.github.io/Basketball-Injury-Project/"
 SEASONS = "2019-20 to 2025-26"
+PAGE = "moments.html"
 FOREST = (0.5, 40.0)   # the college chart's log scale
 
 TAGS = {"solid": dict(cls="solid", icon="✓", text="Solid"),
@@ -206,16 +208,19 @@ def render(d: dict) -> str:
              (f"{traced[(league, g)]['traced']:,} of {traced[(league, g)]['injuries']:,}", pct(traced[(league, g)]["share"]))
              if (league, g) in traced else ("—", "—"))] for g in groups], {1, 2, 3, 4})
 
+    # college athletes stay anonymous on the public site: their results appear only as totals
     cards = "\n".join(
         f'      <article class="card"><span class="chip">{esc(e["league"])}</span><h3>{esc(e["player"])}</h3>'
         f'<p class="meta">{esc(e["team"])} {esc(e["game"])} · {_day(e["date"])} · {esc(e["injury"])}</p>'
-        f'<p class="play">{esc(e["pattern"])}</p><p class="story">{esc(e["story"])}</p></article>' for e in d["examples"])
+        f'<p class="play">{esc(e["pattern"])}</p><p class="story">{esc(e["story"])}</p></article>'
+        for e in d["examples"] if e["league"] == "NBA")
 
     today = date.today()
     values = dict(
         description=f"{one_in(facts['nba_traced_share'])} NBA injuries traced to the half-minute before the player left the game: the "
                     f"plays that come right before injuries, tested across {n_seasons} NBA seasons and checked in college basketball.",
-        author=AUTHOR, site_url=SITE_URL, repo_url=REPO_URL, seasons=SEASONS, updated=f"{today:%B} {today.year}",
+        author=AUTHOR, site_url=SITE_URL, page_url=f"{SITE_URL}{PAGE}", repo_url=REPO_URL, seasons=SEASONS,
+        updated=f"{today:%B} {today.year}",
         nba_injuries=f"{facts['nba_injuries']:,}", nba_traced=f"{facts['nba_traced']:,}", nba_one_in=one_in(facts["nba_traced_share"]),
         solid_count=str(len(solid)), college_same=f"{facts['college_same_direction']} of {facts['college_tests']}",
         before_injury=pct(facts["nba_pattern_before_injury"]), before_normal=pct(facts["nba_pattern_before_normal_game"]),
@@ -241,7 +246,7 @@ def build(log=print) -> Path:
     DOCS.mkdir(parents=True, exist_ok=True)
     (DOCS / "assets").mkdir(exist_ok=True)
     (DOCS / ".nojekyll").touch()   # GitHub Pages serves the files as they are
-    out = DOCS / "index.html"
+    out = DOCS / PAGE
     out.write_text(page, encoding="utf-8")
     log({"page": str(out), "bytes": len(page.encode())})
     return out

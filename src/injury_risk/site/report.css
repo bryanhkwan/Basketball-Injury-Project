@@ -1,4 +1,4 @@
-/* The public report page (docs/index.html). Light by default, dark when the reader's system is dark.
+/* The injury-moment report (docs/moments.html). Light by default, dark when the reader's system is dark.
    Series colors are validated with the dataviz palette checks: NBA blue and college gold in each mode. */
 :root {
   color-scheme: light;
@@ -61,11 +61,17 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px soli
 .skip:focus { left: 16px; top: 16px; z-index: 10; background: var(--gold); color: #091428; padding: 8px 12px; border-radius: 8px; }
 
 /* ---- hero ---------------------------------------------------------------------------------------------- */
-.hero { position: relative; overflow: hidden; color: var(--hero-ink); padding: 76px 0 60px;
+.hero { position: relative; overflow: hidden; color: var(--hero-ink); padding: 22px 0 60px;
   background: radial-gradient(1100px 620px at 88% -12%, #11335c 0%, rgba(17, 51, 92, 0) 62%), var(--navy); }
 .court { position: absolute; right: -230px; top: -70px; width: 720px; max-width: none; opacity: 0.085; pointer-events: none; }
 .court * { fill: none; stroke: #ffffff; stroke-width: 3; }
 .hero .wrap { position: relative; }
+.sitebar { position: relative; z-index: 1; display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 10px 24px; width: min(1120px, 100% - 40px); margin: 0 auto 52px; }
+.sitebar .home { font: 700 23px/1.1 var(--display); color: #ffffff; text-decoration: none; }
+.sitebar ul { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; font-size: 15px; }
+.sitebar a { color: var(--hero-ink-2); text-decoration: none; transition: color 150ms ease; }
+.sitebar a:hover, .sitebar a[aria-current] { color: #ffffff; }
 .kicker { margin: 0; font: 700 13.5px/1.4 var(--body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
 .hero h1 { margin: 16px 0 22px; max-width: 11ch; font: 800 clamp(52px, 9.5vw, 112px)/0.9 var(--display); text-transform: uppercase; letter-spacing: 0.004em; }
 .dek { margin: 0; max-width: 700px; font-size: clamp(18px, 2.1vw, 21px); line-height: 1.55; color: var(--hero-ink-2); }
@@ -233,7 +239,8 @@ footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; g
 
 @media (max-width: 760px) {
   body { font-size: 16.5px; }
-  .hero { padding: 56px 0 44px; }
+  .hero { padding: 18px 0 44px; }
+  .sitebar { margin-bottom: 36px; }
   .court { width: 520px; right: -170px; top: -40px; }
   .flow { grid-template-columns: minmax(0, 1fr); }
   .flow li + li::before { left: 50%; top: -11px; transform: translate(-50%, -50%) rotate(135deg); }

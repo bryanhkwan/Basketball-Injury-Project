@@ -7,8 +7,14 @@ What public data can say about when, and why, basketball players get hurt. The p
 - **Injury moments:** a test that finds the plays that come right before injuries in NBA play-by-play, then
   checks them in college basketball against a plan written down before any college results.
 
-**Read the report:** https://bryanhkwan.github.io/Basketball-Injury-Project/. Its source is `docs/index.html`,
-built by `python -m injury_risk report-site`.
+**See it live:** https://bryanhkwan.github.io/Basketball-Injury-Project/
+
+- **Overview** (`docs/index.html`): what the project found, with the risk board for any night of 2025-26.
+- **Dashboards** (`docs/dashboard.html`): the nightly risk board, player timelines, the model check, what raises risk,
+  when and who gets hurt, and injury types.
+- **Report** (`docs/moments.html`): the injury-moment study, with its conclusions.
+
+`python -m injury_risk site` builds all three.
 
 ## How the repository works
 
@@ -20,12 +26,13 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
-| Report | `moments-dashboard`, `report-site` | The report's data in `outputs/moments_dashboard/`, then the page in `docs/` |
+| Site | `dashboard`, `moments-dashboard`, `site` | The dashboards' and the report's data in `outputs/`, then the public site in `docs/` (`report-site` rebuilds the report alone) |
 
 Where things are:
 
-- `docs/`: the report page, the college test plan with its SHA-256 fingerprint, and a hand-read sample of college
-  cases.
+- `docs/`: the public site (overview, dashboards, report) and its data in `docs/data/`, the college test plan with its
+  SHA-256 fingerprint, and a hand-read sample of college cases.
+- `DESIGN.md`: the site's design system (colours, type, layout, components and rules).
 - `outputs/`: the aggregate results everything is built from, such as `summary.json` files, model metrics and
   `RESULTS.md`.
 - `tests/`: run them with `python -m unittest discover -s tests`.
@@ -44,8 +51,10 @@ committed; the `fetch-*` steps rebuild it on your own machine.
 | Covers' college injury page, through the [Internet Archive's Wayback Machine](https://web.archive.org/) | College injuries, 2019-20 to 2025-26 | Saved copies read from archive.org, 2.5 seconds apart (`covers.py`); covers.com itself is never contacted |
 | SCACCHoops' conference injury pages | The current college injury list | One pass over 31 pages, a second apart (`ncaa_injuries.py`) |
 
-- **What's published:** only statistics computed from these sources, in the report and `outputs/`. The listings
-  and pages themselves are never published.
+- **What's published:** statistics computed from these sources, in the site and `outputs/`. For the 2025-26 NBA
+  season the site also shows each player's model risk game by game, and their new injuries as the official reports
+  list them (`docs/data/`). College athletes appear only in totals. The listings and pages themselves are never
+  published.
 - **Your use:** if you run the download steps, follow each source's terms.
 - **Affiliation:** this project is not affiliated with the NBA, the NCAA, Covers, SCACCHoops or the sportsdataverse
   project. If you represent one of them and want something changed, please open an issue.
@@ -102,12 +111,11 @@ python -m unittest discover -s tests -v
 
 ## Dashboards
 
-The results were also built as private interactive dashboards for coaches and staff:
-- `python -m injury_risk dashboard` writes the risk model's data: accuracy, calibration, the nightly risk board,
-  player timelines and risk factors.
-- `causes` and `moments-dashboard` write the data for the other two dashboards.
-
-The public version of the findings is the report page in `docs/`.
+The public dashboards (`docs/dashboard.html`) are built from three data files that `site` writes to `docs/data/`:
+- `python -m injury_risk dashboard` writes the risk model's data to `outputs/dashboard/` (accuracy, calibration, the
+  nightly risk board, player timelines and risk factors). It stays local; `site` publishes a compact copy as
+  `board.json`, `players.json` and part of `study.json`.
+- `causes` and `moments-dashboard` write the injury types' and the injury moments' data, which go into `study.json`.
 
 ## Why players get hurt (injury types)
 
@@ -115,7 +123,7 @@ The public version of the findings is the report page in `docs/`.
 about them (pulled muscles, sprained ankles and feet, knocks and collisions, knee, back, other aches) and
 asks, for 2019-20 to 2025-26:
 
-- **When**: each player compared with himself in the same month (Mantel-Haenszel over player-month
+- **When**: each player compared with their own games in the same month (Mantel-Haenszel over player-month
   strata), so who the player is and the calendar drop out. Late season uses player-season strata. First
   games back compare games 1-3 with games 4-10 after the same returns, since inside a month a return
   always follows its injury.
@@ -208,12 +216,12 @@ possessions on the floor, and whether a starter left a close game before the fou
 ## What players were doing when they got hurt (play-by-play test)
 
 `python -m injury_risk moments` (`src/injury_risk/moments.py`) asks whether the play-by-play can show what
-a player was doing when he got hurt.
+a player was doing when they got hurt.
 
-- **Injury exit:** he left a competitive game early for good (6+ minutes left, within 15 points, not ejected
-  or fouled out), finished under 60% of his usual minutes, and the team's next game was the first he missed
+- **Injury exit:** the player left a competitive game early for good (6+ minutes left, within 15 points, not ejected
+  or fouled out), finished under 60% of their usual minutes, and the team's next game was the first they missed
   with a new injury.
-- **Comparison:** each injury exit against the same player's ordinary exits that season, the plays he was
+- **Comparison:** each injury exit against the same player's ordinary exits that season, the plays they were
   credited with in the 30 seconds before each (Mantel-Haenszel over player-seasons, Benjamini-Hochberg
   across the table).
 - **A finding needs** q < 0.05, 10+ exposed exits, and the same direction in 2019-22 and 2022-26. It is
@@ -298,10 +306,10 @@ Added after the results, not in the plan:
 - **Pooled estimate:** all five patterns together give OR 1.94 (1.35-2.79), and 1.91 without H4. Together,
   the NBA patterns do show up before college injury exits, at a smaller size.
 - **Signs of an injury exit:**
-  - leaving at a stoppage the log doesn't record, probably officials stopping play for him: 40% vs 18%,
+  - leaving at a stoppage the log doesn't record, probably officials stopping play for them: 40% vs 18%,
     OR 3.1, and no different after early exits with no injury;
-  - being the only player his team took out: 66% vs 45%;
-  - a teammate shooting the free throws of a foul he drew: 2.4% vs 0.0%.
+  - being the only player the team took out: 66% vs 45%;
+  - a teammate shooting the free throws of a foul the player drew: 2.4% vs 0.0%.
 - **Bugs fixed before this final run, found by an independent review:** phantom halftime exits, names with
   punctuation, and stoppage labels. The first run's verdicts were the same.
 
@@ -319,21 +327,35 @@ Limits:
 those files.
 
 The eight example stories were checked against the raw play-by-play, from two minutes before each exit to 30
-seconds after it. Anything that only news reports show is marked "reports say".
+seconds after it. Anything that only news reports show is marked "reports say". The public report shows the four NBA
+stories; college athletes stay anonymous on the site.
 
-## The report page
+## The public site
 
-`python -m injury_risk report-site` (`src/injury_risk/report_site.py`, with the page's text, styles and charts in
-`src/injury_risk/site/`) builds `docs/index.html`. It is a single page with the charts, tables and data inline, built
-from the same files as the dashboard, and it ends with the conclusions and the limits.
+`python -m injury_risk site` (`src/injury_risk/site_build.py`) builds everything in `docs/`:
+
+- `docs/data/`: `board.json` (each night's 2025-26 board, before tip-off and after the game, with what happened),
+  `players.json` (every player's risk game by game and their new injuries) and `study.json` (the model check, the risk
+  factors, the injury types and the injury moments' NBA patterns). It needs `outputs/dashboard/`; in a fresh clone the
+  step keeps the published files and rebuilds the pages from them.
+- `docs/index.html`: the overview, from `src/injury_risk/site/overview.html` with every figure filled in from
+  `docs/data/`.
+- `docs/dashboard.html` and `docs/assets/`: the dashboards and the shared styles and scripts (`site.css` for the
+  tokens and the overview, `app.css` for the dashboards, `charts.js`, `site.js`, `overview.js`, `dashboard.js`).
+  `charts.js` is adapted from tasteskill's chart helpers (MIT); its licence is at the end of the file.
+- `docs/moments.html`: the injury-moment report (`report_site.py`), one page with its charts, tables and data inline.
+- `docs/assets/social-site.jpg`: the overview's link preview, rendered with headless Chrome.
+  `python -m injury_risk linkedin` renders the report's (`social-card.png`) and the sharing images, which stay local.
+
+The photographs in `docs/assets/img/` are from Wikimedia Commons and credited on the page and in
+`docs/assets/img/credits.json`: "Game Basketball TD Garden" by EgorovaSvetlana (CC BY-SA 4.0, shown in greyscale) and
+"Kinesio taping", a U.S. Air Force photo (public domain).
 
 - **Publishing:** push the repository and turn on GitHub Pages (Settings > Pages > Deploy from a branch > `main`,
   `/docs`).
 - **Links:** they assume the repository is `bryanhkwan/Basketball-Injury-Project`. Otherwise change `REPO_URL` and
-  `SITE_URL` in `report_site.py` and rebuild.
-
-`python -m injury_risk linkedin` (`linkedin.py`) uses headless Chrome to render the page's link-preview card,
-`docs/assets/social-card.png`, along with sharing images that are kept local.
+  `SITE_URL` in `report_site.py` (and the two addresses in `site/dashboard.html`) and rebuild.
+- **Design:** `DESIGN.md` describes the system the pages follow.
 
 ## Limits
 
