@@ -1,0 +1,121 @@
+/* LinkedIn images (1200x675 drawn, rendered at 2x) and the report's link-preview card (1200x630).
+   Dark navy with Rocket Gold accents; data marks use the dark-mode series colors that pass the palette checks
+   on this background: NBA #3987e5, college #c98500, normal substitutions #6b7c8f. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 675px; overflow: hidden; background: #071b32; }
+body.card { height: 630px; }
+html:has(body.card) { height: 630px; }
+body { color: #f4f7fa; font-family: "DM Sans", "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+.frame { position: relative; display: flex; flex-direction: column; width: 1200px; height: 675px; padding: 44px 60px 32px; overflow: hidden;
+  background: radial-gradient(900px 540px at 94% -10%, #13396a 0%, rgba(19, 57, 106, 0) 62%), linear-gradient(180deg, #071b32 0%, #04132a 100%); }
+body.card .frame { height: 630px; padding: 46px 60px 34px; }
+.court { position: absolute; right: -170px; top: -70px; width: 640px; opacity: 0.075; }
+.court * { fill: none; stroke: #ffffff; stroke-width: 3; }
+.kicker { position: relative; font: 700 14.5px/1.3 "DM Sans"; letter-spacing: 0.17em; text-transform: uppercase; color: #ffd200; }
+.title { position: relative; margin-top: 12px; font: 800 70px/0.92 "Barlow Condensed"; letter-spacing: 0.004em; text-transform: uppercase; }
+.title em { font-style: normal; color: #ffd200; }
+.sub { position: relative; max-width: 940px; margin-top: 14px; font: 400 21px/1.42 "DM Sans"; color: #c6d7e5; }
+.sub b { color: #ffffff; font-weight: 700; }
+.footer { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-top: auto; padding-top: 16px; }
+.link { font: 500 17px/1 "DM Sans"; color: #f4f7fa; white-space: nowrap; }
+.link b { margin-right: 12px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.16em; color: #ffd200; }
+.credit { max-width: 560px; font-size: 12.5px; line-height: 1.4; text-align: right; color: #8ea4bc; }
+
+/* image 1: the three plays */
+.stats { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.stat { padding: 20px 22px 18px; border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3987e5; border-radius: 14px; background: rgba(255, 255, 255, 0.04); }
+.num { font: 700 62px/1 "DM Sans"; letter-spacing: -0.01em; color: #ffffff; }
+.as { margin-top: 2px; font: 500 15px/1.2 "DM Sans"; color: #a7bdce; }
+.what { margin-top: 14px; font: 700 26px/1.02 "Barlow Condensed"; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; }
+.detail { margin-top: 8px; font-size: 15px; line-height: 1.38; color: #a7bdce; }
+.verdict { display: inline-block; margin-top: 10px; padding: 2px 10px; border: 1px solid rgba(60, 207, 110, 0.7); border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #3ccf6e; }
+.how { position: relative; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 12px; margin-top: 18px; }
+.how-step { padding: 12px 16px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; }
+.how-step.key { border-color: rgba(255, 210, 0, 0.55); background: rgba(255, 210, 0, 0.06); }
+.how-step b { display: block; font: 700 19px/1.05 "Barlow Condensed"; letter-spacing: 0.03em; text-transform: uppercase; }
+.how-step span { display: block; margin-top: 4px; font-size: 13.5px; line-height: 1.3; color: #a7bdce; }
+.arrow { font-size: 22px; color: #6b7c8f; }
+
+/* image 2: the fade */
+.legend { position: relative; display: flex; gap: 26px; margin-top: 22px; font-size: 14.5px; color: #a7bdce; }
+.legend span { display: inline-flex; align-items: center; gap: 9px; }
+.sw { display: inline-block; width: 13px; height: 13px; border-radius: 3px; }
+.sw.dot { border-radius: 50%; }
+.sw-ref { display: inline-block; width: 22px; height: 0; border-top: 2px dashed #a7bdce; }
+.panels { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 14px; }
+.pnl { padding: 16px 18px 12px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; background: rgba(255, 255, 255, 0.035); }
+.pnl-title { min-height: 2.04em; font: 700 22px/1.02 "Barlow Condensed"; letter-spacing: 0.02em; text-transform: uppercase; }
+.pnl-plot { position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; height: 228px; margin-top: 10px; border-bottom: 1px solid #6b7c8f; }
+.col { position: relative; justify-self: center; width: 40px; border-radius: 4px 4px 0 0; background: #3987e5; }
+.col span { position: absolute; bottom: calc(100% + 5px); left: 50%; transform: translateX(-50%); font: 700 17px/1 "DM Sans"; white-space: nowrap; color: #ffffff; }
+.ref-line { position: absolute; left: 0; right: 0; border-top: 2px dashed #a7bdce; }
+.pnl-ticks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 7px; font-size: 14px; text-align: center; color: #a7bdce; }
+
+/* image 3: the college check */
+.college-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 30px; margin-top: 18px; }
+.forest { padding: 14px 20px 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; background: rgba(255, 255, 255, 0.035); }
+.f-row { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; align-items: center; height: 53px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); }
+.f-row:last-of-type { border-bottom: 0; }
+.f-label { white-space: nowrap; font: 700 19px/1.02 "Barlow Condensed"; letter-spacing: 0.02em; text-transform: uppercase; }
+.f-label small { display: block; margin-top: 3px; font: 600 12px/1.2 "DM Sans"; letter-spacing: 0.02em; text-transform: none; color: #a7bdce; }
+.f-label small.pass { color: #fab219; }
+.f-plot { position: relative; height: 40px; }
+.f-grid { position: absolute; top: 0; bottom: 0; border-left: 1px solid rgba(255, 255, 255, 0.07); }
+.f-ref { position: absolute; top: -9px; bottom: -9px; border-left: 2px dashed #a7bdce; }
+.f-est { position: absolute; left: 0; right: 0; height: 0; }
+.f-est.nba { top: 28%; color: #3987e5; }
+.f-est.college { top: 74%; color: #c98500; }
+.f-whisker { position: absolute; top: -1.5px; height: 3px; border-radius: 2px; background: currentColor; }
+.f-dot { position: absolute; top: 0; width: 15px; height: 15px; border-radius: 50%; background: currentColor; transform: translate(-50%, -50%); box-shadow: 0 0 0 2.5px #0b2036; }
+.f-axis { position: relative; height: 40px; margin-left: 316px; }
+.f-tick { position: absolute; top: 6px; transform: translateX(-50%); font-size: 13px; color: #a7bdce; }
+.f-axis-label { position: absolute; left: 0; right: 0; top: 24px; font-size: 11.5px; text-align: center; white-space: nowrap; color: #8ea4bc; }
+.calls { display: grid; gap: 12px; align-content: start; }
+.call { padding: 14px 18px; border-left: 4px solid #ffd200; border-radius: 0 12px 12px 0; background: rgba(255, 210, 0, 0.07); }
+.call b { display: block; font: 700 38px/1 "DM Sans"; color: #ffffff; }
+.call span { display: block; margin-top: 6px; font-size: 14.5px; line-height: 1.35; color: #c6d7e5; }
+
+/* the one-image version: the whole story on one 4:5 image (1080x1350, rendered at 2x), the college chart included */
+html:has(body.tall), body.tall { width: 1080px; height: 1350px; }
+.tall .frame { width: 1080px; height: 1350px; padding: 50px 56px 38px; }
+.tall .court { right: -260px; top: -100px; width: 780px; }
+.tall .kicker { font-size: 16px; }
+.tall .title { margin-top: 10px; font-size: 76px; line-height: 0.92; white-space: nowrap; }
+.tall .sub { max-width: none; margin-top: 12px; font-size: 23px; line-height: 1.4; }
+.tall .stats { gap: 14px; margin-top: 20px; }
+.tall .stat { padding: 14px 18px 14px; border-top-width: 4px; }
+.tall .num { font-size: 50px; }
+.tall .as { font-size: 14px; }
+.tall .what { margin-top: 10px; font-size: 21px; }
+.tall .detail { margin-top: 6px; font-size: 14.5px; }
+.block { position: relative; margin-top: 22px; }
+.block-h { font: 800 34px/1 "Barlow Condensed"; letter-spacing: 0.005em; text-transform: uppercase; }
+.block-h em { font-style: normal; color: #ffd200; }
+.block-sub { margin-top: 5px; font-size: 15.5px; line-height: 1.35; color: #a7bdce; }
+.mini-panels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.mini-pnl { padding: 12px 14px 8px; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; background: rgba(255, 255, 255, 0.035); }
+.mini-pnl .pnl-title { font: 700 18px/1.02 "Barlow Condensed"; letter-spacing: 0.02em; text-transform: uppercase; }
+.mini-pnl .pnl-plot { height: 110px; margin-top: 8px; }
+.mini-pnl .col { width: 28px; }
+.mini-pnl .col span { font-size: 14.5px; }
+.mini-pnl .pnl-ticks { margin-top: 5px; font-size: 13.5px; }
+.tall .legend { margin-top: 10px; font-size: 14px; }
+.tall .college-grid { grid-template-columns: minmax(0, 1fr) 236px; gap: 14px; margin-top: 10px; }
+.tall .forest { padding: 8px 16px 4px; }
+.tall .f-row { grid-template-columns: 244px minmax(0, 1fr); gap: 12px; height: 55px; }
+.tall .f-label { font-size: 18px; }
+.tall .f-label small { margin-top: 3px; font-size: 12.5px; }
+.tall .f-plot { height: 40px; }
+.tall .f-dot { width: 13px; height: 13px; box-shadow: 0 0 0 2px #0b2036; }
+.tall .f-whisker { top: -1px; height: 2.5px; }
+.tall .f-axis { height: 38px; margin-left: 256px; }
+.tall .f-tick { top: 4px; font-size: 13px; }
+.tall .f-axis-label { top: 22px; font-size: 12px; }
+.tall .calls { gap: 10px; }
+.tall .call { padding: 11px 14px; border-left-width: 4px; }
+.tall .call b { font-size: 34px; }
+.tall .call span { margin-top: 5px; font-size: 14.5px; line-height: 1.32; }
+.tall .footer { padding-top: 14px; }
+.tall .link { font-size: 19px; }
+.tall .link b { font-size: 14.5px; }
+.tall .credit { max-width: 420px; font-size: 12.5px; }

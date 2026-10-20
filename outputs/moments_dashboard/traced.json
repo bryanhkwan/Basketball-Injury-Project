@@ -1,0 +1,130 @@
+[
+ {
+  "league": "NBA",
+  "group": "ankle",
+  "label": "Ankle",
+  "injuries": 1322,
+  "traced": 251,
+  "share": 0.18986384266263237
+ },
+ {
+  "league": "NBA",
+  "group": "knee",
+  "label": "Knee",
+  "injuries": 1135,
+  "traced": 136,
+  "share": 0.1198237885462555
+ },
+ {
+  "league": "NBA",
+  "group": "foot",
+  "label": "Foot and toe",
+  "injuries": 585,
+  "traced": 72,
+  "share": 0.12307692307692308
+ },
+ {
+  "league": "NBA",
+  "group": "muscle",
+  "label": "Pulled muscle or Achilles",
+  "injuries": 1233,
+  "traced": 198,
+  "share": 0.16058394160583941
+ },
+ {
+  "league": "NBA",
+  "group": "back_hip",
+  "label": "Back and hip",
+  "injuries": 930,
+  "traced": 118,
+  "share": 0.12688172043010754
+ },
+ {
+  "league": "NBA",
+  "group": "hand",
+  "label": "Hand, wrist, finger and arm",
+  "injuries": 516,
+  "traced": 71,
+  "share": 0.1375968992248062
+ },
+ {
+  "league": "NBA",
+  "group": "head",
+  "label": "Head and face",
+  "injuries": 265,
+  "traced": 66,
+  "share": 0.2490566037735849
+ },
+ {
+  "league": "NBA",
+  "group": "shoulder",
+  "label": "Shoulder",
+  "injuries": 258,
+  "traced": 41,
+  "share": 0.15891472868217055
+ },
+ {
+  "league": "College",
+  "group": "ankle",
+  "label": "Ankle",
+  "injuries": 261,
+  "traced": 70,
+  "share": 0.2681992337164751
+ },
+ {
+  "league": "College",
+  "group": "knee",
+  "label": "Knee",
+  "injuries": 280,
+  "traced": 56,
+  "share": 0.2
+ },
+ {
+  "league": "College",
+  "group": "foot",
+  "label": "Foot and toe",
+  "injuries": 211,
+  "traced": 42,
+  "share": 0.1990521327014218
+ },
+ {
+  "league": "College",
+  "group": "muscle",
+  "label": "Pulled muscle or Achilles",
+  "injuries": 99,
+  "traced": 25,
+  "share": 0.25252525252525254
+ },
+ {
+  "league": "College",
+  "group": "back_hip",
+  "label": "Back and hip",
+  "injuries": 118,
+  "traced": 17,
+  "share": 0.1440677966101695
+ },
+ {
+  "league": "College",
+  "group": "hand",
+  "label": "Hand, wrist, finger and arm",
+  "injuries": 159,
+  "traced": 25,
+  "share": 0.15723270440251572
+ },
+ {
+  "league": "College",
+  "group": "head",
+  "label": "Head and face",
+  "injuries": 117,
+  "traced": 22,
+  "share": 0.18803418803418803
+ },
+ {
+  "league": "College",
+  "group": "shoulder",
+  "label": "Shoulder",
+  "injuries": 94,
+  "traced": 22,
+  "share": 0.23404255319148937
+ }
+]

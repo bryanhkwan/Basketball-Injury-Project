@@ -1,0 +1,130 @@
+[
+ {
+  "key": "ankle:fouled",
+  "label": "Ankle injury right after being fouled",
+  "seconds": 15,
+  "injury_share": 0.06772908366533864,
+  "normal_share": 0.009645400021044508,
+  "times": 8.102615029773977
+ },
+ {
+  "key": "ankle:fouled",
+  "label": "Ankle injury right after being fouled",
+  "seconds": 30,
+  "injury_share": 0.09163346613545817,
+  "normal_share": 0.022307179685033846,
+  "times": 4.802675477451829
+ },
+ {
+  "key": "ankle:fouled",
+  "label": "Ankle injury right after being fouled",
+  "seconds": 60,
+  "injury_share": 0.11952191235059761,
+  "normal_share": 0.047069552102697206,
+  "times": 3.071778370229695
+ },
+ {
+  "key": "ankle:fouled",
+  "label": "Ankle injury right after being fouled",
+  "seconds": 120,
+  "injury_share": 0.13147410358565736,
+  "normal_share": 0.09536670057170916,
+  "times": 1.5669894415024028
+ },
+ {
+  "key": "any:steal",
+  "label": "Any injury right after a steal by the player",
+  "seconds": 15,
+  "injury_share": 0.024464831804281346,
+  "normal_share": 0.009690785956157548,
+  "times": 2.6161203237647435
+ },
+ {
+  "key": "any:steal",
+  "label": "Any injury right after a steal by the player",
+  "seconds": 30,
+  "injury_share": 0.039755351681957186,
+  "normal_share": 0.016273837105685262,
+  "times": 2.5033752633802258
+ },
+ {
+  "key": "any:steal",
+  "label": "Any injury right after a steal by the player",
+  "seconds": 60,
+  "injury_share": 0.0581039755351682,
+  "normal_share": 0.031489484940295846,
+  "times": 1.9056901696997388
+ },
+ {
+  "key": "any:steal",
+  "label": "Any injury right after a steal by the player",
+  "seconds": 120,
+  "injury_share": 0.07543323139653414,
+  "normal_share": 0.06197647478167884,
+  "times": 1.2491328980483953
+ },
+ {
+  "key": "hand:opp_rim",
+  "label": "Hand, wrist, finger or arm injury after the other team attacked the rim",
+  "seconds": 15,
+  "injury_share": 0.3380281690140845,
+  "normal_share": 0.20146661520648398,
+  "times": 2.006186304987547
+ },
+ {
+  "key": "hand:opp_rim",
+  "label": "Hand, wrist, finger or arm injury after the other team attacked the rim",
+  "seconds": 30,
+  "injury_share": 0.5211267605633803,
+  "normal_share": 0.32445645182040395,
+  "times": 2.225767032630511
+ },
+ {
+  "key": "hand:opp_rim",
+  "label": "Hand, wrist, finger or arm injury after the other team attacked the rim",
+  "seconds": 60,
+  "injury_share": 0.647887323943662,
+  "normal_share": 0.5149877782066127,
+  "times": 1.7390708623353186
+ },
+ {
+  "key": "hand:opp_rim",
+  "label": "Hand, wrist, finger or arm injury after the other team attacked the rim",
+  "seconds": 120,
+  "injury_share": 0.7323943661971831,
+  "normal_share": 0.7311205454779365,
+  "times": 1.0101763544974243
+ },
+ {
+  "key": "muscle:drive",
+  "label": "Pulled muscle or Achilles injury right after a drive or cut to the basket",
+  "seconds": 15,
+  "injury_share": 0.08585858585858586,
+  "normal_share": 0.03444569556761183,
+  "times": 2.625830468365278
+ },
+ {
+  "key": "muscle:drive",
+  "label": "Pulled muscle or Achilles injury right after a drive or cut to the basket",
+  "seconds": 30,
+  "injury_share": 0.1111111111111111,
+  "normal_share": 0.06274951376804176,
+  "times": 1.9112875024580227
+ },
+ {
+  "key": "muscle:drive",
+  "label": "Pulled muscle or Achilles injury right after a drive or cut to the basket",
+  "seconds": 60,
+  "injury_share": 0.16161616161616163,
+  "normal_share": 0.12109734875626983,
+  "times": 1.4345607312075266
+ },
+ {
+  "key": "muscle:drive",
+  "label": "Pulled muscle or Achilles injury right after a drive or cut to the basket",
+  "seconds": 120,
+  "injury_share": 0.2222222222222222,
+  "normal_share": 0.2209540382843689,
+  "times": 1.0264488000668304
+ }
+]

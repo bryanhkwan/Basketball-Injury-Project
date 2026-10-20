@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The moment players get hurt · Basketball injury research</title>
+<meta name="description" content="$description">
+<meta name="author" content="$author">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The moment players get hurt">
+<meta property="og:description" content="$description">
+<meta property="og:url" content="$site_url">
+<meta property="og:image" content="${site_url}assets/social-card.png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#071b32">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23ffd200'/%3E%3Cg fill='none' stroke='%23071b32' stroke-width='3.5'%3E%3Cpath d='M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,600;9..40,700&display=swap">
+<style>
+$css
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to the report</a>
+
+<header class="hero">
+  <svg class="court" viewBox="-10 -10 520 490" aria-hidden="true" focusable="false">
+    <rect x="0" y="0" width="500" height="470"/>
+    <rect x="170" y="0" width="160" height="190"/>
+    <circle cx="250" cy="190" r="60"/>
+    <line x1="220" y1="40" x2="280" y2="40"/>
+    <circle cx="250" cy="52.5" r="7.5"/>
+    <path d="M210 52.5 A40 40 0 0 0 290 52.5"/>
+    <path d="M30 0 V140 A237.5 237.5 0 0 0 470 140 V0"/>
+    <path d="M190 470 A60 60 0 0 1 310 470"/>
+  </svg>
+  <div class="wrap">
+    <p class="kicker">Basketball injury research · NBA $seasons · NCAA Division I</p>
+    <h1>The moment players get hurt</h1>
+    <p class="dek">Play-by-play never says why a player got hurt. It does record the second a player left the game for good. I used that moment to find the plays that come right before injuries across seven NBA seasons, then tested them in college basketball against a plan I wrote down before seeing any college results.</p>
+    <p class="byline">By <b>$author</b> · $updated</p>
+    <ul class="metrics" aria-label="Headline numbers">
+      <li><strong>$nba_injuries</strong><span>new NBA injuries checked, $seasons</span></li>
+      <li><strong>$nba_one_in</strong><span>traced to the moment the player left a game</span></li>
+      <li><strong>$solid_count</strong><span>plays that held up in every check</span></li>
+      <li><strong>$college_same</strong><span>pointed the same way in college</span></li>
+    </ul>
+    <div class="actions">
+      <a class="button primary" href="#conclusions">Read the conclusions</a>
+      <a class="button" href="$repo_url" target="_blank" rel="noopener">Source code ↗</a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section id="question" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">The question</p>
+      <h2>Play-by-play says when, not why.</h2>
+      <p class="lead">Injury reports say what got hurt, like an ankle or a hamstring, but almost never how. Play-by-play logs every shot, foul and substitution to the second, and it has no line for “rolled an ankle.”</p>
+      <p>So I looked for a footprint instead. When a player leaves a competitive game early, never comes back, plays well under their usual minutes and then misses the next game with a new injury, the injury most likely happened in the seconds before they left. I call that an <b>injury exit</b>.</p>
+    </div>
+    <ol class="flow" aria-label="What an injury exit is">
+      <li class="key"><span class="step">The half-minute before</span><strong>What was happening?</strong><p>Shots, drives, fouls, steals, rebounds and turnovers by the player, and what the other team did.</p></li>
+      <li><span class="step">The exit</span><strong>Leaves for good</strong><p>Taken out of a competitive game early, well under their usual minutes, and never returns.</p></li>
+      <li><span class="step">The next game</span><strong>Misses it, injured</strong><p>Listed with a new injury on the NBA’s official report, or on a public injury page in college.</p></li>
+    </ol>
+  </section>
+
+  <section id="approach" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">The method</p>
+      <h2>Compare every player with themselves.</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Find the injury exits.</h3><p>For each of the $nba_injuries new injuries on the NBA’s official injury reports, $seasons, I read the play-by-play of the team’s game before it. $nba_traced of them, about $nba_one_in, ended in an injury exit. Players leave early for other reasons too: among new injuries right after a game the player played in, $before_injury followed an early exit like this, against $before_normal of games followed by a normal one, so about $beyond of traced exits are tied to the injury rather than chance.</p></li>
+      <li><h3>Compare each one with the same player’s normal substitutions.</h3><p>For each injury exit I listed what happened in the 30 seconds before it, then did the same for that player’s ordinary substitutions that season. Comparing players only with themselves takes position, role and playing style out of the picture. In statistics terms, it’s a case-crossover design with Mantel–Haenszel odds ratios.</p></li>
+      <li><h3>Try to break every result.</h3><p>With $n_tests comparisons, some will look real by chance. A result had to survive a false-discovery correction (Benjamini–Hochberg), point the same way in 2019-22 and 2022-26, and hold up at the same kind of stop in play, against random moments on the floor, against other injuries, under tighter and looser definitions of an injury exit, and against early exits that weren’t followed by an injury.</p></li>
+      <li><h3>Then test it somewhere new.</h3><p>Before seeing any college results, I wrote down five NBA patterns and the bar the four main ones had to clear, saved a fingerprint of that plan, and only then ran it on Division I men’s basketball.</p></li>
+    </ol>
+  </section>
+
+  <section id="nba" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">NBA results</p>
+      <h2>Three plays held up.</h2>
+      <p>The share of injury exits with each play in the 30 seconds before, against the same players’ normal substitutions. Hover over a row, or tab to it, for the details.</p>
+    </div>
+    <figure class="figure" aria-labelledby="fig-nba-title">
+      <h3 id="fig-nba-title">What was happening in the half-minute before NBA players left hurt</h3>
+      <p class="sub">NBA, $seasons. <b>Solid</b>: held up in every check. <b>A lead</b>: points the same way but only just clears the multiple-testing bar. <b>Not proven</b>: leans the same way but didn’t clear it.</p>
+      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>Before injury exits</li><li><span class="sw" style="background: var(--normal)"></span>Before the same players’ normal substitutions</li></ul>
+      <div class="chart" id="chart-nba"></div>
+      <p class="note">Times as often = the share before injury exits divided by the share before normal substitutions. The odds ratio in each row’s details compares every player only with themselves, so the two differ a little.</p>
+      <details class="data"><summary>Show the numbers</summary><div class="table-wrap">$table_nba</div></details>
+    </figure>
+    <div class="measure">
+      <p><b>Being fouled</b> and sent to the line holds up only for ankle injuries. For other injuries the rise disappears in the toughest check, which compares injury exits with random moments that end at the next dead ball, the way a hurt player gets off the floor. <b>The steal</b> result counts all injuries together, and most kinds lean the same way; it fits the sprint, finish or scramble that follows a steal. <b>Rim defense</b> is specific to hand, wrist, finger and arm injuries: the player was on defense for a layup, dunk or tip-in, though the play-by-play doesn’t say who contested it.</p>
+    </div>
+  </section>
+
+  <section id="timing" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Timing</p>
+      <h2>It happens in the last few seconds.</h2>
+      <p>If these plays only marked a long, tiring shift, they would show up as often two minutes before the exit as 15 seconds before. They don’t. The link is strongest in the last 15 to 30 seconds and almost gone two minutes out, which points to the play itself.</p>
+    </div>
+    <figure class="figure" aria-labelledby="fig-fade-title">
+      <h3 id="fig-fade-title">How much more often each play came before an injury exit, by how far back you look</h3>
+      <p class="sub">NBA, $seasons. Times as often as before the same players’ normal substitutions, on one shared scale.</p>
+      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>Times as often</li><li><span class="sw ref"></span>No difference</li></ul>
+      <div class="chart fade" id="chart-fade"></div>
+      <details class="data"><summary>Show the numbers</summary><div class="table-wrap">$table_fade</div></details>
+    </figure>
+  </section>
+
+  <section id="college" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">The college test</p>
+      <h2>Then I tried to break it in college.</h2>
+      <p>College basketball is the harder test. There’s no league-wide injury report to download, so I rebuilt seven seasons of Covers’ public injury page from ${covers_copies}saved copies on the Internet Archive’s Wayback Machine, matched them to the NCAA’s own play-by-play, and found $college_traced injury exits.</p>
+      <p>The plan came first: five NBA patterns, the bar the four main ones had to clear (a Holm-adjusted p below 0.05), and the fifth as a side check with no bar. Here’s how each one came out next to the NBA.</p>
+    </div>
+    <figure class="figure" aria-labelledby="fig-college-title">
+      <h3 id="fig-college-title">NBA patterns, checked in Division I men’s basketball</h3>
+      <p class="sub">Each dot is an odds ratio against the same players’ normal substitutions, and the line through it is the likely range (95%). Right of the dashed line means the play came more often before injury exits.</p>
+      <ul class="legend"><li><span class="sw dot" style="background: var(--nba)"></span>NBA</li><li><span class="sw dot" style="background: var(--college)"></span>College</li><li><span class="sw ref"></span>No difference</li></ul>
+      <div class="chart forest" id="chart-college"></div>
+      <details class="data"><summary>Show the numbers</summary><div class="table-wrap">$table_college</div></details>
+    </figure>
+    <ul class="callouts">
+      <li><strong>$college_same</strong><span>leaned the same way as in the NBA.</span></li>
+      <li><strong>$college_passed</strong><span>main checks cleared the bar: pulled muscles after a drive or fast-break finish, on just $h4_players players, so it’s fragile.</span></li>
+      <li><strong>$pooled</strong><span>the odds with all five combined (likely $pooled_range), and $pooled_without without the fragile one. A check added after the plan.</span></li>
+    </ul>
+    <div class="measure">
+      <p style="margin-top: 22px">So college supports the NBA patterns as a group but doesn’t firmly establish any single one. The ankle check isn’t quite the same measure in both, either: the NBA’s play-by-play can only count fouls with free throws, while the college link came mostly from fouls with no free throws, at the whistle.</p>
+    </div>
+  </section>
+
+  <section id="signs" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Signs</p>
+      <h2>How a hurt player leaves.</h2>
+      <p>Some patterns aren’t causes. They’re the footprint of an injury that just happened, and together they could flag an exit worth a look on film.</p>
+    </div>
+    <figure class="figure" aria-labelledby="fig-signs-title">
+      <h3 id="fig-signs-title">How injury exits differ from normal substitutions</h3>
+      <p class="sub">The share of each with the sign. The college signs were spotted after the plan, so treat them as leads.</p>
+      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>NBA injury exits</li><li><span class="sw" style="background: var(--college)"></span>College injury exits</li><li><span class="sw" style="background: var(--normal)"></span>Normal substitutions</li></ul>
+      <div class="chart" id="chart-signs"></div>
+      <details class="data"><summary>Show the numbers</summary><div class="table-wrap">$table_signs</div></details>
+    </figure>
+    <div class="measure">
+      <p>In college, $unlogged_injury of injury exits came at a stop with no foul, timeout, turnover or violation logged, against $unlogged_normal of normal substitutions: often the referees stopping play for a hurt player. In the NBA, $timeout_injury of injury exits came at the team’s own timeout, against $timeout_normal.</p>
+    </div>
+  </section>
+
+  <section id="coverage" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Coverage</p>
+      <h2>What the play-by-play can see.</h2>
+      <p>Sudden injuries show up most. In the NBA, broken bones, concussions and sprains are traced most often, and soreness that builds up over time least. Most injuries never end a player’s night early, so they leave no trace here at all.</p>
+    </div>
+    <figure class="figure" aria-labelledby="fig-traced-title">
+      <h3 id="fig-traced-title">Share of each kind of new injury traced to an injury exit</h3>
+      <p class="sub">NBA $seasons, and Division I men’s basketball over the same seasons.</p>
+      <ul class="legend"><li><span class="sw" style="background: var(--nba)"></span>NBA</li><li><span class="sw" style="background: var(--college)"></span>College</li></ul>
+      <div class="chart" id="chart-traced"></div>
+      <details class="data"><summary>Show the numbers</summary><div class="table-wrap">$table_traced</div></details>
+    </figure>
+  </section>
+
+  <section id="examples" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Examples</p>
+      <h2>What it looks like on the court.</h2>
+      <p>Real injury exits, read from the play-by-play two minutes before to 30 seconds after each one. Anything only news reports show is marked “reports say.”</p>
+    </div>
+    <div class="cards">
+$cards
+    </div>
+  </section>
+
+  <section id="conclusions" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Conclusions</p>
+      <h2>What I found.</h2>
+    </div>
+    <ol class="conclusions">
+      <li><h3>Play-by-play can find the moment, about $nba_one_in times.</h3><p>$nba_traced of $nba_injuries new NBA injuries ended in an injury exit, and about $beyond of those are tied to the injury rather than chance. That’s enough to study what was happening when players got hurt, even though no line in the data says so.</p></li>
+      <li><h3>Contact plays carry the signal.</h3><p>Three plays held up in every check: being fouled before ankle injuries ($ankle_ratio as often), a steal before injuries of any kind ($steal_ratio as often), and defending a rim attack before hand and arm injuries ($hand_injury of exits against $hand_normal of normal substitutions). Pulled muscles after a drive are a lead, and ankle injuries after a rebound aren’t proven.</p></li>
+      <li><h3>It’s the play, not the shift.</h3><p>The link is strongest in the last 15 to 30 seconds before the exit and almost gone two minutes out. That points to the play itself rather than fatigue building up over a long stretch.</p></li>
+      <li><h3>College points the same way, but doesn’t prove it.</h3><p>All five patterns leaned the same way in Division I, and one of the four main checks cleared the bar I set in advance, on just $h4_players players. Combined, the five patterns give an odds ratio of $pooled_plain (likely $pooled_range), and that holds without the fragile one.</p></li>
+      <li><h3>How a player leaves is a signal too.</h3><p>Being the only player taken out, leaving at a stop with nothing logged, a teammate shooting the player’s free throws, or the team spending its own timeout all come with injury exits more often than with normal substitutions. Together they could flag the exits worth a look on film.</p></li>
+      <li><h3>The scale is small.</h3><p>The three solid patterns account for about $attributable injury exits in seven seasons beyond what you’d expect by chance, about $per_season a season across the whole league. Most injuries happen out of view, in practice or building up over time, so prevention needs film, trainer records and load data, not just box scores.</p></li>
+    </ol>
+    <div class="todo">
+      <h3>What a team could do with this</h3>
+      <ul>
+        <li><b>Use injury exits as a film trigger.</b> Pull the 30 seconds before every early exit and log what happened: a landing, contact, a hard cut, a collision.</li>
+        <li><b>Start prevention work where the data points.</b> Contact on fouled drives and landings, the sprint and finish after a steal, and contesting at the rim are the places to look first.</li>
+        <li><b>Build the data the public can’t see.</b> Athletic trainers’ injury logs (with the department’s approval), practice load and tracking data are what can turn these patterns into causes.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="limits" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">Limits</p>
+      <h2>What the data can’t see.</h2>
+      <ul class="limits">
+        <li>The play-by-play only records who made each play and who was on the floor. It can’t show landings, collisions, cuts without the ball, or rebounds someone else won.</li>
+        <li>Most injuries never end a player’s night early, and injuries in practice or that build up over time don’t show up at all.</li>
+        <li>Injury exits are inferred, not observed: about $chance_share traced NBA exits are likely coincidence.</li>
+        <li>College injuries come from saved copies of a public injury page, which are sparse in 2022-23 and 2024-25. Old-format NCAA play-by-play, mostly from 2019-21, can’t show fouls drawn or drives.</li>
+        <li>The NBA patterns came out of many comparisons. The false-discovery correction and the college test guard against chance, but these are associations, not proof of cause.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="work" class="wrap">
+    <div class="measure">
+      <p class="eyebrow">The work</p>
+      <h2>Inspect the work.</h2>
+      <p>The code, the college test plan written before the results (with its SHA-256 fingerprint), a hand-read sample of college cases, and every result, including changes made after seeing the data, are on GitHub.</p>
+      <div class="links">
+        <a class="button dark" href="$repo_url" target="_blank" rel="noopener">Source code ↗</a>
+        <a class="button dark" href="$repo_url/blob/HEAD/README.md" target="_blank" rel="noopener">Full results ↗</a>
+        <a class="button dark" href="$repo_url/blob/HEAD/docs/ncaa_moments_plan.md" target="_blank" rel="noopener">College test plan ↗</a>
+        <a class="button dark" href="$repo_url/blob/HEAD/docs/ncaa_moments_hand_read.md" target="_blank" rel="noopener">Hand-read sample ↗</a>
+      </div>
+      <p class="credits">Data: the NBA’s official injury reports, $seasons; NBA and NCAA play-by-play and box scores from the sportsdataverse data releases; Covers’ college injury page through the Internet Archive’s Wayback Machine. Not affiliated with the NBA, the NCAA or Covers.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>$author · Sports analytics</span><span>Built with Python · Updated $updated</span></div>
+</footer>
+
+<script type="application/json" id="report-data">$data</script>
+<script>
+$js
+</script>
+</body>
+</html>

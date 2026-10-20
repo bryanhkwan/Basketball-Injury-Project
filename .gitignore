@@ -1,0 +1,30 @@
+# Python and editor clutter
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Downloads and caches: the NBA injury report PDFs, play-by-play files and saved web pages. The fetch steps rebuild
+# them, and they are other people's data, so they are never republished here.
+data/
+
+# Large intermediate files the analysis rebuilds
+outputs/**/*.parquet
+outputs/*.log
+
+# Per-player listings (named players and their injuries), kept local
+outputs/dashboard/
+outputs/ncaa_injuries/
+
+# Pages and stores for the private dashboards; the public report is docs/index.html
+outputs/**/page.html
+outputs/**/store/
+
+# LinkedIn images and post drafts
+outputs/linkedin/

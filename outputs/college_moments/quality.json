@@ -1,0 +1,86 @@
+[
+ {
+  "season": 2020,
+  "games": 5782,
+  "games_kept": 4141,
+  "old_format_games": 896,
+  "old_format_kept": 496,
+  "player_games_kept": 80375,
+  "within_1_kept": 0.9754276827371695,
+  "median_minutes_error_kept": 0.23366666666666663,
+  "within_1_all": 0.8631719614830541,
+  "lineup_resets": 1472
+ },
+ {
+  "season": 2021,
+  "games": 4269,
+  "games_kept": 3141,
+  "old_format_games": 268,
+  "old_format_kept": 129,
+  "player_games_kept": 62143,
+  "within_1_kept": 0.9758782163719164,
+  "median_minutes_error_kept": 0.23366666666666447,
+  "within_1_all": 0.8719084120959539,
+  "lineup_resets": 800
+ },
+ {
+  "season": 2022,
+  "games": 5970,
+  "games_kept": 4594,
+  "old_format_games": 161,
+  "old_format_kept": 56,
+  "player_games_kept": 90260,
+  "within_1_kept": 0.9751384888101041,
+  "median_minutes_error_kept": 0.23366666666667157,
+  "within_1_all": 0.890216526102083,
+  "lineup_resets": 820
+ },
+ {
+  "season": 2023,
+  "games": 6221,
+  "games_kept": 4967,
+  "old_format_games": 88,
+  "old_format_kept": 31,
+  "player_games_kept": 97150,
+  "within_1_kept": 0.9778178075141534,
+  "median_minutes_error_kept": 0.23366666666666447,
+  "within_1_all": 0.9086325966850829,
+  "lineup_resets": 729
+ },
+ {
+  "season": 2024,
+  "games": 6243,
+  "games_kept": 4936,
+  "old_format_games": 39,
+  "old_format_kept": 17,
+  "player_games_kept": 96854,
+  "within_1_kept": 0.9771511759968613,
+  "median_minutes_error_kept": 0.25,
+  "within_1_all": 0.9002733762394056,
+  "lineup_resets": 803
+ },
+ {
+  "season": 2025,
+  "games": 6293,
+  "games_kept": 5091,
+  "old_format_games": 2,
+  "old_format_kept": 0,
+  "player_games_kept": 100327,
+  "within_1_kept": 0.9753805057462099,
+  "median_minutes_error_kept": 0.24966666666666626,
+  "within_1_all": 0.9075021960943307,
+  "lineup_resets": 644
+ },
+ {
+  "season": 2026,
+  "games": 6297,
+  "games_kept": 5571,
+  "old_format_games": 0,
+  "old_format_kept": 0,
+  "player_games_kept": 110102,
+  "within_1_kept": 0.9753501298795663,
+  "median_minutes_error_kept": 0.24966666666666626,
+  "within_1_all": 0.9449244240245039,
+  "lineup_resets": 320
+ }
+]

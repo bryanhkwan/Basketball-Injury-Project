@@ -1,0 +1,62 @@
+[
+ {
+  "key": "college:unlogged",
+  "league": "College",
+  "label": "Left at a stop with no foul, timeout, turnover or violation logged",
+  "injury_share": 0.39939024390243905,
+  "normal_share": 0.18112836366191246,
+  "times": 3.0772511852266926,
+  "no_injury_times": 0.9882447066400079,
+  "explain": "Often the referees stopping play for a hurt player."
+ },
+ {
+  "key": "college:lone_sub",
+  "league": "College",
+  "label": "The only player the team took out",
+  "injury_share": 0.6554878048780488,
+  "normal_share": 0.4519075388182393,
+  "times": 2.3021149383714166,
+  "no_injury_times": 1.27722354722532,
+  "explain": "Coaches often sub in groups; an injury takes one player out alone."
+ },
+ {
+  "key": "college:replaced_at_line",
+  "league": "College",
+  "label": "A teammate shot the free throws for a foul the player drew",
+  "injury_share": 0.024390243902439025,
+  "normal_share": 0.00035129628328532284,
+  "times": 44.587406377490986,
+  "no_injury_times": 4.151119536291352,
+  "explain": "The player couldn't stay in to shoot them."
+ },
+ {
+  "key": "nba:own_timeout",
+  "league": "NBA",
+  "label": "Left at the team's own timeout",
+  "injury_share": 0.3201,
+  "normal_share": 0.1417,
+  "times": null,
+  "no_injury_times": null,
+  "explain": "Teams call timeout to get a hurt player off."
+ },
+ {
+  "key": "nba:take_foul",
+  "league": "NBA",
+  "label": "Committed a take foul to stop play",
+  "injury_share": 0.01529051987767584,
+  "normal_share": 0.0022054892176082697,
+  "times": 6.232698270330699,
+  "no_injury_times": 1.5348198620278988,
+  "explain": "Not a cause: a hurt player commits a take foul to stop play and get off the floor."
+ },
+ {
+  "key": "nba:tov_handle",
+  "league": "NBA",
+  "label": "Lost the ball or traveled",
+  "injury_share": 0.03771661569826707,
+  "normal_share": 0.01614017109249688,
+  "times": 2.50913975886409,
+  "no_injury_times": 1.5292218633127734,
+  "explain": "Probably what the injury looks like: an ankle rolls or a muscle grabs mid-dribble and the ball goes. Early exits with no injury after them show it too, less often."
+ }
+]

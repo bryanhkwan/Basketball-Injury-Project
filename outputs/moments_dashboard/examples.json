@@ -1,0 +1,90 @@
+[
+ {
+  "league": "College",
+  "player": "Jaylen Clark",
+  "team": "UCLA",
+  "game": "vs Arizona",
+  "date": "2023-03-04",
+  "injury": "Achilles (out for the season)",
+  "pattern": "Steal, then a fast-break finish",
+  "story": "Stole the ball and scored on the break. Arizona called timeout the same second, and Clark was the only player UCLA took out.",
+  "key": "College:Jaylen Clark"
+ },
+ {
+  "league": "College",
+  "player": "Myles Cale",
+  "team": "Seton Hall",
+  "game": "vs Ohio State",
+  "date": "2021-11-22",
+  "injury": "Groin",
+  "pattern": "Steal, then a fast-break finish",
+  "story": "Stole the ball and scored on a fast-break layup to put Seton Hall up 24-19. Reports say Cale landed awkwardly and stayed down; play stopped seconds later when the arena lights went out, and Seton Hall took Cale and Bryce Aiken out.",
+  "key": "College:Myles Cale"
+ },
+ {
+  "league": "College",
+  "player": "Cooper Flagg",
+  "team": "Duke",
+  "game": "vs Georgia Tech",
+  "date": "2025-03-13",
+  "injury": "Ankle sprain",
+  "pattern": "Rebound",
+  "story": "Went up for a defensive rebound and, reports say, came down on an opponent's foot. Called for traveling in the same second, Flagg was the only player Duke took out.",
+  "key": "College:Cooper Flagg"
+ },
+ {
+  "league": "College",
+  "player": "Jayden Stone",
+  "team": "Detroit Mercy",
+  "game": "at Loyola Marymount",
+  "date": "2023-12-18",
+  "injury": "Ankle",
+  "pattern": "Fouled",
+  "story": "Drew a shooting foul and came out at that whistle, the only player Detroit Mercy took out. Teammate Tyree Davis, already on the floor, shot the free throws.",
+  "key": "College:Jayden Stone"
+ },
+ {
+  "league": "NBA",
+  "player": "Julius Randle",
+  "team": "Knicks",
+  "game": "vs Heat",
+  "date": "2023-03-29",
+  "injury": "Ankle sprain",
+  "pattern": "Rebound, then fouled",
+  "story": "Grabbed an offensive rebound and was fouled by Bam Adebayo. Randle stayed in through a Knicks timeout to shoot the free throws, then came out three seconds later when teammate Josh Hart fouled on purpose to stop play.",
+  "key": "NBA:Julius Randle"
+ },
+ {
+  "league": "NBA",
+  "player": "Kevin Huerter",
+  "team": "Kings",
+  "game": "vs Grizzlies",
+  "date": "2024-03-18",
+  "injury": "Dislocated shoulder",
+  "pattern": "Steal, then fouled",
+  "story": "Stole the ball and was fouled on a shot by Desmond Bane. Huerter came out at a Kings timeout, and teammate Alex Len shot the free throws in Huerter's place.",
+  "key": "NBA:Kevin Huerter"
+ },
+ {
+  "league": "NBA",
+  "player": "Jalen Johnson",
+  "team": "Hawks",
+  "game": "at Wizards",
+  "date": "2023-11-25",
+  "injury": "Broken wrist",
+  "pattern": "Steal, then fouled",
+  "story": "Stole the ball from Kyle Kuzma and was fouled by Kuzma on the shot. Johnson stayed in to shoot the free throws, then came out when teammate Onyeka Okongwu fouled on purpose to stop play.",
+  "key": "NBA:Jalen Johnson"
+ },
+ {
+  "league": "NBA",
+  "player": "Luka Dončić",
+  "team": "Mavericks",
+  "game": "vs Timberwolves",
+  "date": "2024-12-25",
+  "injury": "Calf strain",
+  "pattern": "No play of Dončić's own",
+  "story": "Checked back in with 3:08 left in the second quarter and came out 37 seconds later at a Dallas timeout. No play in that stretch was credited to Dončić, so the play-by-play can't show the moment.",
+  "key": "NBA:Luka Dončić"
+ }
+]
