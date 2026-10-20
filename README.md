@@ -11,7 +11,7 @@ What public data can say about when, and why, basketball players get hurt. The p
 
 - **Overview** (`docs/index.html`): what the project found, with the risk board for any night of 2025-26.
 - **Dashboards** (`docs/dashboard.html`): the nightly risk board, player timelines, the model check, what raises risk,
-  when and who gets hurt, and injury types.
+  when and who gets hurt, injury types, and NBA vs college (every play before every kind of injury, in both leagues).
 - **Report** (`docs/moments.html`): the injury-moment study, with its conclusions.
 
 `python -m injury_risk site` builds all three.
@@ -310,6 +310,15 @@ Added after the results, not in the plan:
     OR 3.1, and no different after early exits with no injury;
   - being the only player the team took out: 66% vs 45%;
   - a teammate shooting the free throws of a foul the player drew: 2.4% vs 0.0%.
+- **Every play, both leagues (exploratory):**
+  - 141 play-and-injury pairs can be estimated in both leagues (30 seconds before the exit, against the same
+    players' other exits).
+  - Of the 33 with a clear NBA signal (a range that stays on one side of 1×), 28 point the same way in college.
+  - All 11 that are clear in both leagues agree.
+  - For any injury, where both leagues have the most cases, the two leagues' log odds ratios correlate at 0.72
+    across 20 plays; across all 141 pairs, 0.29.
+  - The pairs overlap (any injury includes the ankle ones, and a play and no play are opposites), so this is a
+    pattern to test next, not a result. It is the dashboards' NBA vs college view.
 - **Bugs fixed before this final run, found by an independent review:** phantom halftime exits, names with
   punctuation, and stoppage labels. The first run's verdicts were the same.
 
@@ -336,20 +345,17 @@ stories; college athletes stay anonymous on the site.
 
 - `docs/data/`: `board.json` (each night's 2025-26 board, before tip-off and after the game, with what happened),
   `players.json` (every player's risk game by game and their new injuries) and `study.json` (the model check, the risk
-  factors, the injury types and the injury moments' NBA patterns). It needs `outputs/dashboard/`; in a fresh clone the
-  step keeps the published files and rebuilds the pages from them.
+  factors, the injury types, the injury moments' NBA patterns, the college check's totals, and every play's ratio
+  in both leagues with how well they agree). It needs
+  `outputs/dashboard/`; in a fresh clone the step keeps the published files and rebuilds the pages from them.
 - `docs/index.html`: the overview, from `src/injury_risk/site/overview.html` with every figure filled in from
-  `docs/data/`.
+  `docs/data/`. It is always dark, in the same family as the portfolio (bryanhkwan.github.io/portfolio).
 - `docs/dashboard.html` and `docs/assets/`: the dashboards and the shared styles and scripts (`site.css` for the
   tokens and the overview, `app.css` for the dashboards, `charts.js`, `site.js`, `overview.js`, `dashboard.js`).
   `charts.js` is adapted from tasteskill's chart helpers (MIT); its licence is at the end of the file.
 - `docs/moments.html`: the injury-moment report (`report_site.py`), one page with its charts, tables and data inline.
 - `docs/assets/social-site.jpg`: the overview's link preview, rendered with headless Chrome.
   `python -m injury_risk linkedin` renders the report's (`social-card.png`) and the sharing images, which stay local.
-
-The photographs in `docs/assets/img/` are from Wikimedia Commons and credited on the page and in
-`docs/assets/img/credits.json`: "Game Basketball TD Garden" by EgorovaSvetlana (CC BY-SA 4.0, shown in greyscale) and
-"Kinesio taping", a U.S. Air Force photo (public domain).
 
 - **Publishing:** push the repository and turn on GitHub Pages (Settings > Pages > Deploy from a branch > `main`,
   `/docs`).

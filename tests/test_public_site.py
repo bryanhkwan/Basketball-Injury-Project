@@ -39,7 +39,7 @@ class Overview(unittest.TestCase):
         nights = dict(self.d["board"]["modes"]["before"]["nights"])
         first = nights[B.OPENING_NIGHT][0]
         self.assertIn(first[1], self.page)
-        self.assertEqual(self.page.count('<td class="n rank">'), B.LIVE_ROWS)
+        self.assertEqual(self.page.count('<span class="bc-rank">'), B.LIVE_ROWS)
 
     def test_every_kind_of_injury_has_a_tab_and_a_panel(self):
         for key, _ in B.KINDS:
@@ -79,6 +79,40 @@ class PublishedData(unittest.TestCase):
             self.assertEqual(x["d"], sorted(x["d"]))
             self.assertTrue(all(0 <= i < len(p["dates"]) for i in x["d"]))
         self.assertEqual(len(p["avg"]), len(p["dates"]))
+
+    def test_data_is_strict_json(self):
+        # Python writes NaN and Infinity by default; browsers refuse the whole file.
+        def refuse(token):
+            raise ValueError(f"{token} in the published data")
+        for name in ("board", "players", "study"):
+            json.loads((B.DATA / f"{name}.json").read_text(encoding="utf-8"), parse_constant=refuse)
+
+    def test_college_comparison_can_be_drawn(self):
+        c = self.d["study"]["compare"]
+        self.assertTrue(c["plays"])
+        for r in c["plays"]:
+            for league in ("nba", "col"):
+                ratio, lo, hi = r[league][:3]
+                self.assertTrue(0 < lo <= ratio <= hi, (r["group"], r["play"], league))
+                self.assertGreater(r[league][5], 0)
+        for g in c["groups"]:
+            self.assertTrue(0 <= g["nba"][1] <= 1 and 0 <= g["col"][3] <= 1, g["group"])
+        for league in ("nba", "col"):
+            for kind, shares in c["stoppages"][league].items():
+                self.assertAlmostEqual(sum(shares.values()), 1, delta=0.01, msg=(league, kind))
+        seasons = [s["season"] for s in c["seasons"]]
+        self.assertEqual(seasons, sorted(seasons))
+
+    def test_agreement_counts_the_plays_it_shows(self):
+        c = self.d["study"]["compare"]
+        a, clear = c["agreement"], [p for p in c["plays"] if p["nba"][1] > 1 or p["nba"][2] < 1]
+        self.assertEqual(a["pairs"], len(c["plays"]))
+        self.assertEqual(a["nba_clear"], len(clear))
+        self.assertEqual(a["nba_clear_same"], sum((p["nba"][0] - 1) * (p["col"][0] - 1) > 0 for p in clear))
+        self.assertLessEqual(a["both_clear_same"], a["both_clear"])
+        self.assertTrue(-1 <= a["r_all"] <= 1 and -1 <= a["r_any"] <= 1)
+        page = (DOCS / "index.html").read_text(encoding="utf-8")
+        self.assertIn(f"Of the {a['nba_clear']} with a clear NBA signal, <strong>{a['nba_clear_same']} point the same way", page)
 
 
 @unittest.skipUnless((OUTPUTS / "moments_dashboard" / "examples.json").exists() and DOCS.exists(), "needs the site and the examples")

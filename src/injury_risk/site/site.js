@@ -70,12 +70,23 @@
     }).join('')}</div><div class="dot-scale" style="--track:${track}px" aria-hidden="true"><span></span><span>${ticksAt.map((v) => `<i style="left:${at(v)}%">${v < 1 ? `${v}×` : `${v}×`}</i>`).join('')}</span><span></span></div>`;
   }
 
-  // Two shares per row: the main one in the data hue, its comparison in grey.  rows: [{ label, a, b }]
-  function pairs(el, rows, { format = (v) => pct(v, 1) } = {}) {
+  // Two shares per row: the main one in the data hue, its comparison in grey (or in college gold: second 'college').
+  //   rows: [{ label, a, b }]
+  function pairs(el, rows, { format = (v) => pct(v, 1), second = '' } = {}) {
     const top = Math.max(...rows.flatMap((r) => [r.a, r.b])) || 1;
     el.innerHTML = `<div class="pairs">${rows.map((r) => `<div class="pair"><span class="label">${esc(r.label)}</span><span class="bars">`
-      + `<span><i style="width:${(r.a / top) * 100}%"></i>${format(r.a)}</span><span><i style="width:${(r.b / top) * 100}%"></i>${format(r.b)}</span></span></div>`).join('')}</div>`;
+      + `<span><i style="width:${(r.a / top) * 100}%"></i>${format(r.a)}</span><span><i class="${second}" style="width:${(r.b / top) * 100}%"></i>${format(r.b)}</span></span></div>`).join('')}</div>`;
   }
 
-  window.Site = { load, esc, pct, int, dec, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, boardRow, dotRows, pairs };
+  // Two estimates per row on one log scale, the NBA's in blue and college's in gold, each with its likely range.
+  //   rows: [{ label, sub, nba: [ratio, lo, hi], col: [ratio, lo, hi], aria }]
+  function vsRows(el, rows, { min = 0.5, max = 40, ticks = [1, 3, 10, 30] } = {}) {
+    const at = (v) => ((Math.log(Math.min(max, Math.max(min, v))) - Math.log(min)) / (Math.log(max) - Math.log(min))) * 100;
+    const marks = (cls, [v, a, b]) => `<span class="${cls} rng" style="--lo:${at(a)}%;--hi:${at(b)}%"></span><span class="${cls} dot" style="--x:${at(v)}%"></span>`;
+    el.innerHTML = `<div class="vs">${rows.map((r) => `<div class="vs-row"><span class="vs-label"><b>${esc(r.label)}</b>${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</span>`
+      + `<span class="vs-track" role="img" aria-label="${esc(r.aria || r.label)}" style="--one:${at(1)}%"><span class="one"></span>${marks('nba', r.nba)}${marks('col', r.col)}</span></div>`).join('')}`
+      + `<div class="vs-row vs-axis" aria-hidden="true"><span></span><span class="vs-track">${ticks.map((v) => `<i style="left:${at(v)}%">${v}×</i>`).join('')}</span></div></div>`;
+  }
+
+  window.Site = { load, esc, pct, int, dec, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, boardRow, dotRows, pairs, vsRows };
 })();

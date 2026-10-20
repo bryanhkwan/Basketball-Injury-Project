@@ -15,7 +15,9 @@ from __future__ import annotations
 import functools
 import html
 import json
+import math
 import shutil
+import statistics
 import subprocess
 import tempfile
 import threading
@@ -36,6 +38,8 @@ MODES = {"before": dict(label="Before tip-off", question="a new injury in the ne
          "after": dict(label="After the game", question="missing the next game with a new injury", short="next game",
                        none="No new injury next game")}
 OPENING_NIGHT = "2025-10-21"
+PORTFOLIO_URL = "https://bryanhkwan.github.io/portfolio/"
+LINKEDIN_URL = "https://www.linkedin.com/in/bryanhkwan"
 LIVE_ROWS = 5        # rows of the overview's board; the dashboard shows all of them
 esc = html.escape
 
@@ -116,7 +120,10 @@ def players_data(board: dict) -> dict:
 
 
 def study_data() -> dict:
-    moments = {n: _read("moments_dashboard", n) for n in ("facts", "nba_patterns")}
+    moments = {n: _read("moments_dashboard", n) for n in ("facts", "nba_patterns", "college_tests")}
+    # the college check, as totals only: no college athlete is named anywhere on the site
+    college = [{k: t[k] for k in ("key", "order", "label", "group", "times", "lo", "hi", "nba_key", "nba_times", "verdict",
+                                  "verdict_label", "primary", "injury_exits", "with_play")} for t in moments["college_tests"]]
     return _round(dict(
         model=dict(scores=_read("dashboard", "model_scores"), seasons=_read("dashboard", "season_scores"),
                    calibration=_read("dashboard", "calibration"), drivers=_read("dashboard", "drivers"),
@@ -125,15 +132,85 @@ def study_data() -> dict:
                      trend=_read("dashboard", "injury_trend"), mix=_read("dashboard", "injury_mix"),
                      prone=_read("dashboard", "prone_players")),
         causes={n: _read("causes", n) for n in ("facts", "groups", "months", "situations", "traits")},
-        moments=dict(facts={r["metric"]: r["value"] for r in moments["facts"] if not r["metric"].startswith("college")},
-                     patterns=moments["nba_patterns"])))
+        moments=dict(facts={r["metric"]: r["value"] for r in moments["facts"]}, patterns=moments["nba_patterns"],
+                     college=college),
+        compare=compare_data()))
+
+
+# the NBA-vs-college comparison: the same injury-moment test in both leagues, as totals only
+PLAYS = {"rebound": "Rebound", "off_rebound": "Offensive rebound", "def_rebound": "Defensive rebound",
+         "rim": "Shot at the rim", "drive": "Drove or cut to the basket", "dunk": "Dunk", "putback": "Tip-in or putback",
+         "jumper": "Jump shot", "fouled": "Was fouled", "foul_def": "Committed a defensive foul",
+         "foul_off": "Offensive foul or charge", "block": "Blocked a shot", "steal": "Steal",
+         "tov_handle": "Lost the ball or traveled", "tov_pass": "Bad pass or other turnover",
+         "scramble": "On the floor for a rebound", "scramble_close": "On the floor near the basket",
+         "opp_rim": "Defending a rim attack", "any_play": "Any play of their own", "no_play": "No play of their own"}
+GROUPS = {"any": "Any injury", "ankle": "Ankle", "knee": "Knee", "foot": "Foot and toe", "muscle": "Pulled muscle",
+          "back_hip": "Back and hip", "hand": "Hand and arm", "head": "Head and face", "shoulder": "Shoulder",
+          "other": "Everything else"}
+
+
+def compare_data() -> dict:
+    nba = json.loads((OUTPUTS / "moments" / "summary.json").read_text(encoding="utf-8"))
+    col = json.loads((OUTPUTS / "college_moments" / "summary.json").read_text(encoding="utf-8"))
+
+    def main(s: dict) -> dict:
+        """The main comparison: 30 seconds before the exit, injury exits against the same players' other exits."""
+        return {(r["group"], r["play"]): r for r in s["table"]
+                if r["window"] == 30 and r["against"] == "exit" and r["case_role"] == "case" and not r["by_stoppage"]
+                and r["short"] == 0.6}
+
+    def cut(r: dict) -> list:
+        return [r["odds_ratio"], r["lo"], r["hi"], r["case_share"], r["comparison_share"], r["cases"]]
+
+    def estimable(r: dict) -> bool:
+        """A play no injured player made has no ratio (NaN in the summaries); leave it out rather than draw it."""
+        return all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in (r["odds_ratio"], r["lo"], r["hi"]))
+
+    n, c = main(nba), main(col)
+    plays = [dict(group=g, play=p, label=PLAYS[p], nba=cut(n[(g, p)]), col=cut(c[(g, p)]))
+             for (g, p) in sorted(n) if g in GROUPS and p in PLAYS and (g, p) in c
+             and estimable(n[(g, p)]) and estimable(c[(g, p)])]
+    ng, cg = {g["group"]: g for g in nba["groups"]}, {g["group"]: g for g in col["groups"]}
+    groups = [dict(group=g, name=name, nba=[ng[g]["injuries"], ng[g]["pinned_share"]],
+                   col=[cg[g]["injuries"], cg[g]["evaluable"], cg[g]["pinned"], cg[g]["pinned_share"]])
+              for g, name in GROUPS.items() if g in ng and g in cg]
+    after = col["added_after_results"]
+    return _round(dict(
+        plays=plays, groups=groups, agreement=agreement(plays),
+        stoppages={"nba": {k: nba["stoppages"][k] for k in ("injury exits", "ordinary exits")},
+                   "col": {k: col["stoppages"][k] for k in ("injury exits", "ordinary exits")}},
+        seasons=[{k: s[k] for k in ("season", "games", "games_kept", "player_games_kept")} for s in col["quality"]["seasons"]],
+        listings=dict(named=col["quality"]["listings"]["named_injury_listings"],
+                      matched=col["quality"]["listings"]["matched_to_a_player"]),
+        pooled=after["pooled"]["correlated"], power=after["power"], versus=after["versus_nba"]))
+
+
+def agreement(plays: list) -> dict:
+    """How the two leagues line up across every play before every kind of injury. Exploratory: the pairs overlap (any
+    injury includes the ankle ones; a play and no play are opposites), so this describes a pattern and is not a test."""
+    def clear(v: list) -> bool:
+        return v[1] > 1 or v[2] < 1
+
+    def same(p: dict) -> bool:
+        return (p["nba"][0] - 1) * (p["col"][0] - 1) > 0
+
+    def r(rows: list) -> float:
+        return statistics.correlation([math.log(p["nba"][0]) for p in rows], [math.log(p["col"][0]) for p in rows])
+
+    nba_clear = [p for p in plays if clear(p["nba"])]
+    both = [p for p in nba_clear if clear(p["col"])]
+    any_injury = [p for p in plays if p["group"] == "any"]
+    return dict(pairs=len(plays), nba_clear=len(nba_clear), nba_clear_same=sum(map(same, nba_clear)),
+                both_clear=len(both), both_clear_same=sum(map(same, both)),
+                any_plays=len(any_injury), r_any=r(any_injury), r_all=r(plays))
 
 
 def write_data(log=print) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
     board = board_data()
     for name, obj in (("board", board), ("players", players_data(board)), ("study", study_data())):
-        text = json.dumps(obj, ensure_ascii=False, separators=(",", ":"))
+        text = json.dumps(obj, ensure_ascii=False, separators=(",", ":"), allow_nan=False)   # browsers can't parse NaN
         (DATA / f"{name}.json").write_text(text, encoding="utf-8")
         log({"data": f"docs/data/{name}.json", "bytes": len(text.encode())})
 
@@ -163,64 +240,52 @@ def times_text(ratio: float) -> str:
     return f"{ratio:.1f}×" if ratio >= 1 else f"{round(100 * (1 - ratio))}% less"
 
 
-def outcome_cells(row: list, mode: dict) -> str:
-    """The 'what happened' cell: the injury report's words, split into the injury and the games it cost."""
-    if not row[6]:
-        return '<td class="outcome none">No new injury</td>'
-    injury, _, cost = row[7].partition(" (")
-    cost = cost.rstrip(")")
-    return (f'<td class="outcome hurt"><span class="dot" aria-hidden="true"></span><span class="what">{esc(injury)}'
-            f'<span class="sub">{esc(cost)}</span></span></td>')
-
-
-def board_rows(night: list, mode: dict, limit: int = LIVE_ROWS) -> str:
+def board_rows(night: list, limit: int = LIVE_ROWS) -> str:
+    """The hero's board: rank, player, team and what happened, and the chance as a number and a bar."""
+    top = max(r[4] for r in night) or 1
     out = []
     for rank, row in enumerate(night[:limit], start=1):
-        out.append(f'<tr><td class="n rank">{rank}</td><td class="who"><b>{esc(row[1])}</b>'
-                   f'<span class="sub">{esc(row[2])} vs {esc(row[3])}</span></td>'
-                   f'<td class="n chance">{row[4] / 10:.0f}%</td>{outcome_cells(row, mode)}</tr>')
+        if row[6]:
+            injury, _, cost = row[7].partition(" (")
+            what = f'<span class="out hurt">{esc(injury)}, {esc(cost.rstrip(")"))}</span>'
+        else:
+            what = '<span class="out">No new injury</span>'
+        out.append(f'<li class="bc-row{" is-hurt" if row[6] else ""}"><span class="bc-rank">{rank}</span>'
+                   f'<span class="bc-who"><b>{esc(row[1])}</b><small>{esc(row[2])} vs {esc(row[3])} · {what}</small></span>'
+                   f'<span class="bc-chance"><span class="bc-bar" aria-hidden="true"><i style="width:{100 * row[4] / top:.0f}%"></i></span>'
+                   f'<b>{row[4] / 10:.0f}%</b></span></li>')
     return "".join(out)
 
 
-KINDS = [("any", "Any injury"), ("muscle", "Pulled muscles"), ("sprain", "Sprained ankles"), ("contact", "Knocks"),
-         ("knee", "Knees"), ("back", "Backs"), ("other", "Other aches")]
-BANDS = 6   # findings shown per kind on the overview
+KINDS = [("any", "Any injury"), ("muscle", "Muscles"), ("sprain", "Ankles"), ("contact", "Knocks"), ("knee", "Knees"),
+         ("back", "Backs"), ("other", "Other")]
+FINDINGS = 6   # findings shown per kind of injury on the overview
 
 
-def finding_bands(causes: dict) -> tuple[str, str]:
-    """The overview's list: one tab per kind of injury, and its strongest findings that held in both halves."""
+def kind_lists(causes: dict) -> tuple[str, str]:
+    """One tab per kind of injury, and its strongest findings that held in both halves of the seasons."""
     rows = causes["situations"] + causes["traits"]
     groups = {g["group"]: g for g in causes["groups"]}
-    total = causes["facts"]
-    injuries = next(f["value"] for f in total if f["metric"] == "injuries")
+    facts = {f["metric"]: f["value"] for f in causes["facts"]}
     tabs, panels = [], []
     for i, (key, short) in enumerate(KINDS):
-        found = sorted((r for r in rows if r["group"] == key and r["headline"]), key=lambda r: -abs(r["ratio"] - 1))[:BANDS]
-        count = groups[key]["injuries"] if key in groups else injuries
+        found = sorted((r for r in rows if r["group"] == key and r["headline"]), key=lambda r: -abs(r["ratio"] - 1))[:FINDINGS]
         state = ' aria-selected="true"' if i == 0 else ' aria-selected="false" tabindex="-1"'
-        tabs.append(f'<button type="button" role="tab" id="kind-{key}" aria-controls="panel-{key}"{state}>'
-                    f'<b>{esc(short)}</b><span>{count:,.0f} injuries</span></button>')
-        bands = []
-        for r in found:
-            up = r["ratio"] >= 1
-            versus = r.get("versus") or "everyone else"
-            bands.append(f'<li class="band {"up" if up else "down"}"><span class="figure num">{times_text(r["ratio"])}</span>'
-                         f'<span class="what"><b>{esc(r["label"])}</b><span class="note">compared with {esc(versus)}</span></span>'
-                         f'<span class="verdict">{esc(r["verdict"])}</span></li>')
+        tabs.append(f'<button type="button" role="tab" id="kind-{key}" aria-controls="panel-{key}"{state}>{esc(short)}</button>')
         g = groups.get(key)
         if g:
-            side = (f'<p class="side-figure num">{g["games_lost_per_team_season"]:.0f}</p>'
-                    f'<p class="side-note">games a team loses to {esc(g["name"].lower())} each season. '
-                    f'{round(100 * g["share_5plus"])}% of them kept the player out five games or more, and '
-                    f'{round(100 * g["repeat_share"])}% hit the same body part again within a year.</p>')
+            summary = (f'{g["injuries"]:,} injuries · {g["games_lost_per_team_season"]:.0f} games lost per team each season · '
+                       f'{round(100 * g["repeat_share"])}% hit the same spot again within a year')
         else:
-            lost = next(f["value"] for f in total if f["metric"] == "games_lost_per_team_season")
-            side = (f'<p class="side-figure num">{lost:.0f}</p><p class="side-note">games a team loses to new injuries each '
-                    f'season, about {next(f["value"] for f in total if f["metric"] == "injuries_per_team_season"):.0f} '
-                    f'injuries. These are the findings that held in both halves of the seasons.</p>')
+            summary = (f'{facts["injuries"]:,.0f} injuries · {facts["games_lost_per_team_season"]:.0f} games lost per team each '
+                       f'season · about {facts["players_out_per_game"]:.1f} players per team out on an average night')
+        items = "".join(
+            f'<li class="find {"up" if r["ratio"] >= 1 else "down"}"><span class="chip num">{times_text(r["ratio"])}</span>'
+            f'<span class="find-what"><b>{esc(r["label"])}</b><small>vs {esc(r.get("versus") or "everyone else")}</small></span></li>'
+            for r in found)
         hidden = "" if i == 0 else " hidden"
         panels.append(f'<div class="kind-panel" role="tabpanel" id="panel-{key}" aria-labelledby="kind-{key}"{hidden}>'
-                      f'<div class="kind-side">{side}</div><ol class="bands">{"".join(bands)}</ol></div>')
+                      f'<p class="kind-sum">{summary}</p><ol class="finds">{items}</ol></div>')
     return "".join(tabs), "".join(panels)
 
 
@@ -233,47 +298,51 @@ def render_overview(d: dict) -> str:
     check = board["check"]["before"]
     coverage = {r["metric"]: r["value"] for r in study["model"]["coverage"]}
     facts = {r["metric"]: r["value"] for r in study["causes"]["facts"]}
+    moments, agree = study["moments"]["facts"], study["compare"]["agreement"]
     scores = {(r["question"], r["model"]): r for r in study["model"]["scores"]}
     main = scores[("pregame_g5", "full_gbm")]
-    tabs, panels = finding_bands(study["causes"])
+    tabs, panels = kind_lists(study["causes"])
     today = date.today()
-    credits = json.loads((DOCS / "assets" / "img" / "credits.json").read_text(encoding="utf-8"))
-    credit_html = "; ".join(
-        f'<a href="{esc(c["page"])}">“{esc(c["title"])}”</a> by {esc(c["creator"])}, '
-        f'<a href="{esc(c["licenseUrl"])}">{esc(c["license"])}</a>' for c in credits)
+    top = check["top"]["rate"]
     values = dict(
         site_url=SITE_URL, repo_url=REPO_URL, author=AUTHOR, seasons=SEASONS, updated=f"{today:%B} {today.year}",
-        description=(f"A model that reads seven seasons of official NBA injury reports and ranks who is most likely to get "
-                     f"hurt next, checked against what happened in 2025-26, plus why and when players get hurt."),
-        live_day=OPENING_NIGHT, live_date=day_label(OPENING_NIGHT), live_short=short_day(OPENING_NIGHT), live_rows=board_rows(opening, before),
-        live_sum=f"{hurt} of these {len(opening)} had a new injury within 5 games.",
+        portfolio_url=PORTFOLIO_URL, linkedin_url=LINKEDIN_URL,
+        description=("A model that reads seven seasons of official NBA injury reports and ranks who is most likely to get "
+                     "hurt next, checked against what happened in 2025-26, plus why and when players get hurt."),
+        live_day=OPENING_NIGHT, live_date=day_label(OPENING_NIGHT), live_short=short_day(OPENING_NIGHT),
+        live_rows=board_rows(opening), live_sum=f"{hurt} of these {len(opening)} had a new injury within 5 games.",
         live_count=str(len(before["nights"])),
-        ratio=f"{check['top']['rate'] / check['bottom']['rate']:.1f}", top_rate=pct(check["top"]["rate"]),
-        all_rate=pct(check["all"]["rate"]), bottom_rate=pct(check["bottom"]["rate"]),
-        top_label=esc(check["top"]["label"]), bottom_label=esc(check["bottom"]["label"]),
-        top_w=f"{100 * check['top']['rate'] / check['top']['rate']:.1f}", all_w=f"{100 * check['all']['rate'] / check['top']['rate']:.1f}",
-        bottom_w=f"{100 * check['bottom']['rate'] / check['top']['rate']:.1f}",
-        auc=f"{main['auc']:.2f}", top10=f"{main['top10_lift']:.1f}",
+        ratio=f"{top / check['bottom']['rate']:.1f}", top_rate=pct(top), all_rate=pct(check["all"]["rate"]),
+        bottom_rate=pct(check["bottom"]["rate"]), top_label=esc(check["top"]["label"]), bottom_label=esc(check["bottom"]["label"]),
+        top_w="100", all_w=f"{100 * check['all']['rate'] / top:.1f}", bottom_w=f"{100 * check['bottom']['rate'] / top:.1f}",
+        vs_all=f"{top / check['all']['rate']:.1f}",
+        auc=f"{main['auc']:.2f}", auc_lo=f"{main['auc_lo']:.2f}", auc_hi=f"{main['auc_hi']:.2f}", top10=f"{main['top10_lift']:.1f}",
+        test_rows=f"{main['rows']:,}",
         reports=f"{coverage['report_days']:,.0f}", lines=f"{coverage['report_rows']:,.0f}", matched=pct(coverage["matched_share"]),
         injuries=f"{facts['injuries']:,.0f}", player_games=f"{facts['player_games']:,.0f}",
-        out_per_night=f"{facts['players_out_per_game']:.1f}",
-        kind_tabs=tabs, kind_panels=panels, credits=credit_html)
+        nba_injuries=f"{moments['nba_injuries']:,.0f}", nba_traced=f"{moments['nba_traced']:,.0f}",
+        nba_one_in=f"1 in {round(1 / moments['nba_traced_share'])}",
+        college_same=f"{moments['college_same_direction']:.0f} of {moments['college_tests']:.0f}",
+        college_passed=f"{moments['college_passed']:.0f}", college_traced=f"{moments['college_traced']:,.0f}",
+        pooled=f"{moments['college_pooled_times']:.1f}",
+        agree_clear=str(agree["nba_clear"]), agree_same=str(agree["nba_clear_same"]),
+        kind_tabs=tabs, kind_panels=panels)
     return Template((SITE / "overview.html").read_text(encoding="utf-8")).substitute(values)
 
 
-CARD = (1336, 700)   # the link preview's window; at 2x it is 2672x1400, LinkedIn's 1.91:1
+CARD = (1452, 760)   # the link preview's window, the hero's full height; at 2x it is 2904x1520, LinkedIn's 1.91:1
 
 
 def social_card(log=print) -> Path | None:
-    """The link preview for the overview and the dashboards: the overview's first screen (opening night's board) in the
-    light theme, at 2x with headless Chrome."""
+    """The link preview for the overview and the dashboards: the overview's first screen (opening night's board), at 2x
+    with headless Chrome, with motion off so every part is in its final place."""
     from .linkedin import _chrome
     try:
         chrome = _chrome()
     except RuntimeError as e:
         log({"card": f"skipped: {e}"})
         return None
-    from PIL import Image, ImageStat   # installed with pdfplumber
+    from PIL import Image   # installed with pdfplumber
     jpg = DOCS / "assets" / "social-site.jpg"
 
     class Quiet(SimpleHTTPRequestHandler):
@@ -282,35 +351,22 @@ def social_card(log=print) -> Path | None:
         def log_message(self, *args):   # noqa: D401 - keep the build log clean
             pass
 
-    def photo_drawn(png: Path) -> bool:
-        """The arena photograph fills the bottom-left tile; a failed load leaves a flat tile with its alt text."""
-        im = Image.open(png).convert("L")
-        w, h = im.size
-        tile = im.crop((int(w * 0.06), int(h * 0.72), int(w * 0.46), int(h * 0.92)))
-        return ImageStat.Stat(tile).stddev[0] > 25
-
     # served over http, as on GitHub Pages, so the page's script can load its data
     server = ThreadingHTTPServer(("127.0.0.1", 0), functools.partial(Quiet, directory=str(DOCS)))
     threading.Thread(target=server.serve_forever, daemon=True).start()
     try:
-        for attempt in range(3):
-            with tempfile.TemporaryDirectory() as tmp:
-                png = Path(tmp) / "card.png"
-                subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run", "--no-default-browser-check",
-                                f"--user-data-dir={Path(tmp) / 'profile'}", f"--window-size={CARD[0]},{CARD[1]}", "--force-device-scale-factor=2",
-                                "--blink-settings=preferredColorScheme=1", "--virtual-time-budget=20000", f"--screenshot={png}",
-                                f"http://127.0.0.1:{server.server_address[1]}/index.html"], check=True, timeout=180, capture_output=True)
-                if not png.exists():
-                    raise RuntimeError("Chrome did not write the link preview")
-                if photo_drawn(png):
-                    # a photograph: as JPEG it is a third of the PNG
-                    Image.open(png).convert("RGB").save(jpg, quality=84, optimize=True, progressive=True)
-                    break
-        else:
-            raise RuntimeError("the link preview's photograph did not load in three tries")
+        with tempfile.TemporaryDirectory() as tmp:
+            png = Path(tmp) / "card.png"
+            subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--no-first-run", "--no-default-browser-check",
+                            f"--user-data-dir={Path(tmp) / 'profile'}", f"--window-size={CARD[0]},{CARD[1]}", "--force-device-scale-factor=2",
+                            "--force-prefers-reduced-motion", "--virtual-time-budget=20000", f"--screenshot={png}",
+                            f"http://127.0.0.1:{server.server_address[1]}/index.html"], check=True, timeout=180, capture_output=True)
+            if not png.exists():
+                raise RuntimeError("Chrome did not write the link preview")
+            Image.open(png).convert("RGB").save(jpg, quality=84, optimize=True, progressive=True)   # as JPEG: a third of the PNG
     finally:
         server.shutdown()
-    log({"card": "docs/assets/social-site.jpg", "bytes": jpg.stat().st_size, "tries": attempt + 1})
+    log({"card": "docs/assets/social-site.jpg", "bytes": jpg.stat().st_size})
     return jpg
 
 

@@ -1,26 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="home-html">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Basketball Injury Project</title>
+<title>Basketball Injury Project · Who gets hurt next?</title>
 <meta name="description" content="$description">
 <meta name="author" content="$author">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Basketball Injury Project">
+<meta property="og:title" content="Who gets hurt next? · Basketball Injury Project">
 <meta property="og:description" content="$description">
 <meta property="og:url" content="$site_url">
 <meta property="og:image" content="${site_url}assets/social-site.jpg">
-<meta property="og:image:width" content="2672">
-<meta property="og:image:height" content="1400">
-<meta property="og:image:alt" content="The Basketball Injury Project overview: its title, the risk board for opening night of 2025-26, an NBA arena and two statements about the model">
+<meta property="og:image:width" content="2904">
+<meta property="og:image:height" content="1520">
+<meta property="og:image:alt" content="Who gets hurt next? The Basketball Injury Project’s risk board for opening night of 2025-26">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#071b32" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#030b1a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%23ffd200'/%3E%3Cg fill='none' stroke='%23071b32' stroke-width='3.5'%3E%3Cpath d='M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/app.css">
 <script>document.documentElement.classList.add('js')</script>
@@ -28,173 +27,273 @@
 <script src="assets/site.js" defer></script>
 <script src="assets/overview.js" defer></script>
 </head>
-<body class="page">
+<body class="page home">
 <a class="skip" href="#main">Skip to the content</a>
 
-<header class="board" id="top">
-  <div class="board-top">
-    <a class="tile mark" href="./" aria-label="Basketball Injury Project, home">
+<header class="nav" id="top">
+  <div class="wrap nav-in">
+    <a class="brand" href="./" aria-label="Basketball Injury Project, home">
       <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#ffd200"/><g fill="none" stroke="#071b32" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg>
+      <span>Basketball Injury Project</span>
     </a>
-    <nav class="tile links" aria-label="Main">
-      <ul>
-        <li><a href="dashboard.html#board">Risk board</a></li>
-        <li><a href="dashboard.html#players">Players</a></li>
-        <li><a href="dashboard.html#when">Why they get hurt</a></li>
-        <li><a href="moments.html">Injury moments</a></li>
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#record">The record</a></li>
+        <li><a href="#explore">Explore</a></li>
+        <li><a href="dashboard.html#college">NBA vs college</a></li>
+        <li><a href="moments.html">Report</a></li>
       </ul>
     </nav>
-    <a class="tile action" href="dashboard.html">All dashboards <span aria-hidden="true">→</span></a>
-  </div>
-  <div class="board-grid">
-    <div class="tile name"><h1>Basketball <br>Injury Project</h1></div>
-    <div class="tile live">
-      <section class="sheet live-sheet" data-ui id="live" data-day="$live_day" aria-labelledby="live-title">
-        <div class="sheet-head">
-          <div>
-            <h2 class="sheet-title" id="live-title">Risk board, before tip-off</h2>
-            <p class="sheet-meta" id="live-date">$live_date · 1 of $live_count nights in 2025-26</p>
-          </div>
-          <div class="stepper">
-            <button type="button" class="step" id="live-prev" aria-label="Previous night" disabled>‹</button>
-            <label class="sr-only" for="live-night">Night of the 2025-26 season</label>
-            <select id="live-night" disabled><option>$live_short</option></select>
-            <button type="button" class="step" id="live-next" aria-label="Next night" disabled>›</button>
-          </div>
-        </div>
-        <table class="board-table" aria-describedby="live-sum">
-          <thead><tr><th scope="col" class="n">#</th><th scope="col">Player</th><th scope="col" class="n">Chance</th><th scope="col">Next 5 games</th></tr></thead>
-          <tbody id="live-rows">$live_rows</tbody>
-        </table>
-        <p class="sheet-foot"><span id="live-sum" aria-live="polite">$live_sum</span><a id="live-link" href="dashboard.html#board/$live_day">See all 12 on the board</a></p>
-      </section>
-    </div>
-    <figure class="tile photo shutter" id="hero-photo">
-      <img src="assets/img/arena.jpg" width="1600" height="1200" alt="An NBA game at TD Garden in Boston, seen from the upper deck" fetchpriority="high">
-    </figure>
-    <div class="tile-pair">
-      <p class="tile dark">A model that reads every NBA injury report since 2018 and ranks who gets hurt next.</p>
-      <p class="tile gold">Pick a night on the board to see who it flagged before tip-off, and what happened.</p>
-    </div>
+    <a class="button gold small" href="dashboard.html">Dashboards <span aria-hidden="true">→</span></a>
   </div>
 </header>
 
 <main id="main">
-  <section class="record" aria-labelledby="record-title">
-    <div class="grid record-grid">
-      <figure class="record-photo" data-rise>
-        <img src="assets/img/taping.jpg" width="1400" height="1057" alt="A physical therapy technician tapes a patient’s ankle" loading="lazy" decoding="async">
-      </figure>
-      <h2 class="record-claim" id="record-title" data-rise>Its riskiest picks got hurt</h2>
-      <p class="record-figure" data-rise aria-label="$ratio times">$ratio<span class="unit" aria-hidden="true">×</span></p>
-      <p class="record-caption" data-rise>as often as the players it rated safest, night after night through 2025-26, a season the model never trained on.</p>
-      <ul class="record-bars" data-rise aria-label="Share with a new injury within five games, 2025-26">
-        <li style="--i:0"><span>$top_label</span><b>$top_rate</b><span class="bar"><span style="width:$top_w%"></span></span></li>
-        <li style="--i:1"><span>All players</span><b>$all_rate</b><span class="bar"><span style="width:$all_w%"></span></span></li>
-        <li style="--i:2"><span>$bottom_label</span><b>$bottom_rate</b><span class="bar"><span style="width:$bottom_w%"></span></span></li>
-      </ul>
-      <p class="record-source" data-rise>Share of players with a new injury within five games. Across every game, the model’s ranking scores AUC $auc, and its riskiest tenth of player-games got hurt $top10 times as often as average.</p>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="court-floor" aria-hidden="true">
+      <svg class="court" viewBox="-6 -6 512 952">
+        <rect x="0" y="0" width="500" height="940" pathLength="1"/>
+        <path d="M0 470H500" pathLength="1"/>
+        <circle cx="250" cy="470" r="60" pathLength="1"/>
+        <circle cx="250" cy="470" r="20" pathLength="1"/>
+        <rect x="170" y="750" width="160" height="190" pathLength="1"/>
+        <circle cx="250" cy="750" r="60" pathLength="1"/>
+        <path d="M30 940V798A237.5 237.5 0 0 1 470 798V940" pathLength="1"/>
+        <path d="M210 887.5A40 40 0 0 1 290 887.5" pathLength="1"/>
+        <path d="M220 900H280" pathLength="1"/>
+        <circle class="rim" cx="250" cy="887.5" r="7.5" pathLength="1"/>
+        <rect x="170" y="0" width="160" height="190" pathLength="1"/>
+        <circle cx="250" cy="190" r="60" pathLength="1"/>
+        <path d="M30 0V142A237.5 237.5 0 0 0 470 142V0" pathLength="1"/>
+        <path d="M210 52.5A40 40 0 0 0 290 52.5" pathLength="1"/>
+        <path d="M220 40H280" pathLength="1"/>
+        <circle class="rim" cx="250" cy="52.5" r="7.5" pathLength="1"/>
+      </svg>
     </div>
-  </section>
-
-  <section class="outputs" aria-labelledby="outputs-title">
-    <h2 class="sr-only" id="outputs-title">Five dashboards</h2>
-    <div class="grid">
-      <div class="output-index">
-        <div class="output-names" role="tablist" aria-label="Dashboards">
-          <button type="button" role="tab" id="out-board" aria-controls="stage" aria-selected="true" data-rise style="--i:0">Risk board</button>
-          <button type="button" role="tab" id="out-players" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:1">Player timelines</button>
-          <button type="button" role="tab" id="out-model" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:2">Model check</button>
-          <button type="button" role="tab" id="out-why" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:3">Why players get hurt</button>
-          <button type="button" role="tab" id="out-moments" aria-controls="stage" aria-selected="false" tabindex="-1" data-rise style="--i:4">Injury moments</button>
+    <div class="wrap hero-in">
+      <div class="hero-copy">
+        <p class="kicker" data-rise>NBA &amp; college injury analytics · <span class="nowrap">$seasons</span></p>
+        <h1 id="hero-title" data-rise>Who gets <span class="gold">hurt next?</span></h1>
+        <p class="lead" data-rise>I built a model that reads every official NBA injury report since 2018 and ranks each player’s injury risk before every game, then tested what I found in college basketball. On a season it never trained on, its 15 riskiest players each night got hurt <strong>$ratio times as often</strong> as its 15 safest.</p>
+        <div class="cta-row" data-rise>
+          <a class="button gold" href="dashboard.html">Explore the dashboards <span aria-hidden="true">→</span></a>
+          <a class="button line" href="#record">See the results</a>
         </div>
-        <p class="output-text" id="output-text" aria-live="polite">Every night of the 2025-26 season, the twelve players the model rated most at risk before tip-off, and what happened to each of them in their next five games.</p>
-        <a class="button" id="output-link" href="dashboard.html#board">Open the risk board <span aria-hidden="true">→</span></a>
+        <dl class="hero-stats" data-rise>
+          <div><dt>official injury reports read</dt><dd class="num">$reports</dd></div>
+          <div><dt>new injuries studied</dt><dd class="num">$injuries</dd></div>
+          <div><dt>AUC on unseen seasons</dt><dd class="num">$auc</dd></div>
+          <div><dt>riskiest 15 vs safest 15</dt><dd class="num gold">$ratio×</dd></div>
+        </dl>
       </div>
-      <div class="stage" id="stage" role="tabpanel" aria-labelledby="out-board" data-rise>
-        <div class="sheet out-sheet" data-ui id="out-sheet">
-          <noscript><p>The dashboards need JavaScript. The numbers are also in the <a href="$repo_url">repository</a>.</p></noscript>
+
+      <div class="hero-visual" data-rise>
+        <section class="board-card" data-ui id="live" data-day="$live_day" aria-labelledby="live-title">
+          <div class="bc-head">
+            <div>
+              <p class="bc-kicker"><span class="live-dot" aria-hidden="true"></span><span id="live-title">Risk board · before tip-off</span></p>
+              <p class="bc-date" id="live-date">$live_date</p>
+            </div>
+            <div class="bc-step">
+              <button type="button" class="step" id="live-prev" aria-label="Previous night" disabled>‹</button>
+              <label class="sr-only" for="live-night">Night of the 2025-26 season</label>
+              <select id="live-night" disabled><option>$live_short</option></select>
+              <button type="button" class="step" id="live-next" aria-label="Next night" disabled>›</button>
+            </div>
+          </div>
+          <ol class="bc-rows" id="live-rows">$live_rows</ol>
+          <div class="bc-foot">
+            <span id="live-sum" aria-live="polite">$live_sum</span>
+            <a id="live-link" href="dashboard.html#board/$live_day">Open this night <span aria-hidden="true">→</span></a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="record" aria-labelledby="record-title">
+    <div class="wrap">
+      <header class="sec-head" data-rise>
+        <p class="kicker">The record</p>
+        <h2 id="record-title">Its riskiest picks really did get hurt</h2>
+        <p class="sec-lead">Every night of 2025-26, a season the model never saw, it ranked every player before tip-off. Then I checked who had a new injury in their next five games.</p>
+      </header>
+      <div class="record-grid">
+        <article class="panel record-main" data-ui data-rise>
+          <p class="big-figure"><span class="num">$ratio×</span></p>
+          <p class="big-caption">as often for each night’s 15 riskiest players as for its 15 safest, and <strong>$vs_all×</strong> the rate for everyone.</p>
+          <ul class="ladder" aria-label="Share with a new injury within five games, 2025-26">
+            <li><span class="ladder-label">$top_label</span><span class="ladder-bar"><i class="top" style="--w:$top_w%"></i></span><b class="num">$top_rate</b></li>
+            <li><span class="ladder-label">All players</span><span class="ladder-bar"><i style="--w:$all_w%"></i></span><b class="num">$all_rate</b></li>
+            <li><span class="ladder-label">$bottom_label</span><span class="ladder-bar"><i style="--w:$bottom_w%"></i></span><b class="num">$bottom_rate</b></li>
+          </ul>
+        </article>
+        <article class="panel" data-ui data-rise>
+          <h3>Do its percentages come true?</h3>
+          <p class="panel-sub">$test_rows test player-games, split into tenths by predicted chance</p>
+          <div class="chart" id="cal-chart"></div>
+          <p class="panel-note">Dots on the dashed line came true exactly. Across every game the model scores an AUC of <strong>$auc</strong> ($auc_lo to $auc_hi), and its riskiest tenth got hurt <strong>$top10×</strong> as often as average.</p>
+        </article>
+        <article class="panel wide" data-ui data-rise>
+          <div class="panel-row">
+            <div>
+              <h3>Every night of the season</h3>
+              <p class="panel-sub">How many of the 12 players flagged each night got hurt within five games. Click a night to open it.</p>
+            </div>
+            <a class="text-link" href="dashboard.html#board">Open the risk board <span aria-hidden="true">→</span></a>
+          </div>
+          <div class="chart" id="strip-chart"></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-alt" id="explore" aria-labelledby="explore-title">
+    <div class="wrap">
+      <header class="sec-head" data-rise>
+        <p class="kicker">Inside the project</p>
+        <h2 id="explore-title">Four questions, answered with data</h2>
+        <p class="sec-lead">Each one has its own dashboard or report. Here’s the short version, with the real charts.</p>
+      </header>
+
+      <article class="feature" aria-labelledby="f1-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">Risk board · player timelines</p>
+          <h3 id="f1-title">Who’s at risk tonight?</h3>
+          <p>Every player gets a fresh chance of a new injury before each game. Pick a night to see the twelve the model rated most at risk, what pushed each score up, and who actually got hurt. Or follow any of 569 players through the season.</p>
+          <ul class="ticks">
+            <li>205 nights of 2025-26, before tip-off and right after the game</li>
+            <li>The reasons behind each score, from injury history to workload</li>
+            <li>Every new injury marked where it happened</li>
+          </ul>
+          <a class="text-link" href="dashboard.html#players">Find a player <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <div class="panel-row">
+            <div><h4 id="tl-name">Player timeline</h4><p class="panel-sub" id="tl-meta">Chance of a new injury before each game</p></div>
+          </div>
+          <div class="chips" role="group" aria-label="Player" id="tl-chips"></div>
+          <div class="chart" id="tl-chart"></div>
+          <p class="legend" aria-hidden="true"><span><i class="line"></i>This player</span><span><i class="dash"></i>League average</span><span><i class="marker"></i>New injury</span></p>
+        </div>
+      </article>
+
+      <article class="feature flip" aria-labelledby="f2-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">When and who</p>
+          <h3 id="f2-title">What makes an injury more likely?</h3>
+          <p>Each player is compared with their own games in the same month, so it’s the situation, not the player. A pattern only counts if it showed up in both halves of the seven seasons.</p>
+          <ul class="ticks">
+            <li>Injury history and heavy minutes matter most</li>
+            <li>Rest helps; the late season hurts</li>
+            <li>Back-to-backs and travel made no clear difference</li>
+          </ul>
+          <a class="text-link" href="dashboard.html#when">See every comparison <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <div class="tabs-pills" role="tablist" aria-label="Kind of injury">$kind_tabs</div>
+          <div class="kind-panels">$kind_panels</div>
+        </div>
+      </article>
+
+      <article class="feature" aria-labelledby="f3-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">Injury moments</p>
+          <h3 id="f3-title">What happens right before an injury?</h3>
+          <p>Play-by-play never says why a player got hurt, but it does record the second they left the game. <strong>$nba_one_in</strong> new injuries ($nba_traced of $nba_injuries) can be traced to that moment, and three plays kept showing up in the half-minute before it.</p>
+          <a class="text-link" href="moments.html">Read the report <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <h4>The half-minute before NBA players left hurt</h4>
+          <p class="panel-sub">Share of injury exits with each play, against the same players' normal substitutions</p>
+          <p class="legend" aria-hidden="true"><span><i></i>Injury exits</span><span><i class="muted"></i>Normal substitutions</span></p>
+          <div class="chart" id="moments-chart"></div>
+        </div>
+      </article>
+
+      <article class="feature flip" aria-labelledby="f4-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">NBA vs college</p>
+          <h3 id="f4-title">Does it hold up in college basketball?</h3>
+          <p>Before looking at any college data, I wrote the test down and published its fingerprint, so the results couldn’t steer the questions. In $college_traced Division I injury exits, <strong>$college_same patterns</strong> pointed the same way as in the NBA. $college_passed of the four main checks cleared the bar, and together they give an odds ratio of $pooled.</p>
+          <p>Then I lined up every play before every kind of injury in both leagues. Of the $agree_clear with a clear NBA signal, <strong>$agree_same point the same way in college</strong>.</p>
+          <p class="fine">College athletes appear only as totals; no player is named.</p>
+          <a class="text-link" href="dashboard.html#college">Compare every play, NBA vs college <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <h4>NBA patterns, checked in college</h4>
+          <p class="panel-sub">How many times as likely, with the likely range. 1× is no difference.</p>
+          <p class="legend" aria-hidden="true"><span><i class="dot nba"></i>NBA</span><span><i class="dot college"></i>College</span></p>
+          <div class="chart" id="college-chart"></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="sec" id="method" aria-labelledby="method-title">
+    <div class="wrap">
+      <header class="sec-head" data-rise>
+        <p class="kicker">How it’s built</p>
+        <h2 id="method-title">From $reports PDFs to a nightly ranking</h2>
+      </header>
+      <ol class="steps">
+        <li data-rise><span class="step-num num">$reports</span><b>Read</b><p>Official NBA injury reports, one for every game day from December 2018 to June 2026.</p></li>
+        <li data-rise><span class="step-num num">$lines</span><b>Match</b><p>Report lines tied to players and games; $matched matched. Box scores, schedules and play-by-play joined in.</p></li>
+        <li data-rise><span class="step-num num">$player_games</span><b>Model</b><p>Player-games scored on injury history, workload, schedule and age with gradient-boosted trees.</p></li>
+        <li data-rise><span class="step-num num">$auc</span><b>Test</b><p>AUC on 2024-25 and 2025-26, seasons the model never saw. The misses are left in.</p></li>
+      </ol>
+      <div class="limits panel" data-rise>
+        <h3>What it can’t tell you</h3>
+        <ul>
+          <li>It ranks risk; it doesn’t diagnose it, and it isn’t medical advice.</li>
+          <li>Injury reports say what hurt, not how it happened.</li>
+          <li>It has no practice load, wearables or medical records, which is the data teams have and the public doesn’t.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec sec-alt" id="about" aria-labelledby="about-title">
+    <div class="wrap about-in">
+      <div>
+        <p class="kicker">About</p>
+        <h2 id="about-title">Built by $author</h2>
+      </div>
+      <div class="about-copy">
+        <p class="sec-lead">Business analytics and sports technology: dashboards for the business side, scouting and computer vision for the game. This project asks what public data can say about NBA injuries before they happen, and what it can’t.</p>
+        <div class="cta-row">
+          <a class="button gold" href="$linkedin_url" target="_blank" rel="noopener">Connect on LinkedIn <span aria-hidden="true">↗</span></a>
+          <a class="button line" href="$portfolio_url" target="_blank" rel="noopener">Portfolio <span aria-hidden="true">↗</span></a>
+          <a class="button line" href="$repo_url" target="_blank" rel="noopener">Code on GitHub <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="kinds" aria-labelledby="kinds-title">
-    <div class="grid">
-      <h2 class="kinds-title" id="kinds-title" data-rise>What comes before each kind of injury</h2>
-      <a class="button kinds-action" href="dashboard.html#when" data-rise>Every comparison <span aria-hidden="true">→</span></a>
-      <div class="kinds-body">
-        <div class="kind-tabs" role="tablist" aria-label="Kind of injury" aria-orientation="vertical" data-rise>$kind_tabs</div>
-        <div class="kind-panels" data-rise>$kind_panels</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="how" aria-labelledby="how-title">
-    <div class="grid">
-      <div class="how-side" data-rise>
-        <p class="side-figure num">$reports</p>
-        <p class="side-note">official NBA injury reports read, one for every game day from December 2018 to June 2026.</p>
-      </div>
-      <h2 class="how-title" id="how-title" data-rise>From reports <br>to a ranking</h2>
-      <p class="how-text" data-rise>Every game day the league publishes an injury report: who is out, and why. I matched every line to a player and a game, then asked one question before every game, for every player: how likely is a new injury in the next five games?</p>
-      <svg class="how-diagram" id="how-diagram" viewBox="0 0 1200 267" role="img" aria-label="Scattered report lines are pulled into one table of player-games, then laid out as an ordered ranking"></svg>
-      <div class="how-steps">
-        <div data-rise style="--i:0"><h3>Read</h3><p>$lines report lines, $matched of them matched to a player.</p></div>
-        <div data-rise style="--i:1"><h3>Match</h3><p>$injuries new injuries across $player_games player-games, with what each player had been doing beforehand.</p></div>
-        <div data-rise style="--i:2"><h3>Rank</h3><p>A chance of a new injury for every player before every game, checked on two seasons the model never saw.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="about" aria-labelledby="about-title">
-    <div class="grid">
-      <ul class="about-facts" data-rise>
-        <li><b>Built with</b>Python, pandas and scikit-learn</li>
-        <li><b>Seasons</b>$seasons, tested on 2024-25 and 2025-26</li>
-        <li><b>Code and method</b><a href="$repo_url">github.com/bryanhkwan</a></li>
-      </ul>
-      <div class="about-body">
-        <h2 id="about-title" data-rise>Who made this</h2>
-        <p class="about-lead" data-rise><span class="dropcap" aria-hidden="true"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#071b32"/><g fill="none" stroke="#ffd200" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg></span><b>$author</b> built this to find out what public data can say about NBA injuries before they happen, and what it can’t.</p>
-        <p class="about-more" data-rise>Everything here comes from public sources: the league’s official injury reports, box scores and play-by-play. The model was tested on two seasons it never saw, misses included. On an average night about $out_per_night players per team sit out with a new injury, and most of those injuries never show up in a box score.</p>
-        <p class="about-more" data-rise>It ranks risk; it can’t say why any one player got hurt, and it isn’t medical advice. College results appear only as totals. Not affiliated with the NBA or the NCAA.</p>
+  <section class="cta-band" aria-labelledby="cta-title">
+    <div class="wrap cta-in">
+      <h2 id="cta-title">Pick a night. <span class="gold">See who it flagged.</span></h2>
+      <div class="cta-row">
+        <a class="button gold" href="dashboard.html#board">Open the risk board <span aria-hidden="true">→</span></a>
+        <a class="button line" href="moments.html">Read the report</a>
       </div>
     </div>
   </section>
 </main>
 
 <footer class="foot">
-  <p class="foot-name">Basketball Injury Project</p>
-  <div class="grid foot-grid">
-    <ul class="foot-places">
+  <div class="wrap foot-in">
+    <a class="brand" href="#top" aria-label="Back to top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#ffd200"/><g fill="none" stroke="#071b32" stroke-width="3.5"><path d="M3 32h58M32 3v58M12 11c9 8 9 34 0 42M52 11c-9 8-9 34 0 42"/></g></svg>
+      <span>Basketball Injury Project</span>
+    </a>
+    <ul class="foot-links">
       <li><a href="dashboard.html">Dashboards</a></li>
-      <li><a href="moments.html">The report</a></li>
-      <li><a href="$repo_url">GitHub ↗</a></li>
+      <li><a href="moments.html">Report</a></li>
+      <li><a href="$repo_url">GitHub</a></li>
+      <li><a href="$repo_url/blob/HEAD/docs/ncaa_moments_plan.md">College test plan</a></li>
     </ul>
-    <div class="foot-links">
-      <div><h2>Dashboards</h2><ul>
-        <li><a href="dashboard.html#board">Risk board</a></li>
-        <li><a href="dashboard.html#players">Players</a></li>
-        <li><a href="dashboard.html#model">Model check</a></li>
-        <li><a href="dashboard.html#factors">What raises risk</a></li>
-      </ul></div>
-      <div><h2>Studies</h2><ul>
-        <li><a href="dashboard.html#when">When and who</a></li>
-        <li><a href="dashboard.html#types">Injury types</a></li>
-        <li><a href="moments.html">The moment of injury</a></li>
-        <li><a href="$repo_url/blob/HEAD/docs/ncaa_moments_plan.md">College test plan</a></li>
-      </ul></div>
-      <div><h2>Project</h2><ul>
-        <li><a href="$repo_url#readme">How it works</a></li>
-        <li><a href="$repo_url#data-sources-and-terms">Data sources</a></li>
-        <li><a href="#top">Back to top</a></li>
-      </ul></div>
-    </div>
-  </div>
-  <div class="grid foot-legal">
-    <p>© 2026 $author · Updated $updated · Not affiliated with the NBA or the NCAA. Pictures: $credits, both via Wikimedia Commons and shown in greyscale.</p>
-    <a class="top" href="#top">Back to top ↑</a>
+    <p class="foot-note">© 2026 $author · Updated $updated · Data: the NBA’s official injury reports; NBA and NCAA play-by-play from the sportsdataverse releases. Not affiliated with the NBA or the NCAA.</p>
   </div>
 </footer>
 </body>

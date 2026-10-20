@@ -3,10 +3,10 @@
 // from the files in data/ (written by site_build.py) and keeps its state while the reader moves between nights,
 // players or kinds of injury.
 (() => {
-  const { load, esc, pct, int, dec, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, dotRows, pairs } = window.Site;
+  const { load, esc, pct, int, dec, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, dotRows, pairs, vsRows } = window.Site;
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
-  const NAMES = { board: 'Risk board', players: 'Players', model: 'Model check', factors: 'What raises risk', when: 'When and who', types: 'Injury types' };
+  const NAMES = { board: 'Risk board', players: 'Players', model: 'Model check', factors: 'What raises risk', when: 'When and who', types: 'Injury types', college: 'NBA vs college' };
   const KINDS = [['any', 'Any injury'], ['muscle', 'Muscles'], ['sprain', 'Ankles'], ['contact', 'Knocks'], ['knee', 'Knees'], ['back', 'Backs'], ['other', 'Other']];
   const fail = (el, err) => { el.innerHTML = `<div class="empty error">Couldn’t load this view: ${esc(err.message)}. Reload the page to try again.</div>`; };
   const segmented = (label, items, on) => `<div class="segmented" role="group" aria-label="${esc(label)}">${items.map(([k, t]) => `<button type="button" data-key="${k}" aria-pressed="${k === on}">${esc(t)}</button>`).join('')}</div>`;
@@ -312,8 +312,119 @@
     },
   };
 
+
+  // ====================================================================================================== college
+  // The same injury-moment test in both leagues. College players appear only as totals.
+  const COMPARE_KINDS = [['any', 'Any injury'], ['ankle', 'Ankle'], ['knee', 'Knee'], ['foot', 'Foot'], ['muscle', 'Muscle'],
+    ['back_hip', 'Back & hip'], ['hand', 'Hand & arm'], ['head', 'Head'], ['shoulder', 'Shoulder'], ['other', 'Other']];
+  const STOPS = { 'own timeout': 'The team’s own timeout', 'opponent timeout': 'The other team’s timeout', 'media timeout': 'A media timeout',
+    foul: 'A foul', 'free throws': 'Free throws', break: 'A break between periods', 'turnover or violation': 'A turnover or violation',
+    'team rebound': 'A team rebound', 'no logged stoppage': 'Nothing logged: play just stopped', 'jump ball': 'A jump ball' };
+  const TESTS = { H1: 'Ankle injury, after drawing a foul', H2: 'Any injury, after a steal', H3: 'Hand or arm injury, after a rim attack',
+    H4: 'Pulled muscle or Achilles, after a drive', H5: 'Ankle injury, after a rebound' };
+  const seasonName = (y) => `${y - 1}-${String(y).slice(2)}`;
+  // a ratio is clear when its likely range stays on one side of 1×; v = [ratio, lo, hi]
+  const clear = (v) => v[1] > 1 || v[2] < 1;
+  const sameWay = (r) => (r.nba[0] - 1) * (r.col[0] - 1) > 0;
+  const clarity = (r) => (clear(r.nba) && clear(r.col) ? 'clear in both' : clear(r.nba) ? 'clear in the NBA only' : clear(r.col) ? 'clear in college only' : 'clear in neither');
+  const ratioRange = (v) => `<b style="font-weight:600">${dec(v[0], 2)}×</b> (${dec(v[1], 2)} to ${dec(v[2], 2)})`;
+  const college = {
+    async init(el) {
+      const st = await load('study');
+      this.c = st.compare; this.m = st.moments;
+      const f = this.m.facts, c = this.c, a = c.agreement, primaries = this.m.college.filter((t) => t.primary).length;
+      el.innerHTML = `
+        <div class="title-row">
+          <div><h1 id="college-title">NBA vs college</h1><p class="sub">The same injury-moment test on NBA games and on Division I men’s games, ${seasonName(c.seasons[0].season)} to ${seasonName(c.seasons.at(-1).season)}. The college test followed a plan written down and fingerprinted before any college result. College players appear only as totals.</p></div>
+          <div class="controls"><a class="btn" href="moments.html#college">Read the college test</a></div>
+        </div>
+        <div class="kpis">
+          <div class="kpi lead"><div class="kpi-label">Planned tests pointing the same way</div><div class="kpi-value">${f.college_same_direction}<small>of ${f.college_tests}</small></div><div class="delta">in ${int(f.college_traced)} college injury exits</div></div>
+          <div class="kpi"><div class="kpi-label">Main checks cleared</div><div class="kpi-value">${f.college_passed}<small>of ${primaries}</small></div><div class="delta">against a bar set before the test</div></div>
+          <div class="kpi"><div class="kpi-label">All five together</div><div class="kpi-value">${dec(c.pooled.odds_ratio)}<small>×</small></div><div class="delta">likely ${dec(c.pooled.lo)}× to ${dec(c.pooled.hi)}×</div></div>
+          <div class="kpi"><div class="kpi-label">Every play: same way in college</div><div class="kpi-value">${a.nba_clear_same}<small>of ${a.nba_clear}</small></div><div class="delta">clear NBA signals · exploratory</div></div>
+        </div>
+        <div class="cards">
+          <article class="card span-7"><header><h2>The five NBA patterns, checked in college</h2><p class="meta">How many times as likely, with the likely range</p></header>
+            <p class="legend" aria-hidden="true"><span><i class="dot nba"></i>NBA</span><span><i class="dot college"></i>College</span></p>
+            <div id="c-tests" style="margin-top:6px"></div></article>
+          <article class="card span-5"><header><h2>How players leave hurt</h2><p class="meta">What stopped play when they left</p></header>
+            <p class="legend" aria-hidden="true"><span><i></i>Injury exits</span><span><i class="muted"></i>Ordinary substitutions</span></p>
+            <div id="c-stops"></div><p class="note" id="c-stops-note"></p></article>
+          <article class="card span-12"><header><h2>Do the same plays come before injuries in both leagues?</h2><p class="meta">One dot per play and kind of injury: how much more often it came before injury exits</p></header>
+            <div class="split">
+              <div><p class="legend" aria-hidden="true"><span><i class="dot nba"></i>Clear in the NBA</span><span><i class="dot muted"></i>Not clear in the NBA</span><span><i class="dash"></i>The same in both</span></p>
+                <div class="chart" id="c-scatter" style="margin-top:8px"></div></div>
+              <div class="prose" id="c-agree" style="align-self:center"></div>
+            </div></article>
+          <article class="card span-12"><header><h2>Every play, both leagues</h2><div class="controls">${segmented('Kind of injury', COMPARE_KINDS, 'any')}</div></header>
+            <p class="meta" id="c-plays-meta"></p>
+            <p class="legend" aria-hidden="true" style="margin-top:8px"><span><i class="dot nba"></i>NBA</span><span><i class="dot college"></i>College</span></p>
+            <div id="c-plays" style="margin-top:6px"></div>
+            <p class="note">How much more often each play came in the 30 seconds before an injury exit than before the same players’ other exits. 1× is no difference, and a range that crosses 1× isn’t clear. Ranges past the axis run to its edge. Plays no injured player made in a league are left out.</p></article>
+          <article class="card span-6"><header><h2>What can be traced, by kind of injury</h2><p class="meta">Share of new injuries that ended in an injury exit</p></header>
+            <p class="legend" aria-hidden="true"><span><i></i>NBA</span><span><i class="college"></i>College</span></p><div id="c-traced"></div></article>
+          <article class="card span-6"><header><h2>The college data</h2><p class="meta">Division I men’s games, by season</p></header><div id="c-data"></div></article>
+        </div>`;
+      $$('.segmented button', el).forEach((b) => b.addEventListener('click', () => { location.hash = `college/${b.dataset.key}`; }));
+
+      const byKey = Object.fromEntries(this.m.patterns.map((r) => [r.key, r]));
+      vsRows($('#c-tests', el), [...this.m.college].sort((a, b) => a.order - b.order).map((t) => {
+        const n = byKey[t.nba_key], label = TESTS[t.key] || t.label;
+        return { label, sub: `NBA ${times(n.times)} · college ${times(t.times)} · ${t.verdict_label}`, nba: [n.times, n.lo, n.hi], col: [t.times, t.lo, t.hi],
+          aria: `${label}: NBA ${dec(n.times)} times, college ${dec(t.times)} times. ${t.verdict_label}.` };
+      }));
+
+      // every play before every kind of injury, the NBA's ratio against college's
+      const kindName = Object.fromEntries(c.groups.map((g) => [g.group, g.name]));
+      const agreeing = `${a.nba_clear_same} of the ${a.nba_clear}`;
+      Charts.logScatter($('#c-scatter', el), {
+        points: c.plays.map((r) => ({ x: r.nba[0], y: r.col[0], strong: clear(r.nba),
+          tip: `<div style="opacity:.7">${esc(kindName[r.group] || r.group)} · ${esc(r.label)}</div><div>NBA ${ratioRange(r.nba)}</div><div>College ${ratioRange(r.col)}</div>` })),
+        xLabel: 'NBA', yLabel: 'College', corners: ['More often in both', 'Less often in both'],
+        aria: `${a.pairs} plays and kinds of injury, the NBA’s ratio against college’s. ${agreeing} with a clear NBA signal point the same way in college. Every pair is listed under Every play, both leagues.` });
+      $('#c-agree', el).innerHTML = `<p><b>${agreeing}</b> plays with a clear NBA signal point the same way in college${a.both_clear ? `, and ${a.both_clear_same === a.both_clear ? `all ${a.both_clear}` : `${a.both_clear_same} of the ${a.both_clear}`} that are clear in both leagues agree` : ''}.</p>`
+        + `<p>For any injury, where both leagues have the most cases, the two leagues’ ratios line up with a correlation of <b>${dec(a.r_any, 2)}</b> across ${a.any_plays} plays. Across all ${a.pairs} pairs it is ${dec(a.r_all, 2)}, because the smaller college groups add noise.</p>`
+        + `<p class="note">Exploratory. These pairs were lined up after the planned test, and they overlap (any injury includes the ankle ones), so they show what to test next rather than prove it. Ratios past 8× sit on the edge.</p>`;
+
+      // how players leave hurt: the three stoppages that differ most between injury exits and ordinary substitutions
+      const top = (league) => {
+        const inj = c.stoppages[league]['injury exits'], ord = c.stoppages[league]['ordinary exits'];
+        return Object.keys(inj).map((k) => ({ k, a: inj[k], b: ord[k] || 0 })).sort((x, y) => Math.abs(y.a - y.b) - Math.abs(x.a - x.b)).slice(0, 3);
+      };
+      const nbaStops = top('nba'), colStops = top('col');
+      $('#c-stops', el).innerHTML = '<h3 class="sub-head">NBA</h3><div id="c-stops-nba"></div><h3 class="sub-head">College</h3><div id="c-stops-col"></div>';
+      pairs($('#c-stops-nba', el), nbaStops.map((r) => ({ label: STOPS[r.k] || r.k, a: r.a, b: r.b })), { format: (v) => pct(v, 0) });
+      pairs($('#c-stops-col', el), colStops.map((r) => ({ label: STOPS[r.k] || r.k, a: r.a, b: r.b })), { format: (v) => pct(v, 0) });
+      const nt = c.stoppages.nba['injury exits']['own timeout'], no = c.stoppages.nba['ordinary exits']['own timeout'];
+      const cl = c.stoppages.col['injury exits']['no logged stoppage'], co = c.stoppages.col['ordinary exits']['no logged stoppage'];
+      $('#c-stops-note', el).innerHTML = `NBA teams call their own timeout to get a hurt player off: <b>${pct(nt, 0)}</b> of injury exits, against ${pct(no, 0)} of ordinary substitutions. In college, play most often just stops with nothing logged (<b>${pct(cl, 0)}</b> against ${pct(co, 0)}), usually the officials stopping play for a hurt player.`;
+
+      pairs($('#c-traced', el), c.groups.map((g) => ({ label: g.name, a: g.nba[1], b: g.col[3] })), { format: (v) => pct(v, 0), second: 'college' });
+
+      const rows = c.seasons.map((r) => `<tr><td class="nowrap">${seasonName(r.season)}</td><td class="n">${int(r.games)}</td><td class="n">${int(r.games_kept)}</td><td class="n">${int(r.player_games_kept)}</td></tr>`).join('');
+      const sum = (k) => c.seasons.reduce((n, r) => n + r[k], 0);
+      $('#c-data', el).innerHTML = `<div class="table-wrap"><table class="data"><thead><tr><th scope="col">Season</th><th class="n" scope="col">Games</th><th class="n" scope="col">Games kept</th><th class="n" scope="col">Player-games</th></tr></thead>`
+        + `<tbody>${rows}<tr><td><b>All</b></td><td class="n"><b>${int(sum('games'))}</b></td><td class="n"><b>${int(sum('games_kept'))}</b></td><td class="n"><b>${int(sum('player_games_kept'))}</b></td></tr></tbody></table></div>`
+        + `<p class="note">Games kept are those with clean play-by-play. College injuries come from ${int(c.listings.named)} listings on Covers’ public college injury page, read from ${int(f.college_saved_pages)} copies saved by the Internet Archive; ${pct(c.listings.matched, 0)} matched to a player in the box scores. The listings only point to the injuries. No college player is named on this site.</p>`;
+    },
+    show(el, [kindArg]) {
+      const kind = COMPARE_KINDS.some(([k]) => k === kindArg) ? kindArg : 'any';
+      press(el, kind);
+      const rows = this.c.plays.filter((r) => r.group === kind).sort((a, b) => b.nba[0] - a.nba[0]);
+      const name = (this.c.groups.find((g) => g.group === kind) || {}).name || COMPARE_KINDS.find(([k]) => k === kind)[1];
+      if (!rows.length) { $('#c-plays-meta', el).textContent = ''; $('#c-plays', el).innerHTML = '<div class="empty">No plays to compare for this kind of injury.</div>'; return; }
+      const strong = rows.filter((r) => clear(r.nba)), agree = strong.filter(sameWay).length;
+      $('#c-plays-meta', el).textContent = `${name}: ${int(rows[0].nba[5])} NBA injury exits and ${int(rows[0].col[5])} college ones, with what each player did in the 30 seconds before. `
+        + (strong.length ? `${agree} of the ${strong.length} plays with a clear NBA signal point the same way in college.` : 'No play here has a clear NBA signal.');
+      vsRows($('#c-plays', el), rows.map((r) => ({ label: r.label, sub: `NBA ${times(r.nba[0])} · college ${times(r.col[0])} · ${clarity(r)}`,
+        nba: r.nba.slice(0, 3), col: r.col.slice(0, 3), aria: `${r.label}: NBA ${dec(r.nba[0])} times, college ${dec(r.col[0])} times, ${clarity(r)}.` })),
+      { min: 0.2, max: 40, ticks: [0.5, 1, 2, 5, 10, 25] });
+    },
+  };
+
   // ======================================================================================================== router
-  const VIEWS = { board, players, model, factors, when, types };
+  const VIEWS = { board, players, model, factors, when, types, college };
   const ready = {};
   async function route() {
     const [name = 'board', ...args] = location.hash.slice(1).split('/');

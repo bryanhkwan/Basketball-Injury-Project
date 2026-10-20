@@ -691,8 +691,58 @@
     };
     draw(); watch(el, draw); settle(draw);
   }
+  // Added for this project. Two estimates of the same ratio on matching log scales, one dot per pair: one across, the
+  // other up. The 1× lines split the plot; the two shaded corners are where both point the same way, and the dashed
+  // line is where they agree exactly. Strong dots are drawn in the data hue over the muted rest. Values past the
+  // scale sit on its edge.  points: [{ x, y, strong, tip }], tip being the tooltip's HTML
+  function logScatter(el, { points, min = 0.125, max = 8, ticks: at = [0.25, 0.5, 1, 2, 4, 8], format = (v) => `${nf({ maximumFractionDigits: 2 }).format(v)}×`, xLabel = '', yLabel = '', corners = ['', ''], aria = '' }) {
+    const draw = () => {
+      const { s, w, h } = frame(el, Math.round(Math.min(420, Math.max(260, el.clientWidth || 360))));
+      const padL = 12 + Math.max(...at.map((v) => measure(s, format(v), 12))), padB = 42, padT = 10, padR = 8;
+      const L = (v) => (Math.log(Math.min(max, Math.max(min, v))) - Math.log(min)) / (Math.log(max) - Math.log(min));
+      const x = (v) => padL + L(v) * (w - padL - padR), y = (v) => padT + (1 - L(v)) * (h - padT - padB);
+      const g = svg('g', {}, s), grid = css(el, '--grid', '#e8e8e8'), ink = css(el, '--axis-ink', '#6b6b6b'), surface = css(el, '--surface', '#fff');
+      const shade = mix(el, ink, surface, 0.07);
+      svg('rect', { x: x(1), y: y(max), width: x(max) - x(1), height: y(1) - y(max), fill: shade }, g);
+      svg('rect', { x: x(min), y: y(1), width: x(1) - x(min), height: y(min) - y(1), fill: shade }, g);
+      for (const v of at) {
+        const one = v === 1, rule = { stroke: one ? ink : grid, 'stroke-width': 1, opacity: one ? 0.6 : 1, 'shape-rendering': 'crispEdges' };
+        svg('line', { x1: x(v), x2: x(v), y1: y(max), y2: y(min), ...rule }, g);
+        svg('line', { x1: x(min), x2: x(max), y1: y(v), y2: y(v), ...rule }, g);
+        text(g, format(v), { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end', 'font-size': 12, fill: ink });
+        const tw = measure(s, format(v), 12); text(g, format(v), { x: Math.min(w - padR - tw, Math.max(padL, x(v) - tw / 2)), y: h - padB + 18, 'font-size': 12, fill: ink });
+      }
+      svg('line', { x1: x(min), y1: y(min), x2: x(max), y2: y(max), stroke: ink, 'stroke-width': 1, 'stroke-dasharray': '4 4', opacity: 0.7 }, g);
+      if (xLabel) text(g, xLabel, { x: padL, y: h - 4, 'font-size': 12, fill: ink });
+      if (yLabel) text(g, yLabel, { x: padL + 6, y: padT + 16, 'font-size': 12, fill: ink });
+      // the corner captions stand clear of the dashed line, which runs through both corners
+      const xd = (yy) => x(min) + ((y(min) - yy) / (y(min) - y(max))) * (x(max) - x(min));
+      if (corners[0]) text(g, corners[0], { x: xd(y(max) + 19) - 6, y: y(max) + 16, 'text-anchor': 'end', 'font-size': 12, fill: ink });
+      if (corners[1]) text(g, corners[1], { x: xd(y(min) - 20) + 6, y: y(min) - 8, 'font-size': 12, fill: ink });
+      const strong = css(el, '--chart-1', '#2f6fdf'), weak = css(el, '--chart-muted', '#c3ccd6');
+      const order = [...points].sort((a, b) => a.strong - b.strong);   // muted dots underneath
+      const dots = order.map((p) => svg('circle', { cx: x(p.x), cy: y(p.y), r: p.strong ? 4.5 : 3.5, fill: p.strong ? strong : weak, stroke: surface, 'stroke-width': 1.5 }, g));
+      // one hover layer that finds the nearest dot, so crowded dots can all be read
+      const tip = tooltip(el), hit = svg('rect', { x: padL, y: padT, width: w - padL - padR, height: h - padT - padB, fill: 'transparent' }, s);
+      let on = null;
+      const hide = () => { tip.style.opacity = 0; if (on) { on.setAttribute('r', on.dataset.r); on = null; } };
+      const near = (e) => {
+        const box = s.getBoundingClientRect(), px = (e.clientX - box.left) * (w / box.width), py = (e.clientY - box.top) * (h / box.height);
+        let best = -1, reach = 14 * 14;
+        order.forEach((p, i) => { const dx = x(p.x) - px, dy = y(p.y) - py; if (dx * dx + dy * dy < reach) { reach = dx * dx + dy * dy; best = i; } });
+        if (best < 0) { hide(); return; }
+        const dot = dots[best], p = order[best];
+        if (on !== dot) { hide(); on = dot; dot.dataset.r = dot.getAttribute('r'); dot.setAttribute('r', +dot.dataset.r + 2); g.appendChild(dot); }
+        tip.innerHTML = p.tip; tip.style.opacity = 1;
+        tip.style.left = `${Math.max(0, Math.min(x(p.x) + 12, w - tip.offsetWidth - 4))}px`; tip.style.top = `${Math.max(0, y(p.y) - tip.offsetHeight - 10)}px`;
+      };
+      hit.addEventListener('pointermove', near); hit.addEventListener('pointerdown', near); hit.addEventListener('pointerleave', hide);
+      if (aria) s.setAttribute('aria-label', aria);
+    };
+    draw(); watch(el, draw); settle(draw);
+  }
   function watch(el, draw) { if (!('ResizeObserver' in window)) return; let w = el.clientWidth; new ResizeObserver(() => { if (Math.abs(el.clientWidth - w) > 4) { w = el.clientWidth; draw(); } }).observe(el); }
-  window.Charts = { line, bars, diverging, ring, barList, plan, bullet, timeline, matrix, timeStrip, timeLine, calibration, ticks, fmt };
+  window.Charts = { line, bars, diverging, ring, barList, plan, bullet, timeline, matrix, timeStrip, timeLine, calibration, logScatter, ticks, fmt };
 })();
 
 /*
