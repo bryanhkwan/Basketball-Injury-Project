@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboards · Basketball Injury Project</title>
-<meta name="description" content="Interactive NBA injury dashboards: each night’s risk board for 2025-26 with what happened, player risk timelines, the model’s accuracy on unseen seasons, and why and when players get hurt.">
+<meta name="description" content="Interactive NBA injury dashboards: each night’s risk board for 2025-26 with what happened, player profiles, the model’s accuracy on unseen seasons, why and when players get hurt, how it happened according to the news, and what an injury does to a career.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Dashboards · Basketball Injury Project">
-<meta property="og:description" content="Each night’s NBA injury-risk board for 2025-26 with what happened, player timelines, the model check, and why players get hurt.">
+<meta property="og:description" content="Each night’s NBA injury-risk board for 2025-26 with what happened, player profiles, the model check, how players get hurt, and what an injury does to a career.">
 <meta property="og:url" content="https://bryanhkwan.github.io/Basketball-Injury-Project/dashboard.html">
 <meta property="og:image" content="https://bryanhkwan.github.io/Basketball-Injury-Project/assets/social-site.jpg">
 <meta property="og:image:width" content="2904">
@@ -42,7 +42,9 @@
     <p class="group-label">Why players get hurt</p>
     <a class="nav-item" href="#when" data-view="when"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3.25l2 1.5"/></svg>When and who</a>
     <a class="nav-item" href="#types" data-view="types"><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="1"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="1"/><rect x="9" y="9" width="4.5" height="4.5" rx="1"/></svg>Injury types</a>
+    <a class="nav-item" href="#how" data-view="how"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h9v11h-9z"/><path d="M5.5 5.5h5M5.5 8h5M5.5 10.5h3"/></svg>How it happened</a>
     <p class="group-label">Studies</p>
+    <a class="nav-item" href="#careers" data-view="careers"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 12.5 6 9l2.5 2 5-6"/><path d="M10.5 5h3v3"/></svg>After an injury</a>
     <a class="nav-item" href="#college" data-view="college"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 12.5 5.5 6l3 4 2-3 3 5.5"/><path d="M2.5 13.5h11"/></svg>NBA vs college</a>
     <a class="nav-item" href="moments.html"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 2.5h6l3 3v8h-9z"/><path d="M9.5 2.5v3h3"/></svg>Injury moments</a>
     <div class="bottom">
@@ -57,7 +59,7 @@
     <div class="search" role="search">
       <svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="6" cy="6" r="4.5"/><path d="M9.5 9.5 13 13"/></svg>
       <label class="sr-only" for="find">Find a player</label>
-      <input id="find" name="player" type="search" placeholder="Find a player, e.g. Jayson Tatum…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="find-results" aria-autocomplete="list">
+      <input id="find" name="player" type="search" placeholder="Find any NBA or college player…" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="find-results" aria-autocomplete="list">
       <kbd aria-hidden="true">/</kbd>
       <div class="results" id="find-results" role="listbox" aria-label="Players" hidden></div>
     </div>
@@ -71,6 +73,8 @@
     <section class="view" id="view-factors" aria-labelledby="factors-title" hidden></section>
     <section class="view" id="view-when" aria-labelledby="when-title" hidden></section>
     <section class="view" id="view-types" aria-labelledby="types-title" hidden></section>
+    <section class="view" id="view-how" aria-labelledby="how-title" hidden></section>
+    <section class="view" id="view-careers" aria-labelledby="careers-title" hidden></section>
     <section class="view" id="view-college" aria-labelledby="college-title" hidden></section>
     <noscript><div class="view"><h1>Dashboards</h1><p class="prose">These dashboards need JavaScript. The overview page and the report work without it, and every number is in the repository.</p></div></noscript>
   </main>

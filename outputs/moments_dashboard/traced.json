@@ -3,57 +3,57 @@
   "league": "NBA",
   "group": "ankle",
   "label": "Ankle",
-  "injuries": 1322,
-  "traced": 251,
-  "share": 0.18986384266263237
+  "injuries": 1315,
+  "traced": 253,
+  "share": 0.19239543726235742
  },
  {
   "league": "NBA",
   "group": "knee",
   "label": "Knee",
-  "injuries": 1135,
-  "traced": 136,
-  "share": 0.1198237885462555
+  "injuries": 1124,
+  "traced": 138,
+  "share": 0.12277580071174377
  },
  {
   "league": "NBA",
   "group": "foot",
   "label": "Foot and toe",
-  "injuries": 585,
+  "injuries": 574,
   "traced": 72,
-  "share": 0.12307692307692308
+  "share": 0.1254355400696864
  },
  {
   "league": "NBA",
   "group": "muscle",
   "label": "Pulled muscle or Achilles",
-  "injuries": 1233,
-  "traced": 198,
-  "share": 0.16058394160583941
+  "injuries": 1212,
+  "traced": 199,
+  "share": 0.16419141914191418
  },
  {
   "league": "NBA",
   "group": "back_hip",
   "label": "Back and hip",
-  "injuries": 930,
-  "traced": 118,
-  "share": 0.12688172043010754
+  "injuries": 932,
+  "traced": 122,
+  "share": 0.13090128755364808
  },
  {
   "league": "NBA",
   "group": "hand",
   "label": "Hand, wrist, finger and arm",
-  "injuries": 516,
+  "injuries": 522,
   "traced": 71,
-  "share": 0.1375968992248062
+  "share": 0.1360153256704981
  },
  {
   "league": "NBA",
   "group": "head",
   "label": "Head and face",
-  "injuries": 265,
-  "traced": 66,
-  "share": 0.2490566037735849
+  "injuries": 269,
+  "traced": 69,
+  "share": 0.25650557620817843
  },
  {
   "league": "NBA",

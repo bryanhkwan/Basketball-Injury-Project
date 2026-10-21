@@ -33,7 +33,7 @@
   "key": "nba:own_timeout",
   "league": "NBA",
   "label": "Left at the team's own timeout",
-  "injury_share": 0.3201,
+  "injury_share": 0.3208,
   "normal_share": 0.1417,
   "times": null,
   "no_injury_times": null,
@@ -43,20 +43,20 @@
   "key": "nba:take_foul",
   "league": "NBA",
   "label": "Committed a take foul to stop play",
-  "injury_share": 0.01529051987767584,
-  "normal_share": 0.0022054892176082697,
-  "times": 6.232698270330699,
-  "no_injury_times": 1.5348198620278988,
+  "injury_share": 0.015228426395939087,
+  "normal_share": 0.0022184016416172147,
+  "times": 6.1914116127820895,
+  "no_injury_times": 1.5348914185802842,
   "explain": "Not a cause: a hurt player commits a take foul to stop play and get off the floor."
  },
  {
   "key": "nba:tov_handle",
   "league": "NBA",
   "label": "Lost the ball or traveled",
-  "injury_share": 0.03771661569826707,
-  "normal_share": 0.01614017109249688,
-  "times": 2.50913975886409,
-  "no_injury_times": 1.5292218633127734,
+  "injury_share": 0.03756345177664975,
+  "normal_share": 0.016172147967389496,
+  "times": 2.4966110339917886,
+  "no_injury_times": 1.5293009808322335,
   "explain": "Probably what the injury looks like: an ankle rolls or a muscle grabs mid-dribble and the ball goes. Early exits with no injury after them show it too, less often."
  }
 ]

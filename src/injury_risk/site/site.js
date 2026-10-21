@@ -22,6 +22,8 @@
   const pct = (v, d = 1) => (v == null ? '–' : nf({ style: 'percent', minimumFractionDigits: d, maximumFractionDigits: d }).format(v));
   const int = (v) => (v == null ? '–' : nf({ maximumFractionDigits: 0 }).format(v));
   const dec = (v, d = 1) => (v == null ? '–' : nf({ minimumFractionDigits: d, maximumFractionDigits: d }).format(v));
+  // a change with its sign and a true minus: signed(-1.14) -> "−1.1", signed(0.5, 0) -> "+1"
+  const signed = (v, d = 1) => (v == null ? '–' : `${Math.round(v * 10 ** d) > 0 ? '+' : Math.round(v * 10 ** d) < 0 ? '−' : ''}${dec(Math.abs(v), d)}`);
   // a ratio as people say it: 2.51 -> "2.5×", 0.82 -> "18% less"
   const times = (r) => (r == null ? '–' : r >= 1 || Math.round(100 * (1 - r)) === 0 ? `${dec(r, r >= 10 ? 0 : 1)}×` : `${Math.round(100 * (1 - r))}% less`);
   const dateOf = (iso) => new Date(`${iso}T12:00:00`);
@@ -71,11 +73,26 @@
   }
 
   // Two shares per row: the main one in the data hue, its comparison in grey (or in college gold: second 'college').
-  //   rows: [{ label, a, b }]
-  function pairs(el, rows, { format = (v) => pct(v, 1), second = '' } = {}) {
-    const top = Math.max(...rows.flatMap((r) => [r.a, r.b])) || 1;
-    el.innerHTML = `<div class="pairs">${rows.map((r) => `<div class="pair"><span class="label">${esc(r.label)}</span><span class="bars">`
-      + `<span><i style="width:${(r.a / top) * 100}%"></i>${format(r.a)}</span><span><i class="${second}" style="width:${(r.b / top) * 100}%"></i>${format(r.b)}</span></span></div>`).join('')}</div>`;
+  //   rows: [{ label, sub, a, b, format }]; scale 'row' sizes each row on its own, for rows in different units
+  function pairs(el, rows, { format = (v) => pct(v, 1), second = '', scale = 'all' } = {}) {
+    const all = Math.max(...rows.flatMap((r) => [r.a, r.b])) || 1;
+    el.innerHTML = `<div class="pairs">${rows.map((r) => {
+      const top = scale === 'row' ? Math.max(r.a, r.b) || 1 : all, f = r.format || format;
+      return `<div class="pair"><span class="label">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</span><span class="bars">`
+        + `<span><i style="width:${(r.a / top) * 100}%"></i>${f(r.a)}</span><span><i class="${second}" style="width:${(r.b / top) * 100}%"></i>${f(r.b)}</span></span></div>`;
+    }).join('')}</div>`;
+  }
+
+  // Changes on one linear scale with 0 marked, each a dot with its likely range: filled when the range stays on one side
+  // of 0, grey when it doesn't. Values past the scale sit on its edge.
+  //   rows: [{ label, sub, value, lo, hi, text, aria }], text being the figure shown at the right
+  function changeRows(el, rows, { min = -0.4, max = 0.4, ticks = [-0.4, -0.2, 0, 0.2, 0.4], tick = (v) => `${signed(100 * v, 0)}%`, track = 150 } = {}) {
+    const at = (v) => ((Math.min(max, Math.max(min, v)) - min) / (max - min)) * 100;
+    el.innerHTML = `<div class="dots" style="--track:${track}px">${rows.map((r) => `<div class="dot-row ${r.lo > 0 || r.hi < 0 ? 'up' : 'none'}" style="--one:${at(0)}%;--lo:${at(r.lo)}%;--hi:${at(r.hi)}%;--x:${at(r.value)}%">`
+      + `<span class="label">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</span>`
+      + `<span class="track" role="img" aria-label="${esc(r.aria || `${r.label}: ${r.text}`)}"><span class="one"></span><span class="range"></span><span class="dot"></span></span>`
+      + `<span class="val">${esc(r.text)}</span></div>`).join('')}</div>`
+      + `<div class="dot-scale" style="--track:${track}px" aria-hidden="true"><span></span><span>${ticks.map((v, i) => `<i${i && i < ticks.length - 1 && v ? ' class="minor"' : ''} style="left:${at(v)}%">${tick(v)}</i>`).join('')}</span><span></span></div>`;
   }
 
   // Two estimates per row on one log scale, the NBA's in blue and college's in gold, each with its likely range.
@@ -88,5 +105,6 @@
       + `<div class="vs-row vs-axis" aria-hidden="true"><span></span><span class="vs-track">${ticks.map((v) => `<i style="left:${at(v)}%">${v}×</i>`).join('')}</span></div></div>`;
   }
 
-  window.Site = { load, esc, pct, int, dec, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, boardRow, dotRows, pairs, vsRows };
+  window.Site = { load, esc, pct, int, dec, signed, times, day, shortDay, longDay, dateOf, daysBetween, splitOutcome, bodyPart, boardRow, dotRows,
+    pairs, changeRows, vsRows };
 })();

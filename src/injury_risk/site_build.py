@@ -2,7 +2,9 @@
 
 - docs/data/*.json: what the pages read. board.json and players.json hold the 2025-26 risk board and each player's risk
   game by game, with NBA players by name (the league's injury reports are public); study.json holds the summary tables
-  of the model check, the risk factors and the injury types. Nothing names a college player.
+  of the model check, the risk factors, the injury types, how injuries happened (from the news) and the checks against
+  the news; careers.json the career study; details.json each injury's facts from the news (facts and links, never the
+  reports' words) and how the player came back.
 - docs/index.html: the overview page, from site/overview.html with its figures filled in from docs/data.
 - docs/dashboard.html and docs/assets/*.css|js: the dashboards, copied from site/ as they are.
 - docs/moments.html: the injury-moment report (report_site.py).
@@ -26,12 +28,16 @@ from datetime import date
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from string import Template
+from urllib.parse import urlparse
 
 from .paths import OUTPUTS
 from .report_site import AUTHOR, DOCS, REPO_URL, SEASONS, SITE, SITE_URL
 from . import report_site
 
 DATA = DOCS / "data"
+PROFILES = OUTPUTS / "profiles"
+AFTERMATH = OUTPUTS / "aftermath"
+NEWS = OUTPUTS / "news"
 ASSETS = ("site.css", "app.css", "charts.js", "site.js", "overview.js", "dashboard.js")
 MODES = {"before": dict(label="Before tip-off", question="a new injury in the next 5 games", short="next 5 games",
                         none="No new injury in the next 5 games"),
@@ -121,9 +127,10 @@ def players_data(board: dict) -> dict:
 
 def study_data() -> dict:
     moments = {n: _read("moments_dashboard", n) for n in ("facts", "nba_patterns", "college_tests")}
-    # the college check, as totals only: no college athlete is named anywhere on the site
+    # the college check's results (the players behind them are on their own profiles, from the listings' facts)
     college = [{k: t[k] for k in ("key", "order", "label", "group", "times", "lo", "hi", "nba_key", "nba_times", "verdict",
                                   "verdict_label", "primary", "injury_exits", "with_play")} for t in moments["college_tests"]]
+    carry = json.loads((PROFILES / "both.json").read_text(encoding="utf-8")) if (PROFILES / "both.json").exists() else None
     return _round(dict(
         model=dict(scores=_read("dashboard", "model_scores"), seasons=_read("dashboard", "season_scores"),
                    calibration=_read("dashboard", "calibration"), drivers=_read("dashboard", "drivers"),
@@ -134,7 +141,9 @@ def study_data() -> dict:
         causes={n: _read("causes", n) for n in ("facts", "groups", "months", "situations", "traits")},
         moments=dict(facts={r["metric"]: r["value"] for r in moments["facts"]}, patterns=moments["nba_patterns"],
                      college=college),
-        compare=compare_data()))
+        compare=compare_data(), carry=carry, **{k: json.loads(v.read_text(encoding="utf-8")) for k, v in
+                                                (("news", NEWS / "summary.json"), ("checks", OUTPUTS / "validation" / "summary.json"))
+                                                if v.exists()}))
 
 
 # the NBA-vs-college comparison: the same injury-moment test in both leagues, as totals only
@@ -206,17 +215,76 @@ def agreement(plays: list) -> dict:
                 any_plays=len(any_injury), r_any=r(any_injury), r_all=r(plays))
 
 
+def profiles_data() -> dict:
+    """Every NBA player's injury history since 2018-19 and every college player Covers listed injured
+    (outputs/profiles), with a small index of both for the search box: [id, name, team or school, injuries, league],
+    college ids starting with "c"."""
+    nba, college = (json.loads((PROFILES / f"{n}.json").read_text(encoding="utf-8")) for n in ("nba", "college"))
+    nba["saved"] = college["saved"]   # an NBA profile's college card says how often its last college season was saved
+    people = ([[p["id"], p["n"], p["tm"][-1][1], len(p["inj"]), "nba"] for p in nba["players"]]
+              + [[f"c{p['id']}", p["n"], p["sch"][-1][1], len(p["inj"]), "college"] for p in college["people"]])
+    return dict(history=nba, college=college, people=people)
+
+
+def source(s: dict) -> list:
+    """A citation as the profiles show it: [outlet, published, headline, url, official]. NBA.com's pages go without
+    their link: its terms forbid linking to it for public use without permission."""
+    host = urlparse(s["url"]).hostname or ""
+    return [s["outlet"], s.get("published"), s.get("headline"), None if host == "nba.com" or host.endswith(".nba.com") else s["url"],
+            bool(s.get("official"))]
+
+
+def _facts(f: dict) -> dict:
+    """A fact row without its empty fields, and its sources as citations."""
+    def keep(v):
+        if isinstance(v, dict):
+            v = {k: keep(x) for k, x in v.items()}
+            return {k: x for k, x in v.items() if x not in (None, {}, [])} or None
+        return v
+    out = {k: keep(f.get(k)) for k in ("status", "diagnosis", "side", "grade", "setting", "game", "contact", "mechanism", "surgery",
+                                       "expected")}
+    out = {k: v for k, v in out.items() if v not in (None, {}, [])}
+    out["sources"] = [source(s) for s in f.get("sources") or []]
+    return out
+
+
+def details_data() -> dict:
+    """What each injury was and how the player came back, keyed as the profiles' injuries:
+    - news: the research's facts (outputs/news/facts.jsonl), NBA as '<id>:<first listed>:<region>' and, for college
+      players now in the NBA, 'c<id>:<first listed>:<part>' (the others are students, and little was written about them);
+    - after: the career study's row (outputs/aftermath/players.json), as '<id>:<first listed>'."""
+    targets = {t["id"]: t for t in map(json.loads, (NEWS / "targets.jsonl").read_text(encoding="utf-8").splitlines()) if t}
+    news = {}
+    for line in (NEWS / "facts.jsonl").read_text(encoding="utf-8").splitlines():
+        f = json.loads(line) if line.strip() else None
+        t = targets.get(f["target"]) if f else None
+        if not t or f["status"] == "not_found" or (t["league"] == "college" and not t.get("nba_profile")):
+            continue
+        league, pid, first, part = f["target"].split(":")
+        news[f"{'c' if league == 'college' else ''}{pid}:{first}:{part}"] = _facts(f)
+    after = json.loads((AFTERMATH / "players.json").read_text(encoding="utf-8")) if (AFTERMATH / "players.json").exists() else {}
+    return _round(dict(news=news, after=after))
+
+
 def write_data(log=print) -> None:
     DATA.mkdir(parents=True, exist_ok=True)
     board = board_data()
-    for name, obj in (("board", board), ("players", players_data(board)), ("study", study_data())):
+    files = [("board", board), ("players", players_data(board)), ("study", study_data())]
+    if (PROFILES / "nba.json").exists():
+        files += list(profiles_data().items())
+    if (AFTERMATH / "summary.json").exists():
+        files.append(("careers", json.loads((AFTERMATH / "summary.json").read_text(encoding="utf-8"))))
+    if (NEWS / "targets.jsonl").exists():
+        files.append(("details", details_data()))
+    for name, obj in files:
         text = json.dumps(obj, ensure_ascii=False, separators=(",", ":"), allow_nan=False)   # browsers can't parse NaN
         (DATA / f"{name}.json").write_text(text, encoding="utf-8")
         log({"data": f"docs/data/{name}.json", "bytes": len(text.encode())})
 
 
 def load() -> dict:
-    return {n: json.loads((DATA / f"{n}.json").read_text(encoding="utf-8")) for n in ("board", "players", "study")}
+    return {n: json.loads((DATA / f"{n}.json").read_text(encoding="utf-8")) for n in ("board", "players", "study", "careers")
+            if n != "careers" or (DATA / f"{n}.json").exists()}
 
 
 # ---- the overview page --------------------------------------------------------------------------------------------
@@ -289,6 +357,54 @@ def kind_lists(causes: dict) -> tuple[str, str]:
     return "".join(tabs), "".join(panels)
 
 
+def bar_rows(rows: list[tuple], pair: bool = False) -> str:
+    """The overview's bar rows, drawn here like the dashboards' pairs: (label, note, share[, its comparison]) per row,
+    each with its figure; with pair, the comparison in grey under it."""
+    top = max(max(r[2:]) for r in rows) or 1
+    out = []
+    for label, note, *shares in rows:
+        marks = [("", shares[0])] + ([(' class="cmp"', shares[1])] if pair else [])
+        bars = "".join(f'<span><i{cls} style="width:{100 * v / top:.0f}%"></i>{pct(v, 0)}</span>' for cls, v in marks)
+        out.append(f'<div class="pair"><span class="label">{esc(label)}<small>{esc(note)}</small></span><span class="bars">{bars}</span></div>')
+    return f'<div class="pairs">{"".join(out)}</div>'
+
+
+def news_values(study: dict) -> dict:
+    """The overview's figures from the news research (study.json's news summary)."""
+    n = study["news"]
+    by = {g["key"]: g for g in n["groups"]}
+    contact = [(g["name"], f'{g["contact"]["non_contact"]} of {g["contact"]["known"]}', g["contact"]["non_contact"] / g["contact"]["known"])
+               for g in (by.get(k) for k in ("achilles", "muscle", "acl", "knee_sprain", "ankle", "concussion"))
+               if g and g["contact"]["known"] >= 10]
+    ankle, achilles = by["ankle"], by["achilles"]
+    foot = dict(ankle["mechanisms"]["counts"]).get("stepped_on_foot", 0)
+    return dict(news_researched=f'{n["researched"]:,}', news_named=f'{n["status"].get("confirmed", 0) + n["status"].get("reported", 0):,}',
+                news_how=f'{n["all"]["mechanisms"]["known"]:,}', news_vague=f'{n["vague"]["named"]} of {n["vague"]["listed"]}',
+                news_game=f'{n["game"]:,}', news_contact=bar_rows(contact),
+                news_finding=(f'A torn Achilles almost never involved contact ({achilles["contact"]["non_contact"]} of '
+                              f'{achilles["contact"]["known"]}); most ankle sprains came from landing on someone’s foot '
+                              f'({foot} of {ankle["mechanisms"]["known"]} with a known cause).'))
+
+
+def career_values(careers: dict) -> dict:
+    """The overview's figures from the career study (careers.json)."""
+    by = {g["key"]: g for g in careers["groups"]}
+    def one(g, k):
+        return next(r for r in g["year_1"] + g["outcomes"] if r.get("metric", r.get("outcome")) == k)
+    again = []
+    for k in ("all", "muscle", "concussion", "ankle", "hand_fracture"):
+        r = one(by[k], "same_region")
+        clear = r["lo"] > 0 or r["hi"] < 0
+        again.append(("Every injury" if k == "all" else by[k]["name"],
+                      f'{"+" if r["difference"] > 0 else "−"}{abs(100 * r["difference"]):.0f} points' + ("" if clear else ", no clear difference"),
+                      r["them"], r["matched"]))
+    ach = one(by["achilles"], "playing_3")
+    return dict(career_followed=f'{careers["followed"]:,}', career_minutes=f'{abs(one(by["all"], "mpg")["effect"]):.1f}',
+                career_achilles=(f'After a torn Achilles, {round(ach["them"] * ach["injuries"])} of {ach["injuries"]} were still in the league '
+                                 f'three seasons on, against {pct(ach["matched"], 0)} of players like them.'),
+                career_again=bar_rows(again, pair=True))
+
+
 def render_overview(d: dict) -> str:
     board, study = d["board"], d["study"]
     before = board["modes"]["before"]
@@ -308,7 +424,8 @@ def render_overview(d: dict) -> str:
         site_url=SITE_URL, repo_url=REPO_URL, author=AUTHOR, seasons=SEASONS, updated=f"{today:%B} {today.year}",
         portfolio_url=PORTFOLIO_URL, linkedin_url=LINKEDIN_URL,
         description=("A model that reads seven seasons of official NBA injury reports and ranks who is most likely to get "
-                     "hurt next, checked against what happened in 2025-26, plus why and when players get hurt."),
+                     "hurt next, checked against what happened in 2025-26, plus why players get hurt and what an injury does "
+                     "to a career."),
         live_day=OPENING_NIGHT, live_date=day_label(OPENING_NIGHT), live_short=short_day(OPENING_NIGHT),
         live_rows=board_rows(opening), live_sum=f"{hurt} of these {len(opening)} had a new injury within 5 games.",
         live_count=str(len(before["nights"])),
@@ -326,7 +443,8 @@ def render_overview(d: dict) -> str:
         college_passed=f"{moments['college_passed']:.0f}", college_traced=f"{moments['college_traced']:,.0f}",
         pooled=f"{moments['college_pooled_times']:.1f}",
         agree_clear=str(agree["nba_clear"]), agree_same=str(agree["nba_clear_same"]),
-        kind_tabs=tabs, kind_panels=panels)
+        carry_ratio=f"{study['carry']['well_saved']['ratio']:.1f}",
+        kind_tabs=tabs, kind_panels=panels, **news_values(study), **career_values(d["careers"]))
     return Template((SITE / "overview.html").read_text(encoding="utf-8")).substitute(values)
 
 

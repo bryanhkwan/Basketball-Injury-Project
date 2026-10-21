@@ -143,7 +143,7 @@ components:
 
 ## Overview
 
-The site serves two readers. The first clicks a LinkedIn link and should know in five seconds what this is, and want to touch it. The second checks the work. The overview speaks to the first: a big question ("Who gets hurt next?"), one sentence on what was built and how well it did, and the live risk board right beside it. Below that come the proof, the four questions the project answers (each with a real chart), how it was built, and who built it. The dashboards serve the second reader with quiet working screens.
+The site serves two readers. The first clicks a LinkedIn link and should know in five seconds what this is, and want to touch it. The second checks the work. The overview speaks to the first: a big question ("Who gets hurt next?"), one sentence on what was built and how well it did, and the live risk board right beside it. Below that come the proof, the six questions the project answers (each with a real chart), how it was built, and who built it. The dashboards serve the second reader with quiet working screens.
 
 The look comes from the user's own brand: the portfolio's near-black navy, gold actions and monospace labels, and the report's and LinkedIn images' uppercase Barlow Condensed headlines. The hero's court floor echoes the portfolio's wireframe arena.
 
@@ -167,7 +167,7 @@ The look comes from the user's own brand: the portfolio's near-black navy, gold 
 - **Overview:** one centred 1200px column with `page-pad` sides.
   - The hero is two columns: copy and stats on the left, the live board on the right. The court floor is clipped to the hero's lower 58% and fades upward.
   - Sections alternate between `home-paper` and `home-paper-2`.
-  - The four questions alternate their copy and their chart from side to side.
+  - The six questions alternate their copy and their chart from side to side.
 - **Dashboards:** a 236px sidebar and a 48px top bar on the tinted frame, with the work on a sheet inset 8px. Each view has a title row with its finding, a KPI strip, then cards on a 12-column grid with a 16px gap.
 
 ## Elevation & Depth
@@ -190,11 +190,49 @@ On the overview, depth comes from a lighter panel on the dark ground. Only the l
 - **Hero stats:** four figures divided by lines: reports read, injuries studied, AUC, and the top-vs-bottom ratio in gold.
 - **The record:** the 5.3× figure with a three-bar ladder, the calibration chart, and every night of the season as bars (click a night to open it).
 - **Feature rows:** a kicker, a headline, copy, check-mark ticks, a gold text link, and a live chart panel.
+  - The last two panels (how players get hurt, what an injury does to a career) are bar rows drawn at build time from
+    `docs/data`: one bar per injury with its count, or the injured players' share in blue over the comparison in grey.
   - The panels: player chips over a risk timeline; kind-of-injury tabs over ranked findings; paired bars for the injury moments; NBA-vs-college dots on a log scale.
 - **Steps:** four panels, each a big number, a monospace step name and one sentence. Below them, "What it can't tell you".
 
 ### Dashboards
 KPI strips, the board table (rank, player link, chance and bar, the top two reasons, an outcome pill), the season strip, ratio rows on a log scale, and charts from `charts.js` with 3 to 5 faint gridlines, 2px lines and a bare tooltip.
+
+**Player profiles** (`#players/<id>`, college `#players/c<id>`) come in two columns, each a stack, so a short card never leaves a gap.
+- NBA, on the left:
+  - the model's chances game by game when it scored the player; otherwise their seasons as bars, games played in blue and games missed hurt in the injury red;
+  - every injury, newest first, 12 at a time.
+- NBA, on the right:
+  - "What usually happens next": one big percentage with its counts ("6 of 16 players");
+  - the seasons;
+  - the player's college record;
+  - where they get hurt.
+- College:
+  - every listed injury, then the college-to-NBA finding on the left;
+  - how often the page was saved, then the NBA numbers for that injury on the right.
+- A player out with an injury gets a red pill beside their name.
+- On a phone, injury tables become two-line rows.
+
+**How it happened** (the news research) adds:
+- **The causes table:** one row per kind of injury, one column per cause, each count on a tint of the data hue as deep as
+  its share of the row's known causes. The tint stops at 70% so ink stays readable in both themes, and a 2px surface
+  seam separates the cells. The first column stays put when the table scrolls on a phone.
+- Every count names the injuries it rests on ("15 of 16"), since the news covers stars and long injuries best.
+
+**After an injury** (the career study) adds:
+- **Change rows** (`Site.changeRows`): each measure's change against matched players, as a share of where the injured
+  player started, on one linear scale with 0 marked. A filled dot is a clear difference and a grey one isn't; the raw
+  before, after and the matched players' change sit in the row's subline.
+- **The recovery curve:** the share still out week by week, as a step line, with the chosen injury in blue over every
+  injury in grey, a 50% "Half back" reference line, and an axis of 26, 52 or 104 weeks depending on how long it lasts.
+- Paired bars for the injured players against players like them, each row on its own scale with its difference and
+  range in the subline.
+- On a phone, the kinds-of-injury table and the case list become two-line rows: the name, then the figures with units.
+
+**Player profiles** open an injury when the news or the career study says more about it: the injury's name becomes a
+button with a chevron, and a well under the row lists what it was, how it happened, surgery, the team's first timeline
+and how the player came back, then the sources. NBA.com's pages are named without a link (its terms forbid linking to
+it), and a report's own words are never shown.
 
 The NBA vs college view adds two pieces:
 - **League rows** (`Site.vsRows`): two dots with their likely ranges on one log scale, the NBA's in blue above and college's in gold below. The 1× line marks no difference.
@@ -209,7 +247,7 @@ The NBA vs college view adds two pieces:
 - Lead with the question and the proof, and show the product in the first screen.
 - Use one gold phrase per headline, and gold for actions.
 - Give every relative figure its baseline ("against 15.6% for everyone").
-- Name NBA players; keep college athletes as totals only.
+- Name players. For college players, show only the listings' facts (dates, body part, status in plain words, games missed), never Covers' wording, and say how complete each season's record is.
 - Keep motion to the court drawing itself, entrances and hover feedback, all of them off under reduced motion.
 
 ### Don't

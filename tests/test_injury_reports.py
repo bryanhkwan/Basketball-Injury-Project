@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from injury_risk.injury_reports import parse_pdf
+from injury_risk.injury_reports import _rejoin_wrapped, parse_pdf
 from injury_risk.paths import REPORTS_RAW
 
 
@@ -44,6 +44,50 @@ class ParserTest(unittest.TestCase):
         self.assertEqual(find(res["rows"], "Suggs, Jalen")["reason"], "Injury/Illness - Right Knee; MCL contusion")
         self.assertEqual(find(res["rows"], "Castleton, Colin")["team"], "ORL")
         self.assertEqual(res["problems"], [])
+
+    @unittest.skipUnless(report(2026, "Injury-Report_2025-12-23_05_00PM.pdf").exists(), "2025-26 report not downloaded")
+    def test_reason_wrapped_onto_the_next_page(self):
+        res = parse_pdf(report(2026, "Injury-Report_2025-12-23_05_00PM.pdf"))
+        self.assertEqual(find(res["rows"], "Haliburton, Tyrese")["reason"], "Injury/Illness - Right Achilles Tendon; Tear")
+        self.assertEqual(find(res["rows"], "Jackson, Isaiah")["reason"], "Injury/Illness - N/A; Concussion")
+
+    @unittest.skipUnless(report(2025, "Injury-Report_2025-03-20_05PM.pdf").exists(), "2024-25 report not downloaded")
+    def test_wrapped_words_next_to_a_not_submitted_line(self):
+        res = parse_pdf(report(2025, "Injury-Report_2025-03-20_05PM.pdf"))
+        self.assertEqual(find(res["rows"], "Wiggins, Andrew")["reason"], "Injury/Illness - Right Ankle; Impingement")
+
+
+class RejoinTest(unittest.TestCase):
+    """Made-up reports: words a reason wrapped past the foot of a page go back to it."""
+
+    def rejoin(self, *items):
+        items = [dict(kind=kind, page=page, reason=reason) for kind, page, reason in items]
+        _rejoin_wrapped(items)
+        return [item["reason"] for item in items]
+
+    def test_words_on_the_next_pages_first_row(self):
+        self.assertEqual(self.rejoin(("row", 1, "Injury/Illness - Left Knee; Injury"),
+                                     ("row", 2, "Recovery G League - Two-Way")),
+                         ["Injury/Illness - Left Knee; Injury Recovery", "G League - Two-Way"])
+
+    def test_words_in_front_of_an_available_players_dash(self):
+        self.assertEqual(self.rejoin(("row", 3, "Injury/Illness - Right Hamstring;"), ("row", 4, "Tightness -")),
+                         ["Injury/Illness - Right Hamstring; Tightness", "-"])
+
+    def test_words_caught_by_a_not_submitted_line(self):
+        self.assertEqual(self.rejoin(("row", 5, "Injury/Illness - Right Ankle;"), ("not_submitted", 6, "Impingement"),
+                                     ("row", 6, "Injury/Illness - Left Ankle; Sprain")),
+                         ["Injury/Illness - Right Ankle; Impingement", "", "Injury/Illness - Left Ankle; Sprain"])
+
+    def test_an_opening_line_next_to_a_not_submitted_line_goes_to_the_row_below(self):
+        self.assertEqual(self.rejoin(("row", 2, "Rest"), ("not_submitted", 2, "Injury/Illness - Left Knee;"),
+                                     ("row", 2, "Soreness")),
+                         ["Rest", "", "Injury/Illness - Left Knee; Soreness"])
+
+    def test_whole_reasons_are_left_alone(self):
+        rows = [("row", 1, "Injury/Illness - Left Ankle; Sprain"), ("row", 2, "Injury/Illness - Right Knee; Soreness"),
+                ("row", 2, "Recovery Injury/Illness - Left Foot; Contusion")]   # same page: no wrap to undo
+        self.assertEqual(self.rejoin(*rows), [r for _, _, r in rows])
 
 
 if __name__ == "__main__":

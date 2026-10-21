@@ -117,6 +117,19 @@
 .vs-axis .vs-track { height: 16px; }
 .vs-axis i { position: absolute; top: 0; transform: translateX(-50%); font-style: normal; font-size: 12px; line-height: 16px; color: var(--axis-ink); white-space: nowrap; }
 .legend i.marker { width: 1px; height: 14px; background: var(--axis-ink); opacity: 0.6; }
+.legend i.hurt-bar { background: var(--negative); }
+
+/* a player's seasons: games played, then games missed hurt, on one scale */
+.seasons { display: grid; gap: 8px; }
+.season-row { display: grid; grid-template-columns: 56px minmax(0, 1fr) 60px; align-items: center; gap: 10px; font-size: 13px; line-height: 18px; }
+.season-row .label { color: var(--muted); font-variant-numeric: tabular-nums; }
+.season-bar { display: flex; gap: 2px; height: 10px; }
+.season-bar i { display: block; min-width: 0; height: 100%; background: var(--chart-1); border-radius: 2px; }
+.season-bar i.hurt-bar { background: var(--negative); }
+.season-row .n { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+.season-row .n b { color: var(--ink); font-weight: 600; }
+.data.injuries .unit { display: none; }   /* the games' unit, for the two-line rows on a phone */
+.next-figure { font-size: 34px; line-height: 40px; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
 .legend i.line { width: 16px; height: 2px; }
 .legend i.dash { width: 16px; height: 0; border-top: 1px dashed var(--axis-ink); background: none; }
 
@@ -239,6 +252,37 @@
 .prose p + p { margin-top: 8px; }
 .prose b { color: var(--ink); font-weight: 600; }
 
+/* the career study and the news: change rows' sublines, pair sublines, the causes table, the injury details */
+.pair .label small { display: block; margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--muted); }
+.faint { color: var(--muted); font-weight: 400; }
+.data .faint .sub { color: var(--muted); }
+.data.kinds td .sub { display: inline; margin-left: 4px; }
+.data.kinds .unit, .data.cases .unit { display: none; }   /* the figures' units, for the two-line rows on a phone */
+.data.cases .arrow { color: var(--muted); }
+.data.causes thead th { height: auto; padding: 6px 8px; white-space: normal; vertical-align: bottom; line-height: 16px; min-width: 64px; }
+.data.causes thead th:first-child { min-width: 0; }
+.data.causes tbody th { height: auto; padding: 8px 10px 8px 0; font-size: 14px; line-height: 20px; color: var(--ink); text-align: left; white-space: nowrap; border-bottom: 1px solid var(--rule); }
+.data.causes tbody th .sub { display: block; font-size: 12px; line-height: 16px; color: var(--muted); }
+/* a cause's share of the injury's known causes, as a tint of the data hue (ink stays readable at the darkest, 70%) */
+.data.causes td.heat { padding: 8px; border: 2px solid var(--surface); background: color-mix(in srgb, var(--chart-1) var(--p, 0%), transparent); font-weight: 500; }
+.data.causes tbody tr:last-child th, .data.causes tbody tr:last-child td { font-weight: 600; }
+.data.causes tbody th, .data.causes thead th:first-child { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+.data.vague td.labels span { display: inline-block; margin-right: 12px; white-space: nowrap; }
+.data.vague td.labels b { font-weight: 600; }
+.inj-toggle { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.inj-toggle svg { width: 12px; height: 12px; flex: none; fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; transition: transform 150ms ease; }
+.inj-toggle:hover { text-decoration: underline; text-underline-offset: 3px; }
+.inj-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.data tr.more > td { padding: 0 0 12px; }
+.data tr.more > td:first-child { padding-left: 0; }
+.facts.compact { padding: 4px 14px; background: var(--raised); border-radius: 8px; }
+.facts.compact div { display: grid; grid-template-columns: minmax(120px, 28%) minmax(0, 1fr); gap: 12px; }
+.facts.compact dd { font-weight: 400; text-align: left; }
+.facts.compact dd .sub { display: block; margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--muted); }
+.sources { list-style: none; margin: 10px 0 0; padding: 0 14px; display: grid; gap: 8px; }
+.sources li { font-size: 13px; line-height: 18px; overflow-wrap: anywhere; }
+.sources .sub { display: block; font-size: 12px; line-height: 16px; color: var(--muted); }
+
 @media (max-width: 1100px) {
   .app { grid-template-columns: minmax(0, 1fr); grid-template-rows: 48px auto; }
   .side { position: fixed; inset: 0; z-index: 40; width: 100%; height: 100%; background: var(--surface); transform: translateX(-100%); transition: transform 200ms var(--ease-out); visibility: hidden; }
@@ -267,6 +311,18 @@
   .kpi.lead .kpi-value { font-size: 28px; line-height: 34px; }
   .card { padding: 16px 14px; }
   .split { grid-template-columns: minmax(0, 1fr); }
+  /* a player's injuries as two-line rows: when, then what, with the games on the right */
+  .data.injuries thead { display: none; }
+  .data.injuries tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .data.injuries tbody tr:last-child { border-bottom: 0; }
+  .data.injuries td { padding: 0; border: 0; }
+  .data.injuries td.when { grid-column: 1; color: var(--muted); font-size: 12px; line-height: 16px; }
+  .data.injuries td.when .sub { display: inline; margin-left: 4px; }
+  .data.injuries td.n { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+  .data.injuries td.n .unit { display: inline; color: var(--muted); font-size: 12px; }
+  .data.injuries td.what, .data.injuries td.back, .data.injuries td.status { grid-column: 1; }
+  .data.injuries td.back, .data.injuries td.status { margin-top: 2px; font-size: 12px; line-height: 16px; color: var(--muted); }
+  .data.injuries td.back::before { content: "Back "; }
   .data th, .data td { padding-left: 6px; padding-right: 6px; }
   .span-6, .span-3 { grid-column: span 12; }
   .dot-row, .dot-scale { --track: 110px !important; }
@@ -280,4 +336,20 @@
   .data.stackable td.wide { grid-column: 2 / -1; margin-top: 4px; width: auto; }
   .data.stackable td.bar-cell { display: none; }
   .vs-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .hide-sm { display: none; }
+  .dot-scale i.minor { display: none; }
+  /* the kinds of injury and the case list as two-line rows: the name, then the figures with their units */
+  .data.kinds thead, .data.cases thead { display: none; }
+  .data.kinds tr, .data.cases tr { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .data.kinds tbody tr:last-child, .data.cases tbody tr:last-child { border-bottom: 0; }
+  .data.kinds td, .data.cases td { padding: 0; border: 0; text-align: left; font-size: 13px; }
+  .data.kinds td:first-child, .data.cases td:first-child { flex-basis: 100%; font-size: 14px; }
+  .data.kinds .unit, .data.cases .unit { display: inline; color: var(--muted); font-size: 12px; }
+  .data.kinds tr[aria-selected="true"] { background: var(--raised); }
+  .data.kinds tr[aria-selected="true"] td { background: none; }
+  .data.injuries tr.more { display: block; padding: 0 0 10px; }
+  .data.injuries tr.more > td { display: block; }
+  .data.injuries tr[hidden] { display: none; }
+  .facts.compact div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .sources { padding: 0 4px; }
 }

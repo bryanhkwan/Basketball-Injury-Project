@@ -294,6 +294,8 @@ a { color: inherit; text-underline-offset: 3px; }
 .feature-visual .pair { grid-template-columns: minmax(0, 1fr) minmax(170px, 46%); gap: 6px 18px; }
 .feature-visual .pair .label { font-size: 14px; line-height: 1.4; }
 .feature-visual .pair .bars i { height: 10px; border-radius: 2px; }
+.feature-visual .pair .bars i.cmp { background: var(--chart-muted); }
+.feature-visual .pair .label small { font-size: 13px; color: var(--ink-3); }
 .legend i.dot.nba { background: var(--chart-1); }
 .legend i.dot.college { background: var(--gold); }
 

@@ -1,0 +1,1481 @@
+{
+ "researched": 1434,
+ "status": {
+  "reported": 245,
+  "confirmed": 751,
+  "partial": 199,
+  "not_found": 192,
+  "conflicting": 47
+ },
+ "named": 996,
+ "vague": {
+  "listed": 381,
+  "named": 194,
+  "regions": [
+   {
+    "region": "knee",
+    "name": "Knee",
+    "listed": 137,
+    "named": 54,
+    "labels": [
+     [
+      "Torn meniscus",
+      9
+     ],
+     [
+      "Knee bone bruise",
+      9
+     ],
+     [
+      "Torn ACL",
+      7
+     ],
+     [
+      "Patellar tendinopathy",
+      4
+     ],
+     [
+      "PCL sprain",
+      2
+     ],
+     [
+      "Torn quadriceps tendon",
+      2
+     ],
+     [
+      "Knee fracture",
+      2
+     ],
+     [
+      "MCL sprain",
+      2
+     ],
+     [
+      "Stress reaction",
+      1
+     ],
+     [
+      "Stress fracture",
+      1
+     ],
+     [
+      "Contusion",
+      1
+     ],
+     [
+      "Knee sprain",
+      1
+     ],
+     [
+      "Knee hyperextension",
+      1
+     ]
+    ],
+    "other": 12
+   },
+   {
+    "region": "foot",
+    "name": "Foot",
+    "listed": 63,
+    "named": 33,
+    "labels": [
+     [
+      "Foot fracture",
+      6
+     ],
+     [
+      "Toe sprain",
+      5
+     ],
+     [
+      "Stress fracture",
+      5
+     ],
+     [
+      "Midfoot sprain",
+      3
+     ],
+     [
+      "Stress reaction",
+      2
+     ],
+     [
+      "Torn plantar fascia",
+      1
+     ],
+     [
+      "Plantar fasciitis",
+      1
+     ]
+    ],
+    "other": 10
+   },
+   {
+    "region": "hand",
+    "name": "Hand, wrist or finger",
+    "listed": 36,
+    "named": 31,
+    "labels": [
+     [
+      "Hand or finger fracture",
+      7
+     ],
+     [
+      "Torn thumb ligament",
+      6
+     ],
+     [
+      "Wrist fracture",
+      3
+     ],
+     [
+      "Wrist sprain",
+      1
+     ]
+    ],
+    "other": 14
+   },
+   {
+    "region": "ankle",
+    "name": "Ankle",
+    "listed": 23,
+    "named": 16,
+    "labels": [
+     [
+      "Ankle sprain",
+      6
+     ],
+     [
+      "Stress fracture",
+      2
+     ],
+     [
+      "Bone bruise",
+      2
+     ],
+     [
+      "Stress reaction",
+      1
+     ]
+    ],
+    "other": 5
+   },
+   {
+    "region": "back",
+    "name": "Back",
+    "listed": 29,
+    "named": 14,
+    "labels": [
+     [
+      "Herniated disc",
+      5
+     ],
+     [
+      "Stress reaction",
+      2
+     ],
+     [
+      "Back strain or spasms",
+      2
+     ]
+    ],
+    "other": 5
+   },
+   {
+    "region": "shoulder",
+    "name": "Shoulder",
+    "listed": 18,
+    "named": 12,
+    "labels": [
+     [
+      "Torn labrum",
+      4
+     ],
+     [
+      "Blood clot",
+      3
+     ],
+     [
+      "Shoulder subluxation",
+      3
+     ],
+     [
+      "Rotator cuff injury",
+      1
+     ]
+    ],
+    "other": 1
+   },
+   {
+    "region": "trunk",
+    "name": "Chest or ribs",
+    "listed": 11,
+    "named": 7,
+    "labels": [
+     [
+      "Abdominal or oblique strain",
+      3
+     ]
+    ],
+    "other": 4
+   },
+   {
+    "region": "head_neck",
+    "name": "Head or neck",
+    "listed": 10,
+    "named": 6,
+    "labels": [
+     [
+      "Herniated disc",
+      1
+     ]
+    ],
+    "other": 5
+   },
+   {
+    "region": "hip",
+    "name": "Hip",
+    "listed": 20,
+    "named": 6,
+    "labels": [
+     [
+      "Hip flexor strain",
+      1
+     ],
+     [
+      "Contusion",
+      1
+     ],
+     [
+      "Torn labrum",
+      1
+     ],
+     [
+      "Abdominal or oblique strain",
+      1
+     ]
+    ],
+    "other": 2
+   },
+   {
+    "region": "calf",
+    "name": "Calf",
+    "listed": 7,
+    "named": 5,
+    "labels": [
+     [
+      "Stress fracture",
+      2
+     ],
+     [
+      "Stress reaction",
+      1
+     ],
+     [
+      "Calf strain",
+      1
+     ]
+    ],
+    "other": 1
+   },
+   {
+    "region": "groin",
+    "name": "Groin",
+    "listed": 6,
+    "named": 4,
+    "labels": [
+     [
+      "Groin strain",
+      2
+     ]
+    ],
+    "other": 2
+   },
+   {
+    "region": "achilles",
+    "name": "Achilles",
+    "listed": 7,
+    "named": 2,
+    "labels": [
+     [
+      "Achilles tear",
+      2
+     ]
+    ],
+    "other": 0
+   }
+  ]
+ },
+ "game": 799,
+ "timeline": 511,
+ "all": {
+  "injuries": 1242,
+  "contact": {
+   "known": 341,
+   "non_contact": 51
+  },
+  "mechanisms": {
+   "known": 379,
+   "counts": [
+    [
+     "stepped_on_foot",
+     50
+    ],
+    [
+     "landing",
+     70
+    ],
+    [
+     "cutting_or_planting",
+     16
+    ],
+    [
+     "collision",
+     93
+    ],
+    [
+     "struck",
+     79
+    ],
+    [
+     "fall",
+     58
+    ],
+    [
+     "overextension",
+     10
+    ],
+    [
+     "overuse",
+     3
+    ]
+   ]
+  },
+  "plays": {
+   "known": 335,
+   "counts": [
+    [
+     "drive",
+     59
+    ],
+    [
+     "rebound",
+     43
+    ],
+    [
+     "drew_foul",
+     37
+    ],
+    [
+     "transition",
+     39
+    ],
+    [
+     "loose_ball",
+     28
+    ],
+    [
+     "defending_the_rim",
+     25
+    ],
+    [
+     "screen",
+     19
+    ],
+    [
+     "steal",
+     16
+    ],
+    [
+     "jump_shot",
+     5
+    ],
+    [
+     "other",
+     64
+    ]
+   ]
+  },
+  "settings": {
+   "known": 900,
+   "counts": [
+    [
+     "game",
+     810
+    ],
+    [
+     "practice",
+     48
+    ],
+    [
+     "workout",
+     41
+    ],
+    [
+     "offseason",
+     1
+    ]
+   ]
+  },
+  "surgery": 329,
+  "season_ending": 167
+ },
+ "groups": [
+  {
+   "key": "acl",
+   "name": "Torn ACL",
+   "injuries": 36,
+   "contact": {
+    "known": 17,
+    "non_contact": 7
+   },
+   "mechanisms": {
+    "known": 19,
+    "counts": [
+     [
+      "stepped_on_foot",
+      2
+     ],
+     [
+      "landing",
+      9
+     ],
+     [
+      "cutting_or_planting",
+      5
+     ],
+     [
+      "collision",
+      2
+     ],
+     [
+      "overextension",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 23,
+    "counts": [
+     [
+      "drive",
+      11
+     ],
+     [
+      "rebound",
+      1
+     ],
+     [
+      "drew_foul",
+      5
+     ],
+     [
+      "transition",
+      3
+     ],
+     [
+      "other",
+      3
+     ]
+    ]
+   },
+   "settings": {
+    "known": 34,
+    "counts": [
+     [
+      "game",
+      30
+     ],
+     [
+      "workout",
+      4
+     ]
+    ]
+   },
+   "surgery": 24,
+   "season_ending": 17
+  },
+  {
+   "key": "achilles",
+   "name": "Torn Achilles",
+   "injuries": 21,
+   "contact": {
+    "known": 16,
+    "non_contact": 15
+   },
+   "mechanisms": {
+    "known": 8,
+    "counts": [
+     [
+      "landing",
+      3
+     ],
+     [
+      "cutting_or_planting",
+      4
+     ],
+     [
+      "fall",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 15,
+    "counts": [
+     [
+      "drive",
+      4
+     ],
+     [
+      "rebound",
+      4
+     ],
+     [
+      "transition",
+      3
+     ],
+     [
+      "loose_ball",
+      2
+     ],
+     [
+      "defending_the_rim",
+      1
+     ],
+     [
+      "other",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 20,
+    "counts": [
+     [
+      "game",
+      18
+     ],
+     [
+      "workout",
+      2
+     ]
+    ]
+   },
+   "surgery": 15,
+   "season_ending": 13
+  },
+  {
+   "key": "meniscus",
+   "name": "Torn meniscus",
+   "injuries": 29,
+   "contact": {
+    "known": 4,
+    "non_contact": 1
+   },
+   "mechanisms": {
+    "known": 6,
+    "counts": [
+     [
+      "landing",
+      3
+     ],
+     [
+      "cutting_or_planting",
+      1
+     ],
+     [
+      "collision",
+      1
+     ],
+     [
+      "struck",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 4,
+    "counts": [
+     [
+      "transition",
+      3
+     ],
+     [
+      "loose_ball",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 21,
+    "counts": [
+     [
+      "game",
+      17
+     ],
+     [
+      "workout",
+      4
+     ]
+    ]
+   },
+   "surgery": 26,
+   "season_ending": 7
+  },
+  {
+   "key": "knee_sprain",
+   "name": "Knee sprain or bone bruise",
+   "injuries": 77,
+   "contact": {
+    "known": 37,
+    "non_contact": 3
+   },
+   "mechanisms": {
+    "known": 45,
+    "counts": [
+     [
+      "stepped_on_foot",
+      2
+     ],
+     [
+      "landing",
+      9
+     ],
+     [
+      "cutting_or_planting",
+      2
+     ],
+     [
+      "collision",
+      21
+     ],
+     [
+      "struck",
+      5
+     ],
+     [
+      "fall",
+      3
+     ],
+     [
+      "overextension",
+      3
+     ]
+    ]
+   },
+   "plays": {
+    "known": 37,
+    "counts": [
+     [
+      "drive",
+      6
+     ],
+     [
+      "rebound",
+      6
+     ],
+     [
+      "drew_foul",
+      2
+     ],
+     [
+      "transition",
+      4
+     ],
+     [
+      "loose_ball",
+      3
+     ],
+     [
+      "defending_the_rim",
+      3
+     ],
+     [
+      "screen",
+      3
+     ],
+     [
+      "other",
+      10
+     ]
+    ]
+   },
+   "settings": {
+    "known": 68,
+    "counts": [
+     [
+      "game",
+      66
+     ],
+     [
+      "practice",
+      2
+     ]
+    ]
+   },
+   "surgery": 3,
+   "season_ending": 4
+  },
+  {
+   "key": "foot_fracture",
+   "name": "Broken foot",
+   "injuries": 27,
+   "contact": {
+    "known": 4,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 11,
+    "counts": [
+     [
+      "stepped_on_foot",
+      3
+     ],
+     [
+      "landing",
+      6
+     ],
+     [
+      "fall",
+      2
+     ]
+    ]
+   },
+   "plays": {
+    "known": 8,
+    "counts": [
+     [
+      "drive",
+      3
+     ],
+     [
+      "drew_foul",
+      1
+     ],
+     [
+      "defending_the_rim",
+      1
+     ],
+     [
+      "steal",
+      1
+     ],
+     [
+      "jump_shot",
+      1
+     ],
+     [
+      "other",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 22,
+    "counts": [
+     [
+      "game",
+      15
+     ],
+     [
+      "workout",
+      6
+     ],
+     [
+      "offseason",
+      1
+     ]
+    ]
+   },
+   "surgery": 12,
+   "season_ending": 3
+  },
+  {
+   "key": "bone_stress",
+   "name": "Stress fracture or reaction",
+   "injuries": 42,
+   "contact": {
+    "known": 2,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 3,
+    "counts": [
+     [
+      "stepped_on_foot",
+      1
+     ],
+     [
+      "collision",
+      1
+     ],
+     [
+      "overuse",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 3,
+    "counts": [
+     [
+      "drive",
+      1
+     ],
+     [
+      "rebound",
+      1
+     ],
+     [
+      "other",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 11,
+    "counts": [
+     [
+      "game",
+      9
+     ],
+     [
+      "workout",
+      2
+     ]
+    ]
+   },
+   "surgery": 15,
+   "season_ending": 9
+  },
+  {
+   "key": "leg_fracture",
+   "name": "Broken leg, knee or ankle",
+   "injuries": 21,
+   "contact": {
+    "known": 9,
+    "non_contact": 2
+   },
+   "mechanisms": {
+    "known": 16,
+    "counts": [
+     [
+      "stepped_on_foot",
+      1
+     ],
+     [
+      "landing",
+      8
+     ],
+     [
+      "collision",
+      4
+     ],
+     [
+      "fall",
+      3
+     ]
+    ]
+   },
+   "plays": {
+    "known": 10,
+    "counts": [
+     [
+      "rebound",
+      3
+     ],
+     [
+      "drew_foul",
+      1
+     ],
+     [
+      "transition",
+      3
+     ],
+     [
+      "loose_ball",
+      1
+     ],
+     [
+      "defending_the_rim",
+      1
+     ],
+     [
+      "other",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 20,
+    "counts": [
+     [
+      "game",
+      18
+     ],
+     [
+      "practice",
+      1
+     ],
+     [
+      "workout",
+      1
+     ]
+    ]
+   },
+   "surgery": 8,
+   "season_ending": 7
+  },
+  {
+   "key": "hand_fracture",
+   "name": "Broken hand, finger or wrist",
+   "injuries": 89,
+   "contact": {
+    "known": 20,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 23,
+    "counts": [
+     [
+      "landing",
+      1
+     ],
+     [
+      "collision",
+      3
+     ],
+     [
+      "struck",
+      6
+     ],
+     [
+      "fall",
+      12
+     ],
+     [
+      "overextension",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 29,
+    "counts": [
+     [
+      "drive",
+      4
+     ],
+     [
+      "rebound",
+      4
+     ],
+     [
+      "drew_foul",
+      6
+     ],
+     [
+      "loose_ball",
+      2
+     ],
+     [
+      "screen",
+      2
+     ],
+     [
+      "steal",
+      5
+     ],
+     [
+      "other",
+      6
+     ]
+    ]
+   },
+   "settings": {
+    "known": 79,
+    "counts": [
+     [
+      "game",
+      69
+     ],
+     [
+      "practice",
+      8
+     ],
+     [
+      "workout",
+      2
+     ]
+    ]
+   },
+   "surgery": 36,
+   "season_ending": 3
+  },
+  {
+   "key": "ankle",
+   "name": "Ankle sprain",
+   "injuries": 127,
+   "contact": {
+    "known": 45,
+    "non_contact": 1
+   },
+   "mechanisms": {
+    "known": 58,
+    "counts": [
+     [
+      "stepped_on_foot",
+      33
+     ],
+     [
+      "landing",
+      18
+     ],
+     [
+      "cutting_or_planting",
+      2
+     ],
+     [
+      "collision",
+      4
+     ],
+     [
+      "fall",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 53,
+    "counts": [
+     [
+      "drive",
+      10
+     ],
+     [
+      "rebound",
+      6
+     ],
+     [
+      "drew_foul",
+      8
+     ],
+     [
+      "transition",
+      4
+     ],
+     [
+      "loose_ball",
+      3
+     ],
+     [
+      "defending_the_rim",
+      9
+     ],
+     [
+      "steal",
+      1
+     ],
+     [
+      "jump_shot",
+      2
+     ],
+     [
+      "other",
+      10
+     ]
+    ]
+   },
+   "settings": {
+    "known": 115,
+    "counts": [
+     [
+      "game",
+      100
+     ],
+     [
+      "practice",
+      8
+     ],
+     [
+      "workout",
+      7
+     ]
+    ]
+   },
+   "surgery": 5,
+   "season_ending": 7
+  },
+  {
+   "key": "muscle",
+   "name": "Muscle strain",
+   "injuries": 166,
+   "contact": {
+    "known": 19,
+    "non_contact": 15
+   },
+   "mechanisms": {
+    "known": 11,
+    "counts": [
+     [
+      "landing",
+      2
+     ],
+     [
+      "cutting_or_planting",
+      1
+     ],
+     [
+      "collision",
+      2
+     ],
+     [
+      "struck",
+      1
+     ],
+     [
+      "fall",
+      3
+     ],
+     [
+      "overextension",
+      1
+     ],
+     [
+      "overuse",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 41,
+    "counts": [
+     [
+      "drive",
+      8
+     ],
+     [
+      "rebound",
+      2
+     ],
+     [
+      "drew_foul",
+      1
+     ],
+     [
+      "transition",
+      9
+     ],
+     [
+      "loose_ball",
+      4
+     ],
+     [
+      "defending_the_rim",
+      3
+     ],
+     [
+      "screen",
+      3
+     ],
+     [
+      "jump_shot",
+      1
+     ],
+     [
+      "other",
+      10
+     ]
+    ]
+   },
+   "settings": {
+    "known": 140,
+    "counts": [
+     [
+      "game",
+      127
+     ],
+     [
+      "practice",
+      7
+     ],
+     [
+      "workout",
+      6
+     ]
+    ]
+   },
+   "surgery": 7,
+   "season_ending": 4
+  },
+  {
+   "key": "back",
+   "name": "Back injury",
+   "injuries": 30,
+   "contact": {
+    "known": 2,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 3,
+    "counts": [
+     [
+      "struck",
+      2
+     ],
+     [
+      "fall",
+      1
+     ]
+    ]
+   },
+   "plays": {
+    "known": 3,
+    "counts": [
+     [
+      "drive",
+      1
+     ],
+     [
+      "transition",
+      1
+     ],
+     [
+      "steal",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 15,
+    "counts": [
+     [
+      "game",
+      14
+     ],
+     [
+      "practice",
+      1
+     ]
+    ]
+   },
+   "surgery": 6,
+   "season_ending": 2
+  },
+  {
+   "key": "shoulder",
+   "name": "Shoulder injury",
+   "injuries": 43,
+   "contact": {
+    "known": 18,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 16,
+    "counts": [
+     [
+      "landing",
+      1
+     ],
+     [
+      "collision",
+      8
+     ],
+     [
+      "struck",
+      2
+     ],
+     [
+      "fall",
+      3
+     ],
+     [
+      "overextension",
+      2
+     ]
+    ]
+   },
+   "plays": {
+    "known": 18,
+    "counts": [
+     [
+      "drive",
+      2
+     ],
+     [
+      "rebound",
+      1
+     ],
+     [
+      "drew_foul",
+      3
+     ],
+     [
+      "transition",
+      2
+     ],
+     [
+      "loose_ball",
+      2
+     ],
+     [
+      "screen",
+      5
+     ],
+     [
+      "steal",
+      2
+     ],
+     [
+      "other",
+      1
+     ]
+    ]
+   },
+   "settings": {
+    "known": 34,
+    "counts": [
+     [
+      "game",
+      31
+     ],
+     [
+      "practice",
+      3
+     ]
+    ]
+   },
+   "surgery": 19,
+   "season_ending": 15
+  },
+  {
+   "key": "concussion",
+   "name": "Concussion",
+   "injuries": 126,
+   "contact": {
+    "known": 80,
+    "non_contact": 0
+   },
+   "mechanisms": {
+    "known": 86,
+    "counts": [
+     [
+      "collision",
+      28
+     ],
+     [
+      "struck",
+      46
+     ],
+     [
+      "fall",
+      12
+     ]
+    ]
+   },
+   "plays": {
+    "known": 32,
+    "counts": [
+     [
+      "drive",
+      1
+     ],
+     [
+      "rebound",
+      10
+     ],
+     [
+      "drew_foul",
+      3
+     ],
+     [
+      "transition",
+      1
+     ],
+     [
+      "loose_ball",
+      4
+     ],
+     [
+      "defending_the_rim",
+      2
+     ],
+     [
+      "screen",
+      4
+     ],
+     [
+      "jump_shot",
+      1
+     ],
+     [
+      "other",
+      6
+     ]
+    ]
+   },
+   "settings": {
+    "known": 112,
+    "counts": [
+     [
+      "game",
+      107
+     ],
+     [
+      "practice",
+      5
+     ]
+    ]
+   },
+   "surgery": 0,
+   "season_ending": 0
+  }
+ ],
+ "sources": {
+  "citations": 2009,
+  "outlets": 204,
+  "kinds": {
+   "national": 530,
+   "wire": 334,
+   "local": 311,
+   "team": 296,
+   "aggregator": 253,
+   "league_media": 156,
+   "blog": 126,
+   "league": 1,
+   "school": 1,
+   "student": 1
+  }
+ },
+ "labels": {
+  "mechanisms": {
+   "stepped_on_foot": "On someone’s foot",
+   "landing": "Landing",
+   "cutting_or_planting": "Cutting or planting",
+   "collision": "Collision",
+   "struck": "Hit by a player",
+   "fall": "Fall",
+   "overextension": "Bent too far",
+   "overuse": "Overuse"
+  },
+  "plays": {
+   "drive": "Driving",
+   "rebound": "Rebounding",
+   "drew_foul": "Fouled",
+   "transition": "In transition",
+   "loose_ball": "Chasing a loose ball",
+   "defending_the_rim": "Defending the rim",
+   "screen": "A screen",
+   "steal": "A steal",
+   "jump_shot": "A jump shot",
+   "other": "Something else"
+  },
+  "settings": {
+   "game": "In a game",
+   "practice": "In practice",
+   "workout": "In a workout",
+   "offseason": "In the offseason"
+  }
+ }
+}

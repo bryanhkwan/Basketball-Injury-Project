@@ -7,12 +7,12 @@
   "base_rate": {
    "test": {
     "rows": 56274,
-    "positives": 2081,
-    "rate": 0.037,
+    "positives": 2076,
+    "rate": 0.0369,
     "auc": 0.5,
-    "avg_precision": 0.037,
+    "avg_precision": 0.0369,
     "brier_skill": -0.0009,
-    "log_loss": 0.1587,
+    "log_loss": 0.1584,
     "top10_lift": 1.0,
     "top10_capture": 1.0
    }
@@ -22,215 +22,215 @@
     "learning_rate": 0.03,
     "max_leaf_nodes": 15,
     "min_samples_leaf": 800,
-    "max_iter": 300
+    "max_iter": 250
    },
    "test": {
     "rows": 56274,
-    "positives": 2081,
-    "rate": 0.037,
-    "auc": 0.7044,
-    "avg_precision": 0.0965,
-    "brier_skill": 0.0253,
-    "log_loss": 0.1482,
-    "top10_lift": 2.73,
-    "top10_capture": 0.273
+    "positives": 2076,
+    "rate": 0.0369,
+    "auc": 0.7042,
+    "avg_precision": 0.096,
+    "brier_skill": 0.0256,
+    "log_loss": 0.1479,
+    "top10_lift": 2.7,
+    "top10_capture": 0.27
    },
    "auc_95": [
-    0.6902,
+    0.6896,
     0.7185
    ],
    "by_season": {
     "2025": {
      "rows": 27916,
-     "positives": 1059,
+     "positives": 1058,
      "rate": 0.0379,
-     "auc": 0.7144,
-     "avg_precision": 0.1076,
-     "brier_skill": 0.0307,
-     "log_loss": 0.1497,
-     "top10_lift": 2.95,
-     "top10_capture": 0.295
+     "auc": 0.7137,
+     "avg_precision": 0.1094,
+     "brier_skill": 0.031,
+     "log_loss": 0.1496,
+     "top10_lift": 2.87,
+     "top10_capture": 0.287
     },
     "2026": {
      "rows": 28358,
-     "positives": 1022,
-     "rate": 0.036,
-     "auc": 0.6942,
-     "avg_precision": 0.0864,
-     "brier_skill": 0.0196,
-     "log_loss": 0.1467,
-     "top10_lift": 2.53,
-     "top10_capture": 0.253
+     "positives": 1018,
+     "rate": 0.0359,
+     "auc": 0.6944,
+     "avg_precision": 0.0845,
+     "brier_skill": 0.0199,
+     "log_loss": 0.1462,
+     "top10_lift": 2.5,
+     "top10_capture": 0.25
     }
    },
    "calibration": [
     {
      "decile": 1,
-     "predicted": 0.0076,
-     "observed": 0.0084,
+     "predicted": 0.0078,
+     "observed": 0.0091,
      "rows": 5628
     },
     {
      "decile": 2,
-     "predicted": 0.0115,
+     "predicted": 0.0114,
      "observed": 0.0124,
      "rows": 5627
     },
     {
      "decile": 3,
-     "predicted": 0.0156,
-     "observed": 0.0167,
+     "predicted": 0.0155,
+     "observed": 0.0156,
      "rows": 5627
     },
     {
      "decile": 4,
      "predicted": 0.0202,
-     "observed": 0.0185,
+     "observed": 0.0195,
      "rows": 5628
     },
     {
      "decile": 5,
-     "predicted": 0.0255,
-     "observed": 0.0259,
+     "predicted": 0.0254,
+     "observed": 0.0227,
      "rows": 5627
     },
     {
      "decile": 6,
-     "predicted": 0.0317,
-     "observed": 0.0327,
+     "predicted": 0.0315,
+     "observed": 0.0339,
      "rows": 5627
     },
     {
      "decile": 7,
-     "predicted": 0.0386,
-     "observed": 0.0384,
+     "predicted": 0.0383,
+     "observed": 0.0416,
      "rows": 5628
     },
     {
      "decile": 8,
-     "predicted": 0.0474,
-     "observed": 0.0535,
+     "predicted": 0.0468,
+     "observed": 0.053,
      "rows": 5627
     },
     {
      "decile": 9,
-     "predicted": 0.0614,
-     "observed": 0.0622,
+     "predicted": 0.0609,
+     "observed": 0.0615,
      "rows": 5627
     },
     {
      "decile": 10,
-     "predicted": 0.1068,
-     "observed": 0.1011,
+     "predicted": 0.1064,
+     "observed": 0.0995,
      "rows": 5628
     }
    ]
   },
   "after_game_gbm": {
    "settings": {
-    "learning_rate": 0.06,
+    "learning_rate": 0.03,
     "max_leaf_nodes": 31,
     "min_samples_leaf": 200,
-    "max_iter": 100
+    "max_iter": 150
    },
    "test": {
     "rows": 56274,
-    "positives": 2081,
-    "rate": 0.037,
-    "auc": 0.7623,
-    "avg_precision": 0.2244,
-    "brier_skill": 0.1025,
-    "log_loss": 0.1357,
-    "top10_lift": 3.91,
-    "top10_capture": 0.391
+    "positives": 2076,
+    "rate": 0.0369,
+    "auc": 0.7638,
+    "avg_precision": 0.2225,
+    "brier_skill": 0.1023,
+    "log_loss": 0.1354,
+    "top10_lift": 3.87,
+    "top10_capture": 0.387
    },
    "auc_95": [
-    0.7482,
-    0.7749
+    0.7499,
+    0.7766
    ],
    "by_season": {
     "2025": {
      "rows": 27916,
-     "positives": 1059,
+     "positives": 1058,
      "rate": 0.0379,
-     "auc": 0.7656,
-     "avg_precision": 0.2195,
-     "brier_skill": 0.0998,
-     "log_loss": 0.1383,
-     "top10_lift": 3.93,
-     "top10_capture": 0.393
+     "auc": 0.7669,
+     "avg_precision": 0.2127,
+     "brier_skill": 0.0964,
+     "log_loss": 0.1385,
+     "top10_lift": 3.9,
+     "top10_capture": 0.39
     },
     "2026": {
      "rows": 28358,
-     "positives": 1022,
-     "rate": 0.036,
-     "auc": 0.7589,
-     "avg_precision": 0.23,
-     "brier_skill": 0.1052,
-     "log_loss": 0.1332,
-     "top10_lift": 3.85,
-     "top10_capture": 0.386
+     "positives": 1018,
+     "rate": 0.0359,
+     "auc": 0.7607,
+     "avg_precision": 0.2342,
+     "brier_skill": 0.1084,
+     "log_loss": 0.1323,
+     "top10_lift": 3.84,
+     "top10_capture": 0.384
     }
    },
    "calibration": [
     {
      "decile": 1,
-     "predicted": 0.0062,
-     "observed": 0.0066,
+     "predicted": 0.0068,
+     "observed": 0.0068,
      "rows": 5628
     },
     {
      "decile": 2,
-     "predicted": 0.0093,
-     "observed": 0.0105,
+     "predicted": 0.0097,
+     "observed": 0.0101,
      "rows": 5627
     },
     {
      "decile": 3,
-     "predicted": 0.0123,
-     "observed": 0.0098,
+     "predicted": 0.0128,
+     "observed": 0.0108,
      "rows": 5627
     },
     {
      "decile": 4,
-     "predicted": 0.0157,
-     "observed": 0.0163,
+     "predicted": 0.0162,
+     "observed": 0.016,
      "rows": 5628
     },
     {
      "decile": 5,
-     "predicted": 0.0197,
-     "observed": 0.019,
+     "predicted": 0.0201,
+     "observed": 0.0181,
      "rows": 5627
     },
     {
      "decile": 6,
-     "predicted": 0.0246,
-     "observed": 0.0263,
+     "predicted": 0.0247,
+     "observed": 0.0233,
      "rows": 5627
     },
     {
      "decile": 7,
-     "predicted": 0.0306,
-     "observed": 0.0352,
+     "predicted": 0.0304,
+     "observed": 0.0362,
      "rows": 5628
     },
     {
      "decile": 8,
-     "predicted": 0.0393,
+     "predicted": 0.0387,
      "observed": 0.0453,
      "rows": 5627
     },
     {
      "decile": 9,
-     "predicted": 0.0547,
-     "observed": 0.0562,
+     "predicted": 0.053,
+     "observed": 0.0594,
      "rows": 5627
     },
     {
      "decile": 10,
-     "predicted": 0.1506,
-     "observed": 0.1446,
+     "predicted": 0.1455,
+     "observed": 0.1429,
      "rows": 5628
     }
    ]
@@ -240,83 +240,83 @@
  "importance_after_game_gbm": [
   {
    "feature": "cur_last_on_min",
-   "auc_drop": 0.0679
+   "auc_drop": 0.0687
   },
   {
    "feature": "playoffs",
-   "auc_drop": 0.0149
+   "auc_drop": 0.0159
   },
   {
    "feature": "inj_decay",
-   "auc_drop": 0.0101
+   "auc_drop": 0.0124
   },
   {
    "feature": "game_no",
-   "auc_drop": 0.0085
+   "auc_drop": 0.0078
   },
   {
    "feature": "cur_margin",
-   "auc_drop": 0.0075
+   "auc_drop": 0.0076
   },
   {
    "feature": "inj_per100",
-   "auc_drop": 0.0065
-  },
-  {
-   "feature": "min_avg10",
-   "auc_drop": 0.0031
-  },
-  {
-   "feature": "team_inj_rate_365",
-   "auc_drop": 0.0022
-  },
-  {
-   "feature": "season_min",
-   "auc_drop": 0.0016
-  },
-  {
-   "feature": "b2b_next14",
-   "auc_drop": 0.0015
+   "auc_drop": 0.0066
   },
   {
    "feature": "min_avg3",
-   "auc_drop": 0.0014
+   "auc_drop": 0.0024
   },
   {
-   "feature": "prone_shrunk",
-   "auc_drop": 0.0013
+   "feature": "min_avg10",
+   "auc_drop": 0.0021
   },
   {
-   "feature": "usage36",
-   "auc_drop": 0.0012
+   "feature": "team_inj_rate_365",
+   "auc_drop": 0.0019
   },
   {
    "feature": "cur_q4ot_min",
-   "auc_drop": 0.0011
+   "auc_drop": 0.0017
   },
   {
-   "feature": "days_since_return",
-   "auc_drop": 0.0011
+   "feature": "b2b_next14",
+   "auc_drop": 0.0014
   },
   {
    "feature": "exp",
-   "auc_drop": 0.0011
-  },
-  {
-   "feature": "games_4d",
-   "auc_drop": 0.0011
+   "auc_drop": 0.001
   },
   {
    "feature": "cur_n_stints",
    "auc_drop": 0.001
   },
   {
-   "feature": "cur_minutes",
+   "feature": "usage36",
    "auc_drop": 0.001
   },
   {
    "feature": "missed_decay",
+   "auc_drop": 0.0009
+  },
+  {
+   "feature": "games_4d",
+   "auc_drop": 0.0009
+  },
+  {
+   "feature": "season_min",
    "auc_drop": 0.0008
+  },
+  {
+   "feature": "days_since_return",
+   "auc_drop": 0.0008
+  },
+  {
+   "feature": "cur_minutes",
+   "auc_drop": 0.0008
+  },
+  {
+   "feature": "prone_shrunk",
+   "auc_drop": 0.0007
   }
  ]
 }

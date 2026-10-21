@@ -1,0 +1,150 @@
+{
+ "moments_vs_news": {
+  "pinned_exits_with_a_reported_game": 261,
+  "with_a_reported_play": 129,
+  "plays": {
+   "drive": 28,
+   "other": 24,
+   "transition": 14,
+   "rebound": 13,
+   "drew_foul": 11,
+   "screen": 10,
+   "loose_ball": 9,
+   "defending_the_rim": 9,
+   "steal": 7,
+   "jump_shot": 4
+  },
+  "patterns": [
+   {
+    "pattern": "Fouled",
+    "flag": "fouled_30",
+    "play": "drew_foul",
+    "flagged": 19,
+    "flagged_said": 6,
+    "unflagged": 110,
+    "unflagged_said": 5,
+    "odds_ratio": 9.692307692307692,
+    "p": 0.0013639515424111082
+   },
+   {
+    "pattern": "Their own steal",
+    "flag": "steal_30",
+    "play": "steal",
+    "flagged": 12,
+    "flagged_said": 1,
+    "unflagged": 117,
+    "unflagged_said": 6,
+    "odds_ratio": 1.6818181818181819,
+    "p": 0.5038017457600428
+   },
+   {
+    "pattern": "The other team attacked the rim",
+    "flag": "opp_rim_30",
+    "play": "defending_the_rim",
+    "flagged": 45,
+    "flagged_said": 6,
+    "unflagged": 84,
+    "unflagged_said": 3,
+    "odds_ratio": 4.153846153846154,
+    "p": 0.064483240949118
+   },
+   {
+    "pattern": "A drive",
+    "flag": "drive_30",
+    "play": "drive",
+    "flagged": 16,
+    "flagged_said": 6,
+    "unflagged": 113,
+    "unflagged_said": 22,
+    "odds_ratio": 2.481818181818182,
+    "p": 0.11332028200926593
+   },
+   {
+    "pattern": "A rebound",
+    "flag": "rebound_30",
+    "play": "rebound",
+    "flagged": 17,
+    "flagged_said": 7,
+    "unflagged": 112,
+    "unflagged_said": 6,
+    "odds_ratio": 12.366666666666667,
+    "p": 0.00021213600647973616
+   },
+   {
+    "pattern": "The break or scramble after their own steal",
+    "flag": "steal_30",
+    "play": "transition, drive, drew_foul, loose_ball",
+    "flagged": 12,
+    "flagged_said": 10,
+    "unflagged": 117,
+    "unflagged_said": 52,
+    "odds_ratio": 6.25,
+    "p": 0.013746813802273581
+   }
+  ],
+  "ankle_after_a_foul_mechanisms": {
+   "stepped_on_foot": 3,
+   "not reported": 3,
+   "landing": 1
+  }
+ },
+ "model_by_kind": {
+  "test_auc": 0.7027,
+  "by_kind": {
+   "bone": {
+    "auc": 0.5264,
+    "injuries": 47
+   },
+   "concussion": {
+    "auc": 0.6405,
+    "injuries": 30
+   },
+   "impact": {
+    "auc": 0.7088,
+    "injuries": 176
+   },
+   "ligament": {
+    "auc": 0.6707,
+    "injuries": 260
+   },
+   "muscle_tendon": {
+    "auc": 0.6954,
+    "injuries": 242
+   },
+   "other": {
+    "auc": 0.7795,
+    "injuries": 74
+   },
+   "soreness": {
+    "auc": 0.7337,
+    "injuries": 272
+   },
+   "surgery": {
+    "auc": 0.7713,
+    "injuries": 14
+   }
+  },
+  "comparisons": [
+   {
+    "comparison": "Strains against knocks and concussions (the listing's words)",
+    "auc_a": 0.6954,
+    "injuries_a": 242,
+    "auc_b": 0.7019,
+    "injuries_b": 193,
+    "difference": -0.0065,
+    "lo": -0.0542,
+    "hi": 0.0455
+   },
+   {
+    "comparison": "Non-contact against contact (the news)",
+    "auc_a": 0.5699,
+    "injuries_a": 17,
+    "auc_b": 0.7146,
+    "injuries_b": 52,
+    "difference": -0.1447,
+    "lo": -0.3012,
+    "hi": -0.0057
+   }
+  ]
+ }
+}

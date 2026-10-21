@@ -152,7 +152,7 @@
     <div class="wrap">
       <header class="sec-head" data-rise>
         <p class="kicker">Inside the project</p>
-        <h2 id="explore-title">Four questions, answered with data</h2>
+        <h2 id="explore-title">Six questions, answered with data</h2>
         <p class="sec-lead">Each one has its own dashboard or report. Here’s the short version, with the real charts.</p>
       </header>
 
@@ -216,8 +216,8 @@
           <p class="kicker">NBA vs college</p>
           <h3 id="f4-title">Does it hold up in college basketball?</h3>
           <p>Before looking at any college data, I wrote the test down and published its fingerprint, so the results couldn’t steer the questions. In $college_traced Division I injury exits, <strong>$college_same patterns</strong> pointed the same way as in the NBA. $college_passed of the four main checks cleared the bar, and together they give an odds ratio of $pooled.</p>
-          <p>Then I lined up every play before every kind of injury in both leagues. Of the $agree_clear with a clear NBA signal, <strong>$agree_same point the same way in college</strong>.</p>
-          <p class="fine">College athletes appear only as totals; no player is named.</p>
+          <p>Then I lined up every play before every kind of injury in both leagues. Of the $agree_clear with a clear NBA signal, <strong>$agree_same point the same way in college</strong>. And where the college record is fairly complete, players with a college injury on it got hurt <strong>${carry_ratio}× as often</strong> in their first two NBA seasons.</p>
+          <p class="fine">Every NBA player since 2018-19 and every college player Covers listed injured has a profile in the dashboards.</p>
           <a class="text-link" href="dashboard.html#college">Compare every play, NBA vs college <span aria-hidden="true">→</span></a>
         </div>
         <div class="panel feature-visual" data-ui data-rise>
@@ -225,6 +225,45 @@
           <p class="panel-sub">How many times as likely, with the likely range. 1× is no difference.</p>
           <p class="legend" aria-hidden="true"><span><i class="dot nba"></i>NBA</span><span><i class="dot college"></i>College</span></p>
           <div class="chart" id="college-chart"></div>
+        </div>
+      </article>
+
+      <article class="feature" aria-labelledby="f5-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">How it happened · from the news</p>
+          <h3 id="f5-title">How do players get hurt?</h3>
+          <p>The injury reports often say only “knee soreness.” Looking up <strong>$news_researched injuries</strong> in the news named the injury for $news_named of them and, for $news_how, how it happened. $news_finding</p>
+          <ul class="ticks">
+            <li>$news_vague vague listings named</li>
+            <li>$news_game injuries dated to the game they happened in</li>
+            <li>Every fact on the player profiles, with its sources</li>
+          </ul>
+          <a class="text-link" href="dashboard.html#how">See how each injury happens <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <h4>With no contact</h4>
+          <p class="panel-sub">Share of each injury with no contact, where the news says</p>
+          <div class="chart">$news_contact</div>
+        </div>
+      </article>
+
+      <article class="feature flip" aria-labelledby="f6-title">
+        <div class="feature-copy" data-rise>
+          <p class="kicker">After an injury · the career study</p>
+          <h3 id="f6-title">What does an injury do to a career?</h3>
+          <p>Each of $career_followed injured players was set against the ten players most like them the day they were hurt. In their first year back they played <strong>$career_minutes fewer minutes a game</strong>, but just as well per minute. $career_achilles</p>
+          <ul class="ticks">
+            <li>How long each kind of injury keeps players out</li>
+            <li>Who came back the same, and who got hurt again</li>
+            <li>Every torn ACL and Achilles since 2018-19, player by player</li>
+          </ul>
+          <a class="text-link" href="dashboard.html#careers">See what each injury costs <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="panel feature-visual" data-ui data-rise>
+          <h4>Hurt in the same place again</h4>
+          <p class="panel-sub">Within a year of coming back, against players like them</p>
+          <p class="legend" aria-hidden="true"><span><i></i>After the injury</span><span><i class="muted"></i>Players like them</span></p>
+          <div class="chart">$career_again</div>
         </div>
       </article>
     </div>

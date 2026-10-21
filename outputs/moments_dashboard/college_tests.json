@@ -15,9 +15,9 @@
   "verdict": "same way",
   "verdict_label": "Same direction, not proven",
   "nba_key": "ankle:fouled",
-  "nba_times": 4.802675477451829,
-  "power_lo": 0.974,
-  "power_hi": 0.99025,
+  "nba_times": 4.767110961456386,
+  "power_lo": 0.97225,
+  "power_hi": 0.98925,
   "explain": "Players tended to leave right at the whistle, mostly on fouls with no free throws, rather than after shooting their own free throws as most NBA players did. The NBA check could only count fouls with free throws, so the two sizes can't be compared directly."
  },
  {
@@ -36,9 +36,9 @@
   "verdict": "same way",
   "verdict_label": "Same direction, not proven",
   "nba_key": "any:steal",
-  "nba_times": 2.5033752633802258,
-  "power_lo": 0.71675,
-  "power_hi": 0.856,
+  "nba_times": 2.498285106910216,
+  "power_lo": 0.71525,
+  "power_hi": 0.85325,
   "explain": "Leans the same way as in the NBA, but weaker and not proven, though the check had a good chance of proving a link as strong as the NBA's."
  },
  {
@@ -78,7 +78,7 @@
   "verdict": "passed",
   "verdict_label": "Passed (on 3 players)",
   "nba_key": "muscle:drive",
-  "nba_times": 1.9112875024580227,
+  "nba_times": 1.9116933904581173,
   "power_lo": 0.04425,
   "power_hi": 0.1635,
   "explain": "Passed the bar, but on three players, all on fast-break layups or dunks. Take away any one and it would not pass: treat it as a lead."
@@ -99,7 +99,7 @@
   "verdict": "same way",
   "verdict_label": "Same direction, not proven",
   "nba_key": "ankle:rebound",
-  "nba_times": 1.5208341346683405,
+  "nba_times": 1.5078556248367616,
   "power_lo": null,
   "power_hi": null,
   "explain": "About as strong as in the NBA, but too few college cases to prove it."

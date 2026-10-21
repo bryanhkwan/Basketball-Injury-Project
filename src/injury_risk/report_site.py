@@ -208,7 +208,7 @@ def render(d: dict) -> str:
              (f"{traced[(league, g)]['traced']:,} of {traced[(league, g)]['injuries']:,}", pct(traced[(league, g)]["share"]))
              if (league, g) in traced else ("—", "—"))] for g in groups], {1, 2, 3, 4})
 
-    # college athletes stay anonymous on the public site: their results appear only as totals
+    # the report tells the NBA stories; college players are on their own profiles in the dashboards, from the listings' facts
     cards = "\n".join(
         f'      <article class="card"><span class="chip">{esc(e["league"])}</span><h3>{esc(e["player"])}</h3>'
         f'<p class="meta">{esc(e["team"])} {esc(e["game"])} · {_day(e["date"])} · {esc(e["injury"])}</p>'

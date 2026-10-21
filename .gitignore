@@ -22,10 +22,17 @@ desktop.ini
 outputs/**/*.parquet
 outputs/*.log
 
-# Full per-player exports, kept local: the NBA dashboards' (the site publishes a compact copy in docs/data/) and the
-# NCAA injury listings (named college players, never published)
+# Full per-player exports, kept local: the NBA dashboards' and the player profiles' (the site publishes copies in
+# docs/data/), and the SCACCHoops listings (never published)
 outputs/dashboard/
 outputs/ncaa_injuries/
+outputs/profiles/nba.json
+outputs/profiles/college.json
+outputs/aftermath/players.json
+
+# The news research's list of injuries to look up (rebuilt by news-targets). Its findings, outputs/news/facts.jsonl,
+# are kept; the quotes behind them stay in data/news/, which is never committed.
+outputs/news/targets.jsonl
 
 # Pages and stores of the earlier private dashboards; the public site is docs/
 outputs/**/page.html

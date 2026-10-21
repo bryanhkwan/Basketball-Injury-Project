@@ -1,23 +1,23 @@
 [
  {
   "metric": "nba_injuries",
-  "value": 6536
+  "value": 6470
  },
  {
   "metric": "nba_traced",
-  "value": 981
+  "value": 985
  },
  {
   "metric": "nba_traced_share",
-  "value": 0.15009179926560587
+  "value": 0.15224111282843894
  },
  {
   "metric": "nba_beyond_chance",
-  "value": 0.7872676226403513
+  "value": 0.7882059155557027
  },
  {
   "metric": "nba_pattern_before_injury",
-  "value": 0.17225636523266022
+  "value": 0.17301949762866678
  },
  {
   "metric": "nba_pattern_before_normal_game",
