@@ -37,9 +37,3 @@ outputs/news/targets.jsonl
 # Pages and stores of the earlier private dashboards; the public site is docs/
 outputs/**/page.html
 outputs/**/store/
-
-# LinkedIn images, post drafts and the code that draws them, kept on this machine
-outputs/linkedin/
-src/injury_risk/linkedin.py
-src/injury_risk/site/linkedin.css
-tests/test_linkedin.py
