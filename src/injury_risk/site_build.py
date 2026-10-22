@@ -272,8 +272,9 @@ def write_data(log=print) -> None:
     files = [("board", board), ("players", players_data(board)), ("study", study_data())]
     if (PROFILES / "nba.json").exists():
         files += list(profiles_data().items())
-    if (AFTERMATH / "summary.json").exists():
-        files.append(("careers", json.loads((AFTERMATH / "summary.json").read_text(encoding="utf-8"))))
+    for name, path in (("careers", AFTERMATH / "summary.json"), ("college_careers", OUTPUTS / "college_aftermath" / "summary.json")):
+        if path.exists():
+            files.append((name, json.loads(path.read_text(encoding="utf-8"))))
     if (NEWS / "targets.jsonl").exists():
         files.append(("details", details_data()))
     for name, obj in files:
@@ -283,8 +284,8 @@ def write_data(log=print) -> None:
 
 
 def load() -> dict:
-    return {n: json.loads((DATA / f"{n}.json").read_text(encoding="utf-8")) for n in ("board", "players", "study", "careers")
-            if n != "careers" or (DATA / f"{n}.json").exists()}
+    return {n: json.loads((DATA / f"{n}.json").read_text(encoding="utf-8")) for n in ("board", "players", "study", "careers", "college_careers")
+            if n in ("board", "players", "study") or (DATA / f"{n}.json").exists()}
 
 
 # ---- the overview page --------------------------------------------------------------------------------------------
@@ -386,8 +387,8 @@ def news_values(study: dict) -> dict:
                               f'({foot} of {ankle["mechanisms"]["known"]} with a known cause).'))
 
 
-def career_values(careers: dict) -> dict:
-    """The overview's figures from the career study (careers.json)."""
+def career_values(careers: dict, college: dict | None = None) -> dict:
+    """The overview's figures from the career study (careers.json, and college_careers.json for the college line)."""
     by = {g["key"]: g for g in careers["groups"]}
     def one(g, k):
         return next(r for r in g["year_1"] + g["outcomes"] if r.get("metric", r.get("outcome")) == k)
@@ -399,7 +400,16 @@ def career_values(careers: dict) -> dict:
                       f'{"+" if r["difference"] > 0 else "−"}{abs(100 * r["difference"]):.0f} points' + ("" if clear else ", no clear difference"),
                       r["them"], r["matched"]))
     ach = one(by["achilles"], "playing_3")
-    return dict(career_followed=f'{careers["followed"]:,}', career_minutes=f'{abs(one(by["all"], "mpg")["effect"]):.1f}',
+    line = ""
+    if college:
+        cby = {g["key"]: g for g in college["groups"]}
+        m, nba = one(cby["all"], "mpg"), one(cby["acl"], "nba")
+        moved = m["after"] - m["before"]
+        line = (f' In college, an injury cost a year of growth: players like them gained {m["matched_change"]:.1f} minutes a game '
+                f'the next season, and the injured {"stayed where they were" if abs(moved) < 1 else f"changed by {moved:+.1f}"}. '
+                f'And {round(nba["them"] * nba["injuries"])} of {nba["injuries"]} college players with a torn ACL reached the NBA, '
+                f'against {pct(nba["matched"], 0)} of players like them.')
+    return dict(career_followed=f'{careers["followed"]:,}', career_minutes=f'{abs(one(by["all"], "mpg")["effect"]):.1f}', career_college=line,
                 career_achilles=(f'After a torn Achilles, {round(ach["them"] * ach["injuries"])} of {ach["injuries"]} were still in the league '
                                  f'three seasons on, against {pct(ach["matched"], 0)} of players like them.'),
                 career_again=bar_rows(again, pair=True))
@@ -444,7 +454,7 @@ def render_overview(d: dict) -> str:
         pooled=f"{moments['college_pooled_times']:.1f}",
         agree_clear=str(agree["nba_clear"]), agree_same=str(agree["nba_clear_same"]),
         carry_ratio=f"{study['carry']['well_saved']['ratio']:.1f}",
-        kind_tabs=tabs, kind_panels=panels, **news_values(study), **career_values(d["careers"]))
+        kind_tabs=tabs, kind_panels=panels, **news_values(study), **career_values(d["careers"], d.get("college_careers")))
     return Template((SITE / "overview.html").read_text(encoding="utf-8")).substitute(values)
 
 

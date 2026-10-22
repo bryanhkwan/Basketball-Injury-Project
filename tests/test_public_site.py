@@ -218,6 +218,32 @@ class CareersAndDetails(unittest.TestCase):
         self.assertIn(f"Each of {self.c['followed']:,} injured players", page)
 
 
+@unittest.skipUnless(all((B.DATA / f"{n}.json").exists() for n in ("college_careers", "college")), "needs the published college career study")
+class CollegeCareers(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.c, cls.col = (json.loads((B.DATA / f"{n}.json").read_text(encoding="utf-8")) for n in ("college_careers", "college"))
+
+    def test_recovery_curves_only_fall_and_estimates_sit_in_their_ranges(self):
+        for g in self.c["groups"]:
+            self.assertEqual(g["still_out"][0], 1, g["key"])
+            self.assertTrue(all(b <= a for a, b in zip(g["still_out"], g["still_out"][1:])), g["key"])
+            for r in g["year_1"] + g["year_2"]:
+                self.assertTrue(r["lo"] <= r["effect"] <= r["hi"], (g["key"], r["metric"]))
+            for r in g["outcomes"]:
+                self.assertTrue(r["lo"] <= r["difference"] <= r["hi"], (g["key"], r["outcome"]))
+
+    def test_every_case_has_a_college_profile(self):
+        ids = {p["id"] for p in self.col["people"]}
+        cases = [c for g in self.c["groups"] for c in g.get("cases", [])]
+        self.assertTrue(cases)
+        self.assertEqual([c["covers_id"] for c in cases if c["covers_id"] not in ids], [])
+
+    def test_the_overview_tells_the_college_line(self):
+        page = (DOCS / "index.html").read_text(encoding="utf-8")
+        self.assertIn("In college, an injury cost a year of growth", page)
+
+
 EVIDENCE = OUTPUTS.parent / "data" / "news" / "evidence.jsonl"
 
 

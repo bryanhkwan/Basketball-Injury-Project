@@ -219,7 +219,9 @@ KPI strips, the board table (rank, player link, chance and bar, the top two reas
   seam separates the cells. The first column stays put when the table scrolls on a phone.
 - Every count names the injuries it rests on ("15 of 16"), since the news covers stars and long injuries best.
 
-**After an injury** (the career study) adds:
+**After an injury** (the career studies) switches between the NBA and college in its title row (`#careers/acl`,
+`#careers/college/acl`); each league keeps its own cards' measures (college shows games missed and the season's end
+instead of days, and what came next: the next season, a new school, the NBA). It adds:
 - **Change rows** (`Site.changeRows`): each measure's change against matched players, as a share of where the injured
   player started, on one linear scale with 0 marked. A filled dot is a clear difference and a grey one isn't; the raw
   before, after and the matched players' change sit in the row's subline.

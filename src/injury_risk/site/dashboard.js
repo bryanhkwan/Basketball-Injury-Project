@@ -1,6 +1,6 @@
 // dashboard.js: the dashboards (dashboard.html). One view per question, chosen by the address: #board/2025-10-21,
 // #board/2025-10-21/after, #players/1627936, #model/serious_g5, #factors, #when/muscle, #types/knee, #how, #careers/acl/2,
-// #college/ankle. Every view is drawn
+// #careers/college/acl, #college/ankle. Every view is drawn
 // from the files in data/ (written by site_build.py) and keeps its state while the reader moves between nights,
 // players or kinds of injury.
 (() => {
@@ -650,73 +650,117 @@
   };
 
   // ===================================================================================================== careers
-  // What an injury does to a career (#careers/acl, #careers/acl/2 for the second year back): how long it keeps players
-  // out, whether they come back the same, whether they get hurt again and whether they stay in the league, each set
-  // against the ten players most like them the day they were hurt (aftermath.py).
+  // What an injury does to a career, in the NBA (#careers/acl, #careers/acl/2 for the second year back) and in Division I
+  // (#careers/college/acl): how long it keeps players out, whether they come back the same, whether they get hurt again
+  // and what comes after, each set against the ten players most like them the day they were hurt (aftermath.py,
+  // college_aftermath.py).
   const SAME = [['mpg', 'Minutes a game', 'n'], ['starter', 'Games started', 'share'], ['production36', 'Production per 36 minutes', 'n'],
     ['pts36', 'Points per 36 minutes', 'n'], ['ts', 'True shooting', 'share'], ['rim36', 'Shots at the rim per 36 minutes', 'n']];
-  const AGAIN = [['same_region', 'Hurt in the same place again', 'share'], ['other_regions', 'New injuries elsewhere in the body', 'count'],
-    ['played_share', 'Share of the team’s games they played', 'share']];
-  const STAY = [['playing_2', 'Still playing two seasons on', 'share'], ['playing_3', 'Still playing three seasons on', 'share'],
-    ['new_team', 'On a new team in the year back', 'share']];
+  // each league's file and measures: what the "hurt again" and "after" cards show, the table's columns, the placebo's rows
+  const LEAGUES = {
+    nba: {
+      file: 'careers', since: '2018-19', name: 'NBA',
+      again: [['same_region', 'Hurt in the same place again', 'share'], ['other_regions', 'New injuries elsewhere in the body', 'count'],
+        ['played_share', 'Share of the team’s games they played', 'share']],
+      againMeta: 'The full year back',
+      after: [['playing_2', 'Still playing two seasons on', 'share'], ['playing_3', 'Still playing three seasons on', 'share'],
+        ['new_team', 'On a new team in the year back', 'share']],
+      afterTitle: 'Staying in the league', afterMeta: 'The seasons after',
+      alike: [['age', 'Age', 'n'], ['mpg', 'Minutes a game', 'n'], ['production36', 'Production per 36', 'n'], ['played_share', 'Share of games played', 'share']],
+      placebo: [['mpg', 'Minutes a game'], ['production36', 'Production per 36'], ['same_region', 'Hurt in the same place again'], ['playing_2', 'Still playing two seasons on']],
+      profile: (c) => `#players/${c.player_id}`,
+    },
+    college: {
+      file: 'college_careers', since: '2019-20', name: 'college',
+      again: [['listed_again', 'Listed hurt again', 'share'], ['played_share', 'Share of the team’s games they played', 'share']],
+      againMeta: 'The full year back; listed hurt again only where Covers’ page was well saved',
+      after: [['next_season', 'Still in Division I the next season', 'share'], ['moved', 'At another school the next season, of those still playing', 'share'],
+        ['nba', 'Reached the NBA', 'share']],
+      afterTitle: 'What came next', afterMeta: 'The next season, and the NBA',
+      alike: [['seasons', 'Seasons already played', 'n'], ['mpg', 'Minutes a game', 'n'], ['production36', 'Production per 36', 'n'],
+        ['played_share', 'Share of games played', 'share'], ['won', 'Share of their team’s games won', 'share']],
+      placebo: [['mpg', 'Minutes a game'], ['production36', 'Production per 36'], ['next_season', 'Still in Division I the next season'], ['nba', 'Reached the NBA']],
+      profile: (c) => `#players/c${c.covers_id}`,
+    },
+  };
   const amount = (v, unit) => (unit === 'share' ? pct(v, 0) : dec(v, 1));
   const gap = (v, unit) => (unit === 'share' ? `${signed(100 * v, 1)} points` : signed(v, unit === 'count' ? 2 : 1));
   const span = (r, unit) => `${gap(r.difference ?? r.effect, unit)} (${unit === 'share' ? `${signed(100 * r.lo, 1)} to ${signed(100 * r.hi, 1)}` : `${gap(r.lo, unit)} to ${gap(r.hi, unit)}`})`;
   const clearOf = (r) => r.lo > 0 || r.hi < 0;
+  const one = (list, k) => (list || []).find((r) => (r.metric || r.outcome) === k);
   // a week of the recovery curve as people say it, on an axis of `span` weeks
   const weekName = (i, span) => (i === 0 ? 'Hurt' : span <= 26 || i < 13 ? `${i} ${i === 1 ? 'week' : 'weeks'}`
     : i % 52 === 0 ? `${i / 52} ${i === 52 ? 'year' : 'years'}` : i % 13 === 0 ? `${(i / 13) * 3} months` : `${i} weeks`);
   const careers = {
+    data: {},
     async init(el) {
-      const c = (this.data = await load('careers'));
-      this.groups = Object.fromEntries(c.groups.map((g) => [g.key, g]));
       el.innerHTML = `
         <div class="title-row">
           <div><h1 id="careers-title">After an injury</h1><p class="sub" id="a-sub" aria-live="polite"></p></div>
-          <div class="controls"><label class="sr-only" for="a-pick">Kind of injury</label><select class="select" id="a-pick">${c.groups.map((g) => `<option value="${g.key}">${esc(g.key === 'all' ? 'Every injury' : g.name)}</option>`).join('')}</select></div>
+          <div class="controls"><div id="a-league">${segmented('League', [['nba', 'NBA'], ['college', 'College']], 'nba')}</div>
+            <label class="sr-only" for="a-pick">Kind of injury</label><select class="select" id="a-pick"></select></div>
         </div>
         <div class="kpis" id="a-kpis"></div>
         <div class="cards">
-          <article class="card span-7"><header><h2>Did they come back the same?</h2><div class="controls">${segmented('Year back', [['1', 'First year back'], ['2', 'Second year back']], '1')}</div></header>
+          <article class="card span-7"><header><h2>Did they come back the same?</h2><div class="controls" id="a-years">${segmented('Year back', [['1', 'First year back'], ['2', 'Second year back']], '1')}</div></header>
             <p class="meta" id="a-same-meta"></p><div id="a-same" style="margin-top:10px"></div><p class="note" id="a-same-note"></p></article>
           <article class="card span-5"><header><h2>How long it keeps players out</h2><p class="meta">Share still out, week by week</p></header>
             <p class="legend" id="a-curve-legend" aria-hidden="true"></p><div class="chart" id="a-curve" style="margin-top:8px"></div><p class="note" id="a-curve-note"></p></article>
-          <article class="card span-6"><header><h2>Getting hurt again</h2><p class="meta">The full year back</p></header>
+          <article class="card span-6"><header><h2>Getting hurt again</h2><p class="meta" id="a-again-meta"></p></header>
             <p class="legend" aria-hidden="true"><span><i></i>After this injury</span><span><i class="muted"></i>Players like them</span></p><div id="a-again" style="margin-top:12px"></div></article>
-          <article class="card span-6"><header><h2>Staying in the league</h2><p class="meta">The seasons after</p></header>
-            <p class="legend" aria-hidden="true"><span><i></i>After this injury</span><span><i class="muted"></i>Players like them</span></p><div id="a-stay" style="margin-top:12px"></div></article>
+          <article class="card span-6"><header><h2 id="a-after-title"></h2><p class="meta" id="a-after-meta"></p></header>
+            <p class="legend" aria-hidden="true"><span><i></i>After this injury</span><span><i class="muted"></i>Players like them</span></p><div id="a-after" style="margin-top:12px"></div></article>
           <article class="card span-12" id="a-cases-card"><header><h2 id="a-cases-title"></h2><p class="meta" id="a-cases-meta"></p></header><div id="a-cases"></div></article>
           <article class="card span-12"><header><h2>Every kind of injury</h2><p class="meta">Choose one to see it above</p></header><div class="table-wrap" id="a-table"></div>
-            <p class="note">Minutes a game: the change in the first year back against players like them. Hurt there again: within a year of coming back. Grey: no clear difference.</p></article>
-          <article class="card span-12"><header><h2>How this was measured</h2><p class="meta">Games through ${esc(longDay(c.end_of_data))}</p></header>
+            <p class="note" id="a-table-note"></p></article>
+          <article class="card span-12"><header><h2>How this was measured</h2><p class="meta" id="a-method-meta"></p></header>
             <div class="prose" id="a-method"></div><div class="split" style="margin-top:16px"><div id="a-alike"></div><div id="a-placebo"></div></div></article>
         </div>`;
-      $('#a-pick', el).addEventListener('change', (e) => this.go(e.target.value, this.year));
-      $$('.segmented button', el).forEach((b) => b.addEventListener('click', () => this.go(this.key, b.dataset.key)));
-      this.table(el);
-      this.method(el);
+      $('#a-pick', el).addEventListener('change', (e) => this.go(this.league, e.target.value, this.year));
+      $$('#a-league button', el).forEach((b) => b.addEventListener('click', () => this.go(b.dataset.key, 'all', '1')));
+      $$('#a-years button', el).forEach((b) => b.addEventListener('click', () => this.go(this.league, this.key, b.dataset.key)));
     },
-    go(key, year) { location.hash = `careers/${key}${year === '2' ? '/2' : ''}`; },
-    show(el, [keyArg, yearArg]) {
-      const g = this.groups[keyArg] || this.groups.all, year = yearArg === '2' ? '2' : '1', all = this.groups.all;
+    go(league, key, year) { location.hash = `careers/${league === 'college' ? 'college/' : ''}${key}${year === '2' ? '/2' : ''}`; },
+    async show(el, args) {
+      const league = args[0] === 'college' ? 'college' : 'nba', [keyArg, yearArg] = league === 'college' ? args.slice(1) : args;
+      const L = LEAGUES[league], c = (this.data[league] ||= await load(L.file));
+      if (league !== this.league) this.setLeague(el, league, c);
+      const groups = Object.fromEntries(c.groups.map((g) => [g.key, g]));
+      const g = groups[keyArg] || groups.all, year = yearArg === '2' ? '2' : '1', all = groups.all;
       this.key = g.key; this.year = year;
       $('#a-pick', el).value = g.key;
-      press(el, year);
+      press($('#a-league', el), league); press($('#a-years', el), year);
       $$('#a-table tbody tr', el).forEach((tr) => tr.setAttribute('aria-selected', String(tr.dataset.key === g.key)));
-      const one = (list, k) => (list || []).find((r) => (r.metric || r.outcome) === k);
-      const mpg = one(g.year_1, 'mpg'), prod = one(g.year_1, 'production36'), again = one(g.outcomes, 'same_region'), stay = one(g.outcomes, 'playing_2');
-      $('#a-sub', el).innerHTML = this.finding(g, mpg, prod);
+      const mpg = one(g.year_1, 'mpg');
+      $('#a-sub', el).innerHTML = league === 'college' ? this.collegeFinding(g, mpg) : this.finding(g, mpg, one(g.year_1, 'production36'));
       const kpi = (label, value, delta, lead = false) => `<div class="kpi${lead ? ' lead' : ''}"><div class="kpi-label">${label}</div><div class="kpi-value">${value}</div><div class="delta">${delta}</div></div>`;
-      $('#a-kpis', el).innerHTML = kpi('Half back within', g.median_days == null ? '–' : `${int(g.median_days)}<small>days</small>`,
-        `${dec(g.games_missed.median, 0)} games missed at the median · ${pct(g.back_within_a_year, 0)} back within a year`, true)
-        + kpi('Minutes a game, first year back', mpg ? signed(mpg.effect) : '–', mpg ? `against players like them · ${int(mpg.injuries)} injuries` : 'Too few with a year back to judge')
-        + kpi('Hurt there again within a year', again ? pct(again.them, 0) : '–', again ? `${pct(again.matched, 0)} for players like them` : 'Too few with a full year back')
-        + kpi('Still playing two seasons on', stay ? pct(stay.them, 0) : '–', stay ? `${pct(stay.matched, 0)} for players like them` : 'Too recent to tell');
+      const vs = (r, none) => (r ? [pct(r.them, 0), `${pct(r.matched, 0)} for players like them`] : ['–', none]);
+      const minutes = kpi('Minutes a game, first year back', mpg ? signed(mpg.effect) : '–', mpg ? `against players like them · ${int(mpg.injuries)} injuries` : 'Too few with a year back to judge');
+      $('#a-kpis', el).innerHTML = league === 'college'
+        ? kpi('Games missed', `${dec(g.games_missed.median, 0)}<small>at the median</small>`, `${pct(g.season_over, 0)} didn’t play again that season`, true) + minutes
+          + kpi('In Division I the next season', ...vs(one(g.outcomes, 'next_season'), 'Too recent to tell'))
+          + kpi('Reached the NBA', ...vs(one(g.outcomes, 'nba'), 'Too recent to tell'))
+        : kpi('Half back within', g.median_days == null ? '–' : `${int(g.median_days)}<small>days</small>`,
+          `${dec(g.games_missed.median, 0)} games missed at the median · ${pct(g.back_within_a_year, 0)} back within a year`, true) + minutes
+          + kpi('Hurt there again within a year', ...vs(one(g.outcomes, 'same_region'), 'Too few with a full year back'))
+          + kpi('Still playing two seasons on', ...vs(one(g.outcomes, 'playing_2'), 'Too recent to tell'));
       this.same(el, g, year);
-      this.curve(el, g, all);
-      this.pairsOf($('#a-again', el), g, AGAIN);
-      this.pairsOf($('#a-stay', el), g, STAY);
-      this.cases(el, g);
+      this.curve(el, g, all, league);
+      this.pairsOf($('#a-again', el), g, L.again);
+      this.pairsOf($('#a-after', el), g, L.after);
+      this.cases(el, g, L, c.end_of_data);
+    },
+    // a league's picker, cards' titles, table and method, drawn once each time the league changes
+    setLeague(el, league, c) {
+      const L = LEAGUES[league];
+      this.league = league; this.allCases = null;
+      $('#a-pick', el).innerHTML = c.groups.map((g) => `<option value="${g.key}">${esc(g.key === 'all' ? 'Every injury' : g.name)}</option>`).join('');
+      $('#a-again-meta', el).textContent = L.againMeta;
+      $('#a-after-title', el).textContent = L.afterTitle;
+      $('#a-after-meta', el).textContent = L.afterMeta;
+      $('#a-method-meta', el).textContent = `Games through ${longDay(c.end_of_data)}`;
+      this.table(el, c, league);
+      this.method(el, c, league);
     },
     // the line under the title: what the selected injury did, in one sentence
     finding(g, mpg, prod) {
@@ -731,6 +775,20 @@
       }
       return `${what}. ${back}${came ? `; ${came}` : ''}.`;
     },
+    // college players grow into bigger roles each season, so the finding is the growth an injury cost
+    collegeFinding(g, mpg) {
+      const what = g.key === 'all' ? `${int(g.injuries)} Division I injuries since 2019-20, ${int(g.players)} players`
+        : `${esc(g.name)} in college: ${int(g.injuries)} ${g.injuries === 1 ? 'injury' : 'injuries'} since 2019-20`;
+      const out = `${dec(g.games_missed.median, 0)} games missed at the median, and ${pct(g.season_over, 0)} didn’t play again that season`;
+      let came = '';
+      if (mpg) {
+        came = clearOf(mpg) && mpg.effect < 0 && mpg.matched_change > 0
+          ? `in their first year back they went from ${dec(mpg.before)} to ${dec(mpg.after)} minutes a game while players like them gained ${dec(mpg.matched_change)}: <b>${dec(-mpg.effect)} minutes behind</b>`
+          : clearOf(mpg) ? `in their first year back they played <b>${dec(Math.abs(mpg.effect))} ${mpg.effect < 0 ? 'fewer' : 'more'} minutes a game</b> than players like them`
+            : 'their minutes in the first year back moved like those of players like them';
+      }
+      return `${what}. ${out}${came ? `; ${came}` : ''}.`;
+    },
     same(el, g, year) {
       const rows = SAME.map(([k, label, unit]) => [(g[`year_${year}`] || []).find((r) => r.metric === k), label, unit]).filter(([r]) => r && r.before);
       $('#a-same-meta', el).textContent = rows.length
@@ -744,7 +802,7 @@
       })), { track: 170 });
       $('#a-same-note', el).innerHTML = 'Each dot is the change against players like them, as a share of where the injured player started; the bar is its likely range, and a grey dot means no clear difference. <b>Production</b> adds points, rebounds, assists, steals and blocks, and takes off turnovers.';
     },
-    curve(el, g, all) {
+    curve(el, g, all, league) {
       const span = (g.still_out[26] < 0.1 && all.still_out[26] < 0.1) || g.key === 'concussion' ? 26 : g.still_out[52] < 0.1 ? 52 : 104;
       const labels = Array.from({ length: span + 1 }, (_, i) => weekName(i, span));
       const ticks = span === 26 ? [0, 5, 10, 15, 20, 25] : span === 52 ? [0, 13, 26, 39, 52] : [0, 26, 52, 78, 104];
@@ -755,60 +813,80 @@
       Charts.line($('#a-curve', el), { labels, series, step: true, height: 230, yTicks: [0, 0.25, 0.5, 0.75, 1], format: (v) => pct(v, 0), xAt: ticks,
         reference: { value: 0.5, label: 'Half back' } });
       const t = g.timelines;
-      $('#a-curve-note', el).innerHTML = `${pct(g.back_within_a_year, 0)} were back within a year and ${pct(g.back_within_two_years, 0)} within two${g.not_back ? `; ${int(g.not_back)} hadn’t played again by June 2026` : ''}. Days count from the game they were hurt in and include any offseason.`
-        + (t ? ` <b>The team’s first timeline:</b> ${int(t.later)} of ${int(t.injuries)} came back later than its longest estimate${t.late_by != null ? ` (a median ${dec(t.late_by)} weeks late)` : ''}, ${int(t.sooner)} sooner.` : '');
+      $('#a-curve-note', el).innerHTML = league === 'college'
+        ? `${pct(g.back_within_a_year, 0)} were back within a year; ${pct(g.season_over, 0)} didn’t play again that season, so the summer is in most of these days.`
+          + ` Days count from their last game before the injury${g.not_back ? `, and ${int(g.not_back)} hadn’t played Division I again by April 2026` : ''}.`
+        : `${pct(g.back_within_a_year, 0)} were back within a year and ${pct(g.back_within_two_years, 0)} within two${g.not_back ? `; ${int(g.not_back)} hadn’t played again by June 2026` : ''}. Days count from the game they were hurt in and include any offseason.`
+          + (t ? ` <b>The team’s first timeline:</b> ${int(t.later)} of ${int(t.injuries)} came back later than its longest estimate${t.late_by != null ? ` (a median ${dec(t.late_by)} weeks late)` : ''}, ${int(t.sooner)} sooner.` : '');
     },
     pairsOf(target, g, list) {
       const rows = list.map(([k, label, unit]) => [g.outcomes.find((r) => r.outcome === k), label, unit]).filter(([r]) => r);
+      const missing = list.filter(([k]) => !g.outcomes.some((r) => r.outcome === k)).map(([, label]) => label);
       if (!rows.length) { target.innerHTML = '<div class="empty">Too few injuries with the years to follow yet.</div>'; return; }
       pairs(target, rows.map(([r, label, unit]) => ({ label, a: r.them, b: r.matched, format: (v) => amount(v, unit),
         sub: `${span(r, unit)}${clearOf(r) ? '' : ', no clear difference'} · ${int(r.injuries)} injuries` })), { scale: 'row' });
+      if (missing.length) target.insertAdjacentHTML('beforeend', `<p class="note">${esc(missing.join(', '))}: too few of these injuries to tell yet.</p>`);
     },
-    cases(el, g) {
+    cases(el, g, L, end) {
       const card = $('#a-cases-card', el);
       card.hidden = !g.cases;
       if (!g.cases) return;
       const rows = [...g.cases].reverse(), all = this.allCases === g.key, shown = all ? rows : rows.slice(0, 10);
-      $('#a-cases-title', el).textContent = `Every ${g.name.charAt(0).toLowerCase()}${g.name.slice(1)} since 2018-19`;
+      $('#a-cases-title', el).textContent = `Every ${g.name.charAt(0).toLowerCase()}${g.name.slice(1)}${L.name === 'college' ? ' in college' : ''} since ${L.since}`;
       $('#a-cases-meta', el).textContent = 'Newest first. The year before the injury, then the first year back, in regular-season games.';
       const pair = (a, b) => (a == null ? '–' : `${dec(a)}<span class="arrow" aria-hidden="true"> → </span><span class="sr-only"> before, then </span>${b == null ? '–' : dec(b)}`);
       $('#a-cases', el).innerHTML = `<div class="table-wrap"><table class="data cases"><thead><tr><th scope="col">Player</th><th scope="col">Back</th><th class="n" scope="col">Days out</th><th class="n" scope="col">Games missed</th><th class="n" scope="col">Minutes a game</th><th class="n" scope="col">Production per 36</th></tr></thead><tbody>`
-        + shown.map((r) => `<tr><td class="who"><a class="name" href="#players/${r.player_id}">${esc(r.player)}</a><span class="sub">${r.hurt ? `Hurt ${esc(shortMonth(r.hurt))}` : `First listed ${esc(shortMonth(r.listed))}`}</span></td>`
-          + `<td class="nowrap">${r.back ? esc(shortMonth(r.back)) : '<span class="pill neg">Not back</span>'}</td>`
+        + shown.map((r) => `<tr><td class="who"><a class="name" href="${L.profile(r)}">${esc(r.player)}</a><span class="sub">${r.hurt ? `Hurt ${esc(shortMonth(r.hurt))}` : `First listed ${esc(shortMonth(r.listed))}`}${r.nba ? ' · reached the NBA' : ''}</span></td>`
+          + `<td class="nowrap">${r.back ? esc(shortMonth(r.back)) : `<span class="pill neg">${daysBetween(r.hurt || r.listed, end) < 400 ? 'Not back yet' : 'Not back'}</span>`}</td>`
           + `<td class="n">${r.back && r.hurt ? int(daysBetween(r.hurt, r.back)) : '–'}<span class="unit"> days out</span></td><td class="n">${int(r.games_missed)}<span class="unit"> games missed</span></td>`
           + `<td class="n">${pair(r.mpg_before, r.mpg_after)}<span class="unit"> minutes a game</span></td><td class="n">${pair(r.production_before, r.production_after)}<span class="unit"> production per 36</span></td></tr>`).join('')
         + '</tbody></table></div><p class="note">A dash after the arrow: not back yet, or too few games back to judge by.</p>'
         + (rows.length > 10 ? `<button type="button" class="btn" id="a-more" style="margin-top:12px">${all ? 'Show the latest 10' : `Show all ${rows.length}`}</button>` : '');
       const more = $('#a-more', el);
-      if (more) more.addEventListener('click', () => { this.allCases = all ? null : g.key; this.cases(el, g); });
+      if (more) more.addEventListener('click', () => { this.allCases = all ? null : g.key; this.cases(el, g, L, end); });
     },
-    table(el) {
-      const one = (list, k) => (list || []).find((r) => (r.metric || r.outcome) === k);
-      $('#a-table', el).innerHTML = `<table class="data kinds"><thead><tr><th scope="col">Injury</th><th class="n" scope="col">Injuries</th><th class="n" scope="col">Games missed</th><th class="n hide-sm" scope="col">Days to return</th><th class="n hide-sm" scope="col">Back in a year</th><th class="n" scope="col">Minutes a game</th><th class="n" scope="col">Hurt there again</th></tr></thead><tbody>`
-        + this.data.groups.map((g) => {
-          const m = one(g.year_1, 'mpg'), a = one(g.outcomes, 'same_region');
-          return `<tr data-key="${g.key}"><td><a class="name" href="#careers/${g.key}">${esc(g.key === 'all' ? 'Every injury' : g.name)}</a></td><td class="n">${int(g.injuries)}<span class="unit"> injuries</span></td>`
-            + `<td class="n">${dec(g.games_missed.median, 0)}<span class="unit"> games out</span></td><td class="n hide-sm">${g.median_days == null ? '–' : int(g.median_days)}</td><td class="n hide-sm">${pct(g.back_within_a_year, 0)}</td>`
-            + `<td class="n${m && !clearOf(m) ? ' faint' : ''}">${m ? signed(m.effect) : '–'}<span class="unit"> minutes a game</span></td>`
-            + `<td class="n${a && !clearOf(a) ? ' faint' : ''}">${a ? `${pct(a.them, 0)}<span class="unit"> hurt there again</span><span class="sub">vs ${pct(a.matched, 0)}</span>` : '–'}</td></tr>`;
+    table(el, c, league) {
+      const versus = (r, unit) => (r ? `${pct(r.them, 0)}<span class="unit"> ${unit}</span><span class="sub">vs ${pct(r.matched, 0)}</span>` : '–');
+      const college = league === 'college';
+      const head = college
+        ? '<th class="n" scope="col">Injuries</th><th class="n" scope="col">Games missed</th><th class="n hide-sm" scope="col">Season over</th><th class="n" scope="col">Minutes a game</th><th class="n" scope="col">Next season</th><th class="n hide-sm" scope="col">Reached the NBA</th>'
+        : '<th class="n" scope="col">Injuries</th><th class="n" scope="col">Games missed</th><th class="n hide-sm" scope="col">Days to return</th><th class="n hide-sm" scope="col">Back in a year</th><th class="n" scope="col">Minutes a game</th><th class="n" scope="col">Hurt there again</th>';
+      $('#a-table', el).innerHTML = `<table class="data kinds"><thead><tr><th scope="col">Injury</th>${head}</tr></thead><tbody>`
+        + c.groups.map((g) => {
+          const m = one(g.year_1, 'mpg'), faint = (r) => (r && !clearOf(r) ? ' faint' : '');
+          const middle = college
+            ? `<td class="n hide-sm">${pct(g.season_over, 0)}</td>`
+            : `<td class="n hide-sm">${g.median_days == null ? '–' : int(g.median_days)}</td><td class="n hide-sm">${pct(g.back_within_a_year, 0)}</td>`;
+          const end = college
+            ? `<td class="n${faint(one(g.outcomes, 'next_season'))}">${versus(one(g.outcomes, 'next_season'), 'in Division I the next season')}</td><td class="n hide-sm${faint(one(g.outcomes, 'nba'))}">${versus(one(g.outcomes, 'nba'), 'reached the NBA')}</td>`
+            : `<td class="n${faint(one(g.outcomes, 'same_region'))}">${versus(one(g.outcomes, 'same_region'), 'hurt there again')}</td>`;
+          return `<tr data-key="${g.key}"><td><a class="name" href="#careers/${college ? 'college/' : ''}${g.key}">${esc(g.key === 'all' ? 'Every injury' : g.name)}</a></td><td class="n">${int(g.injuries)}<span class="unit"> injuries</span></td>`
+            + `<td class="n">${dec(g.games_missed.median, 0)}<span class="unit"> games out</span></td>${middle}`
+            + `<td class="n${faint(m)}">${m ? signed(m.effect) : '–'}<span class="unit"> minutes a game</span></td>${end}</tr>`;
         }).join('') + '</tbody></table>';
+      $('#a-table-note', el).textContent = college
+        ? 'Minutes a game: the change in the first year back against players like them. Season over: the share that didn’t play again that season. Next season and the NBA: the injured players against players like them. Grey: no clear difference.'
+        : 'Minutes a game: the change in the first year back against players like them. Hurt there again: within a year of coming back. Grey: no clear difference.';
     },
-    method(el) {
-      const c = this.data, b = Object.fromEntries(c.balance.map((r) => [r.measure, r]));
+    method(el, c, league) {
+      const L = LEAGUES[league], b = Object.fromEntries(c.balance.map((r) => [r.measure, r]));
       const p = Object.fromEntries([...c.placebo.came_back.map((r) => [r.metric, r]), ...c.placebo.outcomes.map((r) => [r.outcome, r])]);
-      $('#a-method', el).innerHTML = `<p>Every NBA injury since 2018-19 that cost 10 or more games, every torn ACL, Achilles and meniscus, and every concussion: <b>${int(c.followed)} of ${int(c.injuries)}</b> had a year of games before them to compare against. The diagnosis is the news’s where the research named it, else the injury report’s.</p>`
-        + '<p>Each player is set against the <b>ten players most like them</b> the day they were hurt: age, minutes, production per 36 and the share of their team’s games they played. Their change over the same dates takes out aging and the league’s drift, and a straight line fitted across everyone playing that day corrects what is left of the gap between them.</p>'
-        + '<p>These are associations in public data, not proof: who gets hurt, and who comes back, isn’t random. Ranges are 95%, resampling players. With 13 kinds of injury and many measures, a few will miss zero by chance.</p>';
+      $('#a-method', el).innerHTML = league === 'college'
+        ? `<p>Every Covers-listed injury to a Division I men’s player since 2019-20 that cost the team 4 or more games, every torn ACL, Achilles and meniscus the notes name, and every concussion: <b>${int(c.followed)} of ${int(c.injuries)}</b> had the games before them to compare against. Players are followed in ESPN’s box scores, whose ids hold across seasons and transfers.</p>`
+          + '<p>Each player is set against the <b>ten players most like them</b> the day they were hurt: seasons already played in Division I, minutes, production per 36, the share of their team’s games they played and how often their team won, with the same correction as the NBA study.</p>'
+          + '<p>Two limits. Covers’ page was saved on 2 to 76 days a season, so some injuries are missing, and “listed hurt again” rests on the two seasons saved on 30 or more days. And there is no class year, so a senior who graduates looks like a player who stopped. Ranges are 95%, resampling players; with this many measures, a few will miss zero by chance.</p>'
+        : `<p>Every NBA injury since 2018-19 that cost 10 or more games, every torn ACL, Achilles and meniscus, and every concussion: <b>${int(c.followed)} of ${int(c.injuries)}</b> had a year of games before them to compare against. The diagnosis is the news’s where the research named it, else the injury report’s.</p>`
+          + '<p>Each player is set against the <b>ten players most like them</b> the day they were hurt: age, minutes, production per 36 and the share of their team’s games they played. Their change over the same dates takes out aging and the league’s drift, and a straight line fitted across everyone playing that day corrects what is left of the gap between them.</p>'
+          + '<p>These are associations in public data, not proof: who gets hurt, and who comes back, isn’t random. Ranges are 95%, resampling players. With 13 kinds of injury and many measures, a few will miss zero by chance.</p>';
       const fact = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
+      const share = (k) => ['same_region', 'playing_2', 'next_season', 'nba'].includes(k);
       const ci = (r, f) => `${f(r.effect ?? r.difference)} <span class="faint">(${f(r.lo)} to ${f(r.hi)})</span>`;
+      const rows = L.placebo.filter(([k]) => p[k]), off = rows.filter(([k]) => clearOf(p[k]));
       $('#a-alike', el).innerHTML = '<h3 class="sub-head">How alike they were, the day they were hurt</h3><p class="note" style="margin-top:0">The injured players against the ten like each of them:</p><dl class="facts">'
-        + fact('Age', `${dec(b.age.injured)} against ${dec(b.age.matched)}`) + fact('Minutes a game', `${dec(b.mpg.injured)} against ${dec(b.mpg.matched)}`)
-        + fact('Production per 36', `${dec(b.production36.injured)} against ${dec(b.production36.matched)}`) + fact('Share of games played', `${pct(b.played_share.injured, 0)} against ${pct(b.played_share.matched, 0)}`)
-        + '</dl>';
-      $('#a-placebo', el).innerHTML = '<h3 class="sub-head">The placebo: players who weren’t hurt</h3><p class="note" style="margin-top:0">Five healthy players for each injury, through the same steps over the same dates. The method found nothing:</p><dl class="facts">'
-        + fact('Minutes a game', ci(p.mpg, (v) => signed(v, 2))) + fact('Production per 36', ci(p.production36, (v) => signed(v, 2)))
-        + fact('Hurt in the same place again', ci(p.same_region, (v) => `${signed(100 * v, 1)} pts`)) + fact('Still playing two seasons on', ci(p.playing_2, (v) => `${signed(100 * v, 1)} pts`))
-        + '</dl>';
+        + L.alike.filter(([k]) => b[k]).map(([k, label, unit]) => fact(label, `${amount(b[k].injured, unit)} against ${amount(b[k].matched, unit)}`)).join('') + '</dl>';
+      $('#a-placebo', el).innerHTML = '<h3 class="sub-head">The placebo: players who weren’t hurt</h3><p class="note" style="margin-top:0">Five healthy players for each injury, through the same steps over the same dates. '
+        + (off.length ? `The method found nothing, except a small bias on ${off.map(([, label]) => label.toLowerCase()).join(' and ')}: changes that small aren’t findings.` : 'The method found nothing:')
+        + '</p><dl class="facts">' + rows.map(([k, label]) => fact(label, ci(p[k], share(k) ? (v) => `${signed(100 * v, 1)} pts` : (v) => signed(v, 2)))).join('') + '</dl>';
     },
   };
 
@@ -909,7 +987,7 @@
     try {
       if (!ready[key]) { el.innerHTML = '<div class="title-row"><div><div class="skeleton" style="width:220px;height:30px"></div><div class="skeleton" style="width:420px;height:18px;margin-top:8px"></div></div></div>'; ready[key] = VIEWS[key].init(el); }
       await ready[key];
-      VIEWS[key].show(el, args.map(decodeURIComponent));
+      await VIEWS[key].show(el, args.map(decodeURIComponent));
     } catch (err) { ready[key] = null; fail(el, err); }
   }
 

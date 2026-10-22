@@ -33,6 +33,8 @@ def main(argv=None) -> None:
                                     "-> outputs/validation/summary.json")
     sub.add_parser("aftermath", help="what an injury does to a career: time out, coming back, durability and staying in "
                                      "the league, against matched players -> outputs/aftermath/summary.json")
+    sub.add_parser("college-aftermath", help="the same for Division I players: time out, coming back, the next season and "
+                                             "the NBA -> outputs/college_aftermath/summary.json")
     sub.add_parser("ncaa-injuries", help="NCAA injury listings from SCACCHoops, with how long each has been up "
                                          "-> outputs/ncaa_injuries/listings.json")
     p = sub.add_parser("moments", help="what players were doing just before leaving a game they got hurt in "
@@ -103,6 +105,9 @@ def main(argv=None) -> None:
     elif args.step == "aftermath":
         from . import aftermath
         aftermath.export()
+    elif args.step == "college-aftermath":
+        from . import college_aftermath
+        college_aftermath.export()
     elif args.step == "ncaa-injuries":
         from . import ncaa_injuries
         print(json.dumps(ncaa_injuries.export()))

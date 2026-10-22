@@ -31,7 +31,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Player profiles | `profiles` | Every NBA player's injury history, the college players Covers listed, and the players found in both (after `college-moments`) |
 | Injury news | `news-targets`, `news-fetch`, `news-research`, `news-audit`, `news-check`, `news-summary` | The injuries worth looking up in the news, a page reader that obeys each site's robots.txt, filing the research a batch at a time, an audit sample of each batch, the checks on what it finds (`specs/injury-news.md`), and how the injuries happened, in numbers |
 | Checks | `validate` | The play-by-play patterns and the model checked against what the news says happened |
-| Careers | `aftermath` | What happened after each injury: time out, how players came back, getting hurt again and staying in the league |
+| Careers | `aftermath`, `college-aftermath` | What happened after each injury, in the NBA and in Division I: time out, how players came back, getting hurt again, and staying in the league (or reaching the NBA) |
 | Site | `dashboard`, `moments-dashboard`, `site` | The dashboards' and the report's data in `outputs/`, then the public site in `docs/` (`report-site` rebuilds the report alone) |
 
 Where things are:
@@ -553,6 +553,81 @@ durability and career outcomes, and each ACL, Achilles, meniscus and broken-foot
 
 Not yet: contracts and salaries. That needs a salary source whose terms allow it.
 
+## What an injury does to a college career
+
+`python -m injury_risk college-aftermath` (`src/injury_risk/college_aftermath.py`) asks the same questions of Division I
+men's players, 2019-20 to 2025-26. It writes `outputs/college_aftermath/summary.json` and needs the college profiles
+(`outputs/profiles/`), the matched Covers listings (`outputs/college_moments/`) and ESPN's college box scores.
+
+**Which injuries.** Every Covers-listed injury that cost the team 4 or more games (10 of an NBA team's 82 is about 4 of
+a college team's 32), every torn ACL, Achilles and meniscus the notes name, and every concussion: 1,227 injuries. 962 of
+them (852 players) had the games before them to compare against.
+- Players are followed in ESPN's box scores, whose ids hold across seasons and transfers (Dalton Knecht from Northern
+  Colorado to Tennessee); the NCAA's change every season. 20,496 of 20,623 listings found their player by season, team
+  and name.
+- The absence is the run of team games the player missed around the listing.
+- An NBA career is a debut since 2020-21 under a name no other debut shares, with one college career of that name ending
+  one to three seasons before it (464 found).
+
+**How it compares.** As in the NBA study, each player is set against the ten players most like them the day they were
+hurt, here on seasons already played in Division I, minutes, production per 36, share of the team's games played, and
+how often their team won.
+
+**Checks.**
+- The injured and their matched players were alike on all five (standardized differences 0.03 or less).
+- The placebo (five players who weren't hurt for each injury) found nothing on minutes (-0.17, -0.44 to +0.09) or on any
+  outcome after the year back: the next season, a new school, the NBA, games played, listed hurt again.
+- It found a small bias on production per 36: -0.21 (-0.38 to -0.05), the same in the early seasons and the late ones.
+  Production changes smaller than about half a point aren't findings here.
+
+**Limits.**
+- Covers' page was saved on 2 to 76 days a season. Only 2020-21 and 2021-22 were saved on 30 or more, so "listed hurt
+  again" rests on those years alone, and in the thin seasons some matched players were hurt without a listing.
+- There is no class year. A senior who graduates looks like a player who stopped, and seasons played count only from
+  2019-20, so matching on them handles part of it.
+
+**What it found** (games through April 6, 2026):
+- **An injury costs a year of growth.** College players grow into bigger roles each season: players like them went up
+  2.5 minutes a game. Injured players stayed where they were (22.2 minutes before, 22.5 after), 2.3 minutes behind
+  (1.7 to 2.8), and started 10.5 points less often. In the second year back they caught up: -0.5 (-1.2 to +0.3).
+  Production per 36 didn't clearly move.
+- **Knee injuries cost the most.** After a torn ACL (52, 28 with a year back to judge by), players went from 23.7
+  minutes a game to 22.2 while players like them gained 3.2: 4.7 behind (2.5 to 6.9), starting 27 points less often.
+  In the second year they were level again. Other knee
+  injuries (181): 4.2 fewer minutes in the first year (2.9 to 5.5) and still 2.2 fewer in the second (0.3 to 4.1).
+- **Injured players stay in college longer.** 72% were in Division I the next season, against 59% of players like them
+  (+12.8 points, +9.2 to +15.9). The gap is widest after season-ending injuries (75% against 58%) and for players with
+  three or more seasons already played (56% against 33%), as a medical hardship waiver, which gives an injured player
+  the season back, would leave it.
+- **A torn ACL and the NBA.** 1 of 37 college players with a torn ACL reached the NBA, against 11.6% of players like
+  them (-8.9 points, -14.8 to -1.3). Across every injury there was no clear difference: 9.0% against 7.5% (711 injuries).
+- **Getting hurt again.** In the two well-saved seasons, 28% were listed hurt again within a year of coming back,
+  against 13% of players like them (+14.6 points, +4.8 to +25.0; 79 injuries).
+- **Games played.** In the year back they played 83% of their team's games, against 88% (-4.4 points, -6.4 to -2.5).
+- **Exploratory: concussions and transfers.** Of the concussed players still in Division I the next season, 57% had
+  changed schools, against 29% of players like them. It was unexpected, and with this many comparisons it may be
+  chance.
+
+| Injury | Injuries | Median games missed | Season over | Minutes a game, first year back | In Division I the next season (vs players like them) | Reached the NBA (vs players like them) |
+|---|---|---|---|---|---|---|
+| Every injury followed | 962 | 10 | 54% | -2.3 (-2.8 to -1.7) | 72% vs 59% | 9% vs 8% |
+| Torn ACL | 52 | 22 | 96% | -4.7 (-6.9 to -2.5) | 70% vs 58% | 3% vs 12% |
+| Torn Achilles | 9 | 17 | 67% | -1.5 (-7.4 to +3.7) | 67% vs 48% | 0% vs 10% |
+| Torn meniscus | 9 | 9 | 44% | -5.4 (-8.5 to -2.6) | 62% vs 52% | 17% vs 5% |
+| Broken bone | 57 | 11 | 42% | -0.7 (-2.6 to +1.3) | 73% vs 60% | 20% vs 11% |
+| Concussion | 75 | 2 | 12% | -1.3 (-2.6 to 0.0) | 79% vs 69% | 11% vs 9% |
+| Other knee injury | 181 | 13 | 61% | -4.2 (-5.5 to -2.9) | 73% vs 57% | 6% vs 8% |
+| Ankle injury | 89 | 7 | 46% | -2.4 (-4.0 to -0.7) | 64% vs 62% | 10% vs 6% |
+| Foot injury | 129 | 12 | 58% | -1.6 (-3.1 to -0.1) | 71% vs 52% | 10% vs 7% |
+| Muscle strain | 27 | 7 | 26% | -3.5 (-6.9 to -0.5) | 65% vs 47% | 16% vs 9% |
+| Back or hip injury | 59 | 12 | 64% | -0.6 (-2.7 to +1.5) | 74% vs 61% | 11% vs 7% |
+| Shoulder, arm or hand injury | 130 | 10 | 58% | -1.6 (-2.8 to -0.2) | 77% vs 62% | 7% vs 5% |
+
+Season over: the share that didn't play again that season. Minutes: the change against players like them. The NBA
+column counts only injuries in seasons that left two or more seasons to reach it; Achilles and meniscus rest on 9
+injuries each, so read them as cases, not rates. The dashboards' **After an injury** view shows it under its College
+switch, with every torn ACL and Achilles linked to the player's college profile.
+
 ## The public site
 
 `python -m injury_risk site` (`src/injury_risk/site_build.py`) builds everything in `docs/`:
@@ -564,8 +639,8 @@ Not yet: contracts and salaries. That needs a salary source whose terms allow it
   `outputs/dashboard/`; in a fresh clone the step keeps the published files and rebuilds the pages from them.
   With `outputs/profiles/` it also writes the profiles: `history.json` (every NBA player), `college.json` (every
   listed college player) and `people.json` (the search box's index of both). With `outputs/aftermath/` and
-  `outputs/news/` it writes `careers.json` (the career study) and `details.json` (each injury's facts from the news and
-  how the player came back, for the profiles), and adds how injuries happened and the checks against the news to
+  `outputs/news/` it writes `careers.json` and `college_careers.json` (the career studies) and `details.json` (each
+  injury's facts from the news and how the player came back, for the profiles), and adds how injuries happened and the checks against the news to
   `study.json`. The news facts are facts and their sources only: no report's own words, NBA.com's pages without a link
   (its terms forbid linking to it), and college players only once they reach the NBA.
 - `docs/index.html`: the overview, from `src/injury_risk/site/overview.html` with every figure filled in from

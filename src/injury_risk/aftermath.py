@@ -167,6 +167,12 @@ class Logs:
         dates, _, seasons = self.played(pid)
         return int(seasons[np.searchsorted(dates, np.datetime64(day), side="right") - 1])
 
+    def team_at(self, pid, day):
+        """The team of the player's last game on or before ``day``."""
+        dates, teams, _ = self.played(pid)
+        i = np.searchsorted(dates, np.datetime64(day), side="right") - 1
+        return teams[i] if i >= 0 else None
+
     def new_team(self, pid, last, back) -> float:
         """1 if they played for a team other than their team at ``last`` in the year from ``back``."""
         dates, teams, _ = self.played(pid)
@@ -209,27 +215,27 @@ def everyone_at(logs: Logs, birth: np.ndarray, day) -> pd.DataFrame:
     return m[keep].reset_index(drop=True)
 
 
-def nearest(target, pool: pd.DataFrame, k: int = K) -> np.ndarray:
-    """Positions in ``pool`` of the k players closest to ``target`` on MATCH, each standardized over the pool."""
-    x = pool[MATCH].to_numpy(dtype=float)
+def nearest(target, pool: pd.DataFrame, k: int = K, match=MATCH) -> np.ndarray:
+    """Positions in ``pool`` of the k players closest to ``target`` on ``match``, each standardized over the pool."""
+    x = pool[match].to_numpy(dtype=float)
     sd = x.std(axis=0)
     sd[sd == 0] = 1
-    d = np.sqrt((((x - np.array([target[c] for c in MATCH], dtype=float)) / sd) ** 2).sum(axis=1))
+    d = np.sqrt((((x - np.array([target[c] for c in match], dtype=float)) / sd) ** 2).sum(axis=1))
     return np.argsort(d, kind="stable")[:k]
 
 
-def corrected(me, pool: pd.DataFrame, pick: np.ndarray, values, use=None) -> float:
+def corrected(me, pool: pd.DataFrame, pick: np.ndarray, values, use=None, match=MATCH) -> float:
     """The mean of ``values`` (lined up with ``pool``) over the matched players at positions ``pick``, less what a
-    straight line on MATCH, fitted over the pool, puts down to the ways they still differ from ``me`` (bias-corrected
-    matching). ``use``: the pool players the outcome counts for (all of them by default)."""
+    straight line on ``match``, fitted over the pool, puts down to the ways they still differ from ``me``
+    (bias-corrected matching). ``use``: the pool players the outcome counts for (all of them by default)."""
     v = np.asarray(values, dtype=float)
     ok = np.isfinite(v) if use is None else np.isfinite(v) & use
     chosen = pick[ok[pick]]
     if not len(chosen):
         return np.nan
-    x = pool[MATCH].to_numpy(dtype=float)
-    gap = np.array([me[c] for c in MATCH], dtype=float) - x[chosen].mean(axis=0)
-    if ok.sum() <= 2 * len(MATCH):
+    x = pool[match].to_numpy(dtype=float)
+    gap = np.array([me[c] for c in match], dtype=float) - x[chosen].mean(axis=0)
+    if ok.sum() <= 2 * len(match):
         return float(v[chosen].mean())
     slope = np.linalg.lstsq(np.c_[np.ones(ok.sum()), x[ok]], v[ok], rcond=None)[0][1:]
     return float(v[chosen].mean() + gap @ slope)
@@ -294,10 +300,11 @@ def episodes(logs: Logs, profiles: dict, said: dict) -> pd.DataFrame:
 
 # --- following them -----------------------------------------------------------------------------------------------------
 
-def came_back(logs: Logs, me: pd.Series, pool: pd.DataFrame, back, end: pd.Timestamp, years=(1, 2)) -> dict:
+def came_back(logs: Logs, me: pd.Series, pool: pd.DataFrame, back, end: pd.Timestamp, years=(1, 2), match=MATCH,
+              enough=(MIN_GAMES, MIN_POST_MINUTES)) -> dict:
     """``me`` (a row of everyone_at) in each year from ``back`` against the year before, set against the same change for
-    the K players in ``pool`` most like them who played that year too: y<n>_<metric>, y<n>_matched_change_<metric> and
-    y<n>_effect_<metric>, the one less the other."""
+    the K players in ``pool`` most like them on ``match`` who played that year too (``enough``: the games and minutes
+    a year needs): y<n>_<metric>, y<n>_matched_change_<metric> and y<n>_effect_<metric>, the one less the other."""
     row = {}
     for n in years:
         a = back + (n - 1) * YEAR
@@ -305,17 +312,17 @@ def came_back(logs: Logs, me: pd.Series, pool: pd.DataFrame, back, end: pd.Times
             break
         b = min(a + YEAR, end)
         games, totals = logs.totals(a, b, [me["at"]])
-        if games[0] < MIN_GAMES or totals[0, 0] < MIN_POST_MINUTES:
+        if games[0] < enough[0] or totals[0, 0] < enough[1]:
             continue
         g2, t2 = logs.totals(a, b, pool["at"])
-        ok = (g2 >= MIN_GAMES) & (t2[:, 0] >= MIN_POST_MINUTES)
+        ok = (g2 >= enough[0]) & (t2[:, 0] >= enough[1])
         if ok.sum() < K:
             continue
         others = pool[ok].reset_index(drop=True)
-        pick, after = nearest(me, others), metrics(g2[ok], t2[ok])
+        pick, after = nearest(me, others, match=match), metrics(g2[ok], t2[ok])
         mine = metrics(games, totals).iloc[0]
         for k, _ in METRICS:
-            matched = corrected(me, others, pick, after[k].to_numpy() - others[k].to_numpy())
+            matched = corrected(me, others, pick, after[k].to_numpy() - others[k].to_numpy(), match=match)
             row[f"y{n}_{k}"], row[f"y{n}_matched_change_{k}"] = mine[k], matched
             row[f"y{n}_effect_{k}"] = mine[k] - me[k] - matched
     return row
@@ -468,11 +475,11 @@ def summarize(f: pd.DataFrame, end: pd.Timestamp) -> list[dict]:
     return out
 
 
-def effects(x: pd.DataFrame, prefix: str, players: str = "player_id") -> list[dict]:
+def effects(x: pd.DataFrame, prefix: str, players: str = "player_id", measures=METRICS) -> list[dict]:
     """Each measure's mean before, after and change for the matched players, and the effect with its interval, from
     the columns came_back() wrote under ``prefix``."""
     out = []
-    for k, label in METRICS:
+    for k, label in measures:
         col = f"{prefix}effect_{k}"
         have = x.dropna(subset=[col]) if col in x else x.iloc[:0]
         if len(have) < MIN_SHOWN:
@@ -484,11 +491,11 @@ def effects(x: pd.DataFrame, prefix: str, players: str = "player_id") -> list[di
     return out
 
 
-def differences(x: pd.DataFrame) -> list[dict]:
+def differences(x: pd.DataFrame, outcomes=OUTCOMES) -> list[dict]:
     """Each durability and career outcome: the mean for the injured, for their matched players, and the difference
     with its interval."""
     out = []
-    for k, label in OUTCOMES:
+    for k, label in outcomes:
         have = x.dropna(subset=[k, f"matched_{k}"]) if k in x else x.iloc[:0]
         if len(have) < MIN_SHOWN:
             continue
@@ -516,11 +523,11 @@ def by_injury(ep: pd.DataFrame, f: pd.DataFrame) -> dict:
     return out
 
 
-def balance(f: pd.DataFrame) -> list[dict]:
+def balance(f: pd.DataFrame, match=MATCH) -> list[dict]:
     """How alike the injured and their matched players were the day they were hurt: the means, and the difference in
     the injured players' standard deviations."""
     return [dict(measure=c, injured=f[f"pre_{c}"].mean(), matched=f[f"matched_{c}"].mean(),
-                 standardized_difference=(f[f"pre_{c}"] - f[f"matched_{c}"]).mean() / f[f"pre_{c}"].std()) for c in MATCH]
+                 standardized_difference=(f[f"pre_{c}"] - f[f"matched_{c}"]).mean() / f[f"pre_{c}"].std()) for c in match]
 
 
 def plain(v):
