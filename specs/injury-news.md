@@ -227,7 +227,7 @@ All of these stay in `data/news/`, which is never committed.
      tier 2 (`--tier 2 --league nba`: the concussions).
    - College: tier 1 (players now in the NBA), with `--league college`. Tiers 2 (out for the season, or a named
      injury) and 3 (out indefinitely, or 5 or more games) are left out (the owner, 2026-10-21): they are players who
-     never reached the NBA, their injuries got little coverage (nothing found in 8 of 8 tried), they are students, and
+     never reached the NBA, their injuries got less coverage (of 8 tried in the pilot, 3 turned up a diagnosis), they are students, and
      they were half of what remained to research.
    - Work in batches of 150 in the order `news-research` lists them: vague listings first, then injuries first listed
      within four days of the player's last game, then the costliest.

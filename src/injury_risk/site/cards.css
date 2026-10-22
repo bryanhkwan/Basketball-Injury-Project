@@ -1,0 +1,32 @@
+/* Cards drawn as HTML and rendered at 2x with headless Chrome (cards.py): the navy frame with its headline and footer,
+   and stat cards. The report's link preview (1200x630) is drawn with these alone.
+   Dark navy with Rocket Gold accents; data marks use the dark-mode series colors that pass the palette checks
+   on this background: the data blue #3987e5 and the comparison grey #6b7c8f. */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1200px; height: 675px; overflow: hidden; background: #071b32; }
+body.card { height: 630px; }
+html:has(body.card) { height: 630px; }
+body { color: #f4f7fa; font-family: "DM Sans", "Segoe UI", sans-serif; -webkit-font-smoothing: antialiased; }
+.frame { position: relative; display: flex; flex-direction: column; width: 1200px; height: 675px; padding: 44px 60px 32px; overflow: hidden;
+  background: radial-gradient(900px 540px at 94% -10%, #13396a 0%, rgba(19, 57, 106, 0) 62%), linear-gradient(180deg, #071b32 0%, #04132a 100%); }
+body.card .frame { height: 630px; padding: 46px 60px 34px; }
+.court { position: absolute; right: -170px; top: -70px; width: 640px; opacity: 0.075; }
+.court * { fill: none; stroke: #ffffff; stroke-width: 3; }
+.kicker { position: relative; font: 700 14.5px/1.3 "DM Sans"; letter-spacing: 0.17em; text-transform: uppercase; color: #ffd200; }
+.title { position: relative; margin-top: 12px; font: 800 70px/0.92 "Barlow Condensed"; letter-spacing: 0.004em; text-transform: uppercase; }
+.title em { font-style: normal; color: #ffd200; }
+.sub { position: relative; max-width: 940px; margin-top: 14px; font: 400 21px/1.42 "DM Sans"; color: #c6d7e5; }
+.sub b { color: #ffffff; font-weight: 700; }
+.footer { position: relative; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; margin-top: auto; padding-top: 16px; }
+.link { font: 500 17px/1 "DM Sans"; color: #f4f7fa; white-space: nowrap; }
+.link b { margin-right: 12px; font-size: 13.5px; font-weight: 700; letter-spacing: 0.16em; color: #ffd200; }
+.credit { max-width: 560px; font-size: 12.5px; line-height: 1.4; text-align: right; color: #8ea4bc; }
+
+/* stat cards */
+.stats { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+.stat { padding: 20px 22px 18px; border: 1px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #3987e5; border-radius: 14px; background: rgba(255, 255, 255, 0.04); }
+.num { font: 700 62px/1 "DM Sans"; letter-spacing: -0.01em; color: #ffffff; }
+.as { margin-top: 2px; font: 500 15px/1.2 "DM Sans"; color: #a7bdce; }
+.what { margin-top: 14px; font: 700 26px/1.02 "Barlow Condensed"; letter-spacing: 0.02em; text-transform: uppercase; color: #ffffff; }
+.detail { margin-top: 8px; font-size: 15px; line-height: 1.38; color: #a7bdce; }
+.verdict { display: inline-block; margin-top: 10px; padding: 2px 10px; border: 1px solid rgba(60, 207, 110, 0.7); border-radius: 999px; font-size: 12.5px; font-weight: 700; color: #3ccf6e; }

@@ -1,11 +1,15 @@
 # Basketball Injury Project
 
-What public data can say about when, and why, basketball players get hurt. The project has three parts:
+What public data can say about when, why and how basketball players get hurt, and what an injury does to a career.
+The project has six parts:
 
 - **Injury risk:** an NBA injury-risk model.
 - **Injury types:** a study of who gets which injuries, and when.
 - **Injury moments:** a test that finds the plays that come right before injuries in NBA play-by-play, then
   checks them in college basketball against a plan written down before any college results.
+- **Player profiles:** every NBA player since 2018-19 and every college player Covers listed injured.
+- **What the news says:** each injury's diagnosis and how it happened, from news reports (facts and sources only).
+- **After an injury:** what injuries do to NBA and Division I careers, against the players most like them.
 
 **See it live:** https://bryanhkwan.github.io/Basketball-Injury-Project/
 
@@ -25,6 +29,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Stage | Steps | What they do |
 |---|---|---|
 | Data | `fetch-data`, `fetch-reports`, `parse-reports`, `fetch-college` | Download the public sources into `data/`, which is not in the repository (see below) |
+| NCAA injury watch | `ncaa-injuries` | The current college injury list, from SCACCHoops' conference pages |
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
@@ -32,14 +37,14 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Injury news | `news-targets`, `news-fetch`, `news-research`, `news-audit`, `news-check`, `news-summary` | The injuries worth looking up in the news, a page reader that obeys each site's robots.txt, filing the research a batch at a time, an audit sample of each batch, the checks on what it finds (`specs/injury-news.md`), and how the injuries happened, in numbers |
 | Checks | `validate` | The play-by-play patterns and the model checked against what the news says happened |
 | Careers | `aftermath`, `college-aftermath` | What happened after each injury, in the NBA and in Division I: time out, how players came back, getting hurt again, and staying in the league (or reaching the NBA) |
-| Site | `dashboard`, `moments-dashboard`, `site` | The dashboards' and the report's data in `outputs/`, then the public site in `docs/` (`report-site` rebuilds the report alone) |
+| Site | `dashboard`, `moments-dashboard`, `site` | The dashboards' and the report's data in `outputs/`, then the public site in `docs/` (`report-site` rebuilds the report alone, `card` its link preview) |
 
 Where things are:
 
 - `docs/`: the public site (overview, dashboards, report) and its data in `docs/data/`, the college test plan with its
   SHA-256 fingerprint, and a hand-read sample of college cases.
 - `DESIGN.md`: the site's design system (colours, type, layout, components and rules).
-- `AGENTS.md` and `specs/`: instructions for coding agents working here, and the specs of work in progress.
+- `AGENTS.md` and `specs/`: instructions for coding agents working here, and the specs the work follows.
 - `outputs/`: the aggregate results everything is built from, such as `summary.json` files, model metrics and
   `RESULTS.md`.
 - `tests/`: run them with `python -m unittest discover -s tests`.
@@ -57,12 +62,14 @@ committed; the `fetch-*` steps rebuild it on your own machine.
 | [sportsdataverse data releases](https://github.com/sportsdataverse/sportsdataverse-data) | NBA and NCAA play-by-play, box scores, rosters and schedules | Release files downloaded from GitHub (`sources.py`) |
 | Covers' college injury page, through the [Internet Archive's Wayback Machine](https://web.archive.org/) | College injuries, 2019-20 to 2025-26 | Saved copies read from archive.org, 2.5 seconds apart (`covers.py`); covers.com itself is never contacted |
 | SCACCHoops' conference injury pages | The current college injury list | One pass over 31 pages, a second apart (`ncaa_injuries.py`) |
+| News reports | What each injury was, how it happened, surgery and timelines | Looked up injury by injury (`specs/injury-news.md`); a page is read only where its robots.txt allows, with a pause between pages on the same site (`news_research.py`) |
 
 - **What's published:** statistics computed from these sources, in the site and `outputs/`. The site also has player
   profiles (`docs/data/`): each NBA player's injuries as the official reports list them, and for 2025-26 their model
   risk game by game; and each college player Covers listed injured, with only the listings' facts (dates, body part,
   the status in plain words) and the games missed from the box scores. Covers' own wording, the listings and the
-  pages themselves are never published.
+  pages themselves are never published. From the news, only facts and their sources are published, never a
+  report's words; NBA.com is cited without a link, since its terms forbid linking to it.
 - **Your use:** if you run the download steps, follow each source's terms.
 - **Affiliation:** this project is not affiliated with the NBA, the NCAA, Covers, SCACCHoops or the sportsdataverse
   project. If you represent one of them and want something changed, please open an issue.
@@ -73,7 +80,7 @@ Before each game, the chance that a player suffers a **new injury that makes the
 team's next 5 games** (also scored over 14 days, and for injuries costing 3+ games), built from the NBA's
 official injury reports, box scores, inactive lists and the schedule.
 
-## Question and target
+### Question and target
 
 - A row is a game a player played, scored as of tip-off: only earlier games feed the features, plus facts
   about the game fixed in advance (rest, back-to-back, travel, altitude, the schedule ahead).
@@ -86,7 +93,7 @@ official injury reports, box scores, inactive lists and the schedule.
 - A row without 5 later team games that season (season over, waived) is left out: a missed game could not
   be seen.
 
-## Data
+### Data
 
 | What | Source | Seasons |
 |---|---|---|
@@ -100,7 +107,7 @@ official injury reports, box scores, inactive lists and the schedule.
 stats.nba.com refuses scripted requests, so the mirrored releases stand in for it. Downloads check HTTPS against
 the system certificate store (`src/injury_risk/net.py`), which also works behind antivirus that re-signs HTTPS.
 
-## Run
+### Run
 
 ```powershell
 $env:PYTHONPATH = "src"
@@ -117,48 +124,7 @@ python -m injury_risk moments          # what players were doing just before lea
 python -m unittest discover -s tests -v
 ```
 
-## Dashboards
-
-The public dashboards (`docs/dashboard.html`) are built from three data files that `site` writes to `docs/data/`:
-- `python -m injury_risk dashboard` writes the risk model's data to `outputs/dashboard/` (accuracy, calibration, the
-  nightly risk board, player timelines and risk factors). It stays local; `site` publishes a compact copy as
-  `board.json`, `players.json` and part of `study.json`.
-- `causes` and `moments-dashboard` write the injury types' and the injury moments' data, which go into `study.json`.
-
-## Why players get hurt (injury types)
-
-`python -m injury_risk causes` (`src/injury_risk/causes.py`) groups new injuries the way coaches talk
-about them (pulled muscles, sprained ankles and feet, knocks and collisions, knee, back, other aches) and
-asks, for 2019-20 to 2025-26:
-
-- **When**: each player compared with their own games in the same month (Mantel-Haenszel over player-month
-  strata), so who the player is and the calendar drop out. Late season uses player-season strata. First
-  games back compare games 1-3 with games 4-10 after the same returns, since inside a month a return
-  always follows its injury.
-- **Who**: players compared with one another, intervals from resampling whole players.
-- A finding counts only if its interval excludes no difference and it points the same way in 2019-22 and
-  2022-26. The 7-day vs 28-day minutes ratio is left out: its swings track openers, breaks and other
-  absences, and gave results no one could act on.
-
-Results are in `outputs/causes/*.json`. They are associations, not proof.
-
-## NCAA injury watch
-
-`python -m injury_risk ncaa-injuries` (`src/injury_risk/ncaa_injuries.py`) takes one pass over
-SCACCHoops' 31 Division I conference injury pages, which list player, injury (a body part), Out or
-Questionable and rarely details, with no dates. To tell a listing left over from last season from a new
-one, each is looked up in up to 12 Wayback Machine copies of its conference page from the past 400 days.
-The output, `outputs/ncaa_injuries/listings.json`, stays local: it lists named players, so it isn't
-committed.
-
-The October 19, 2026 snapshot: 293 listings (41 out, 252 questionable) in 29 conferences. 139 were
-already on an offseason copy of their page (most copies are from March to June 2026), so they are
-probably stale. 91 are "Undisclosed" and 39 "Not injury related"; knee is the most common named injury
-(46). The CAA page has no saved copies, and the newest Sun Belt and Ohio Valley copies are from October
-2025. It shows current listings only: an injury history needs the pages collected every day from the
-season opener.
-
-## Evaluation
+### Evaluation
 
 Train on 2018-19 (from January 15, a month into the report archive) to 2022-23, choose settings on
 2023-24, refit on all of them and score 2024-25 and 2025-26, which no setting ever saw. Feature ideas were
@@ -167,7 +133,7 @@ whole players), average precision, Brier skill against the base rate, log loss, 
 top 10% of risk scores relative to everyone, and calibration by decile. The bar to clear is a logistic
 model on age and injury history alone.
 
-## Results (October 21, 2026)
+### Results (October 21, 2026)
 
 Full tables, calibration and feature importance: `outputs/RESULTS.md`. Test seasons 2024-25 and 2025-26,
 never used for any choice:
@@ -186,7 +152,7 @@ never used for any choice:
 - Where the signal is (2023-24 ablation): injury history carries most of it (alone AUC 0.678), then
   workload (0.645). Schedule, body size and playing style add little once those are in. Logistic regression
   scores the same as boosting: the signal is mostly additive.
-- Plain rates, 2019-20 to 2025-26: a player in the first 2 games back from an injury has a 23% chance of a
+- Plain rates, 2019-20 to 2025-26: a player in the first 3 games back from an injury has a 23% chance of a
   new one within 5 games (1.6x average); 4+ injuries in the past year, 27% (1.8x); 32+ minutes a game,
   22%; no injury on record, 6%. The second night of a back-to-back shows no extra risk, and the acute to
   chronic minutes ratio no clear pattern.
@@ -198,7 +164,7 @@ never used for any choice:
   lot) and fragility (who has been hurt), which bring collisions and fractures as surely as strains: rest can't be
   expected to prevent what it flags.
 
-### Play-by-play (added October 19, 2026)
+#### Play-by-play (added October 19, 2026)
 
 Every play lists the ten players on the floor, so each player-game gets its stints (count, longest,
 average), fourth-quarter and overtime minutes, rim attacks and dunks, transition chances on the floor,
@@ -240,6 +206,35 @@ possessions on the floor, and whether a starter left a close game before the fou
   rows), and "Injury Recovery" stopped counting as a surgery (2,744 rows). New injuries went from 7,222 to 7,194. Test AUCs: next 5 games 0.7032 to 0.7027; 3+ games 0.6526 to 0.6487 (top 10% 2.03x to 1.89x,
   inside its interval; with play-by-play the same target went 0.6546 to 0.6550); 14 days 0.7248 to 0.7264; after
   the game 0.7615 to 0.7638.
+
+### Limits of the risk model
+
+- Listed injuries rose from about 30 per 1,000 player-games in 2019-20 to 38 in 2025-26 (40 in 2024-25), partly
+  reporting practice (the 2023 participation policy asks teams to name a reason). Recalibrate each season.
+- Many one-game "soreness" absences are probably planned rest under another name; the 3+ game target is
+  the stricter test.
+- An injury in a team's last game of the season cannot be seen (no game to miss).
+- About 200 report reasons such as "Injury Recovery" or "Maintenance" still count as new injuries in the
+  risk model's labels when the player had played recently. The play-by-play test leaves them out, along with
+  a dozen non-injury reasons the parser files under "other" (personal reasons, influenza, dental).
+- No practice load, wearables, per-game tracking (distance, speed) or medical detail: these are what teams
+  have and the public does not, and the likely route above about 0.70.
+## Why players get hurt (injury types)
+
+`python -m injury_risk causes` (`src/injury_risk/causes.py`) groups new injuries the way coaches talk
+about them (pulled muscles, sprained ankles and feet, knocks and collisions, knee, back, other aches) and
+asks, for 2019-20 to 2025-26:
+
+- **When**: each player compared with their own games in the same month (Mantel-Haenszel over player-month
+  strata), so who the player is and the calendar drop out. Late season uses player-season strata. First
+  games back compare games 1-3 with games 4-10 after the same returns, since inside a month a return
+  always follows its injury.
+- **Who**: players compared with one another, intervals from resampling whole players.
+- A finding counts only if its interval excludes no difference and it points the same way in 2019-22 and
+  2022-26. The 7-day vs 28-day minutes ratio is left out: its swings track openers, breaks and other
+  absences, and gave results no one could act on.
+
+Results are in `outputs/causes/*.json`. They are associations, not proof.
 
 ## What players were doing when they got hurt (play-by-play test)
 
@@ -443,8 +438,9 @@ batches that failed their audit were corrected. Finished October 21, 2026:
 | NBA concussions | 143 | 105 | | 104 | 87 |
 | College players now in the NBA | 201 | 67 | 51 of 172 | 96 | 47 |
 
-College players who never reached the NBA (1,428 injuries) were left out: little was written about them, nothing in 8
-of 8 tried, and they are students. One college row stays unfiled (a source misspells the player's name).
+College players who never reached the NBA (1,428 injuries) were left out for now: less is written about them (of 8
+tried in the pilot, 3 turned up a diagnosis), and they are students. One college row stays unfiled (a source
+misspells the player's name).
 
 `python -m injury_risk news-summary` (`src/injury_risk/news_summary.py`) counts how the NBA injuries happened, by kind of
 injury (`outputs/news/summary.json`): contact or not, the cause, what the player was doing, and what the vague listings
@@ -468,7 +464,9 @@ whatever it cost, and every concussion: 1,350 absences. 1,174 of them (510 playe
 compare against.
 - Listings that follow each other before the player plays again are one absence ("Right lower leg", then "Right
   Achilles surgery").
-- The diagnosis is the news's where the research named it, else the listing's.
+- The diagnosis is the news's where the research named it, else the listing's. Absences and diagnoses are counted
+  this way, not as in the player profiles, so a few numbers differ from theirs: 27 torn ACLs here, out a median 89
+  games, against 25 and 85 there.
 - 16 absences held two injuries in different parts of the body that each cost 10+ games (Klay Thompson's torn ACL,
   then torn Achilles). They count in the totals but not by diagnosis.
 
@@ -575,7 +573,7 @@ how often their team won.
 
 **Checks.**
 - The injured and their matched players were alike on all five (standardized differences 0.03 or less).
-- The placebo (five players who weren't hurt for each injury) found nothing on minutes (-0.17, -0.44 to +0.09) or on any
+- The placebo (five players who weren't hurt for each injury) found nothing on minutes (-0.17, -0.43 to +0.09) or on any
   outcome after the year back: the next season, a new school, the NBA, games played, listed hurt again.
 - It found a small bias on production per 36: -0.21 (-0.38 to -0.05), the same in the early seasons and the late ones.
   Production changes smaller than about half a point aren't findings here.
@@ -589,7 +587,7 @@ how often their team won.
 **What it found** (games through April 6, 2026):
 - **An injury costs a year of growth.** College players grow into bigger roles each season: players like them went up
   2.5 minutes a game. Injured players stayed where they were (22.2 minutes before, 22.5 after), 2.3 minutes behind
-  (1.7 to 2.8), and started 10.5 points less often. In the second year back they caught up: -0.5 (-1.2 to +0.3).
+  (1.7 to 2.8), and started 10.5 points less often. In the second year back they caught up: -0.5 (-1.2 to +0.2).
   Production per 36 didn't clearly move.
 - **Knee injuries cost the most.** After a torn ACL (52, 28 with a year back to judge by), players went from 23.7
   minutes a game to 22.2 while players like them gained 3.2: 4.7 behind (2.5 to 6.9), starting 27 points less often.
@@ -628,6 +626,22 @@ column counts only injuries in seasons that left two or more seasons to reach it
 injuries each, so read them as cases, not rates. The dashboards' **After an injury** view shows it under its College
 switch, with every torn ACL and Achilles linked to the player's college profile.
 
+## NCAA injury watch
+
+`python -m injury_risk ncaa-injuries` (`src/injury_risk/ncaa_injuries.py`) takes one pass over
+SCACCHoops' 31 Division I conference injury pages, which list player, injury (a body part), Out or
+Questionable and rarely details, with no dates. To tell a listing left over from last season from a new
+one, each is looked up in up to 12 Wayback Machine copies of its conference page from the past 400 days.
+The output, `outputs/ncaa_injuries/listings.json`, stays local: it lists named players, so it isn't
+committed.
+
+The October 19, 2026 snapshot: 293 listings (41 out, 252 questionable) in 29 conferences. 139 were
+already on an offseason copy of their page (most copies are from March to June 2026), so they are
+probably stale. 91 are "Undisclosed" and 39 "Not injury related"; knee is the most common named injury
+(46). The CAA page has no saved copies, and the newest Sun Belt and Ohio Valley copies are from October
+2025. It shows current listings only: an injury history needs the pages collected every day from the
+season opener.
+
 ## The public site
 
 `python -m injury_risk site` (`src/injury_risk/site_build.py`) builds everything in `docs/`:
@@ -636,7 +650,9 @@ switch, with every torn ACL and Achilles linked to the player's college profile.
   `players.json` (every player's risk game by game and their new injuries) and `study.json` (the model check, the risk
   factors, the injury types, the injury moments' NBA patterns, the college check's totals, every play's ratio
   in both leagues with how well they agree, and whether college injuries carry into the NBA). It needs
-  `outputs/dashboard/`; in a fresh clone the step keeps the published files and rebuilds the pages from them.
+  `outputs/dashboard/`, which `python -m injury_risk dashboard` writes (the risk model's full data, kept local);
+  `causes` and `moments-dashboard` write the injury types' and injury moments' parts of `study.json`. In a fresh
+  clone the step keeps the published files and rebuilds the pages from them.
   With `outputs/profiles/` it also writes the profiles: `history.json` (every NBA player), `college.json` (every
   listed college player) and `people.json` (the search box's index of both). With `outputs/aftermath/` and
   `outputs/news/` it writes `careers.json` and `college_careers.json` (the career studies) and `details.json` (each
@@ -649,24 +665,22 @@ switch, with every torn ACL and Achilles linked to the player's college profile.
   tokens and the overview, `app.css` for the dashboards, `charts.js`, `site.js`, `overview.js`, `dashboard.js`).
   `charts.js` is adapted from tasteskill's chart helpers (MIT); its licence is at the end of the file.
 - `docs/moments.html`: the injury-moment report (`report_site.py`), one page with its charts, tables and data inline.
-- `docs/assets/social-site.jpg`: the overview's link preview, rendered with headless Chrome.
-  `python -m injury_risk linkedin` renders the report's (`social-card.png`) and the sharing images, which stay local.
+- `docs/assets/social-site.jpg` and `social-card.png`: the link previews of the overview and of the report, rendered
+  with headless Chrome. `site` redraws the first; `python -m injury_risk card` (`cards.py`) redraws the second.
 
 - **Publishing:** push the repository and turn on GitHub Pages (Settings > Pages > Deploy from a branch > `main`,
   `/docs`).
 - **Links:** they assume the repository is `bryanhkwan/Basketball-Injury-Project`. Otherwise change `REPO_URL` and
-  `SITE_URL` in `report_site.py` (and the two addresses in `site/dashboard.html`) and rebuild.
+  `SITE_URL` in `report_site.py`, the three addresses in `site/dashboard.html` and `USER_AGENT` in
+  `news_research.py`, and rebuild.
 - **Design:** `DESIGN.md` describes the system the pages follow.
 
-## Limits
+## What's next
 
-- Listed injuries rose from 30 to about 40 per 1,000 player-games between 2019-20 and 2025-26, partly
-  reporting practice (the 2023 participation policy asks teams to name a reason). Recalibrate each season.
-- Many one-game "soreness" absences are probably planned rest under another name; the 3+ game target is
-  the stricter test.
-- An injury in a team's last game of the season cannot be seen (no game to miss).
-- About 200 report reasons such as "Injury Recovery" or "Maintenance" still count as new injuries in the
-  risk model's labels when the player had played recently. The play-by-play test leaves them out, along with
-  a dozen non-injury reasons the parser files under "other" (personal reasons, influenza, dental).
-- No practice load, wearables, per-game tracking (distance, speed) or medical detail: these are what teams
-  have and the public does not, and the likely route above about 0.70.
+This isn't finished. Next:
+
+- **College injuries in the news.** The news research covered the NBA and the college players who reached it. The rest
+  of the college players can be looked up the same way (`specs/injury-news.md`'s college tiers), under the same
+  facts-only rules, though less is written about them: of 8 tried in the pilot, 3 turned up a diagnosis.
+- **Pay after an injury.** Whether an injury changes what an NBA player is paid, once there is a salary source whose
+  terms allow it.

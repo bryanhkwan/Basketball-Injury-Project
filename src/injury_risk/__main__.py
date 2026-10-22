@@ -67,8 +67,7 @@ def main(argv=None) -> None:
     p.add_argument("--n", type=int, default=15)
     sub.add_parser("report-site", help="the injury-moment report page, from the dashboard's datasets -> docs/moments.html")
     sub.add_parser("site", help="the whole public site for GitHub Pages: data, overview, dashboards and the report -> docs/")
-    sub.add_parser("linkedin", help="three LinkedIn images and the report's link preview, rendered with headless Chrome "
-                                    "-> outputs/linkedin/*.png, docs/assets/social-card.png")
+    sub.add_parser("card", help="the report's link preview, rendered with headless Chrome -> docs/assets/social-card.png")
     args = parser.parse_args(argv)
     paths.ensure_dirs()
 
@@ -169,9 +168,9 @@ def main(argv=None) -> None:
     elif args.step == "site":
         from . import site_build
         site_build.build()
-    elif args.step == "linkedin":
-        from . import linkedin
-        linkedin.export()
+    elif args.step == "card":
+        from . import cards
+        cards.export()
     elif args.step == "board":
         import pandas as pd
         from . import board, features

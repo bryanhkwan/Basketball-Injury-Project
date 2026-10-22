@@ -464,7 +464,7 @@ CARD = (1452, 760)   # the link preview's window, the hero's full height; at 2x 
 def social_card(log=print) -> Path | None:
     """The link preview for the overview and the dashboards: the overview's first screen (opening night's board), at 2x
     with headless Chrome, with motion off so every part is in its final place."""
-    from .linkedin import _chrome
+    from .cards import _chrome
     try:
         chrome = _chrome()
     except RuntimeError as e:

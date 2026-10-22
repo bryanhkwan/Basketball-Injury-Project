@@ -1,7 +1,7 @@
 import re
 import unittest
 
-from injury_risk import linkedin
+from injury_risk import cards
 from injury_risk import report_site as S
 from injury_risk.paths import OUTPUTS
 
@@ -48,11 +48,10 @@ class Page(unittest.TestCase):
         self.assertIn(f"{facts['nba_injuries']:,}", self.page)
         self.assertIn(S.one_in(facts["nba_traced_share"]), self.page)
 
-    def test_images_render_from_the_same_data(self):
-        for page in (linkedin.findings(self.d), linkedin.timing(self.d), linkedin.college(self.d), linkedin.single(self.d),
-                     linkedin.findings(self.d, card=True)):
-            self.assertIn("FULL REPORT", page)
-            self.assertNotIn("—", page.split("</style>")[1])
+    def test_link_preview_renders_from_the_same_data(self):
+        page = cards.social_card(self.d)
+        self.assertIn("FULL REPORT", page)
+        self.assertNotIn("—", page.split("</style>")[1])
 
 
 if __name__ == "__main__":

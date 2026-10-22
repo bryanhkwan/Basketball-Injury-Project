@@ -38,5 +38,8 @@ outputs/news/targets.jsonl
 outputs/**/page.html
 outputs/**/store/
 
-# LinkedIn images and post drafts
+# LinkedIn images, post drafts and the code that draws them, kept on this machine
 outputs/linkedin/
+src/injury_risk/linkedin.py
+src/injury_risk/site/linkedin.css
+tests/test_linkedin.py
