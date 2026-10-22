@@ -145,7 +145,7 @@ components:
 
 The site serves two readers. The first clicks a LinkedIn link and should know in five seconds what this is, and want to touch it. The second checks the work. The overview speaks to the first: a big question ("Who gets hurt next?"), one sentence on what was built and how well it did, and the live risk board right beside it. Below that come the proof, the six questions the project answers (each with a real chart), how it was built, and who built it. The dashboards serve the second reader with quiet working screens.
 
-The look comes from the user's own brand: the portfolio's near-black navy, gold actions and monospace labels, and the report's and LinkedIn images' uppercase Barlow Condensed headlines. The hero's court floor echoes the portfolio's wireframe arena.
+The look comes from the user's own brand: the portfolio's near-black navy, gold actions and monospace labels, and the report's uppercase Barlow Condensed headlines. The hero's court floor echoes the portfolio's wireframe arena.
 
 ## Colors
 
@@ -157,7 +157,7 @@ The look comes from the user's own brand: the portfolio's near-black navy, gold 
 
 ## Typography
 
-- **Barlow Condensed 800, uppercase**, for every headline and big figure. It is the broadcast voice of the report and the LinkedIn images.
+- **Barlow Condensed 800, uppercase**, for every headline and big figure. It is the broadcast voice of the report and its link preview.
 - **DM Sans** for everything people read, and every number in a table or chart (tabular figures).
 - **A monospace** (Consolas, SF Mono, the system's) only for small tracked labels above headings and on the live board, as on the portfolio.
 - Headlines stay at two lines or fewer at every width. Typographic apostrophes (’), and an ellipsis character (…).
