@@ -1,0 +1,109 @@
+name: Update availability and site
+
+on:
+  schedule:
+    - cron: '37 23 * * *'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Set UPDATES_ENABLED=true in repository variables after reviewing the first dry run.
+# No paid APIs, AI calls, raw-data artifacts, or commits to main are involved.
+permissions:
+  contents: read
+
+concurrency:
+  group: availability-and-pages
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    if: github.event_name == 'workflow_dispatch' || vars.UPDATES_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      PYTHONPATH: src
+      STATE_DIR: ${{ runner.temp }}/availability-state
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Test before collecting
+        run: python -m unittest discover -s tests
+      - name: Restore durable state
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/updates
+          if git ls-remote --exit-code --heads origin availability-data > "$RUNNER_TEMP/availability-ref"; then
+            git fetch --depth=1 origin availability-data
+            git worktree add --detach "$STATE_DIR" FETCH_HEAD
+            test -s "$STATE_DIR/state.json"
+            cp "$STATE_DIR/state.json" data/updates/state.json
+          else
+            code=$?
+            if [ "$code" != 2 ]; then exit "$code"; fi
+            git worktree add --detach "$STATE_DIR" HEAD
+            git -C "$STATE_DIR" switch --orphan availability-data
+          fi
+      - name: Collect, validate, archive and stage
+        run: python -m injury_risk updates --archive "$STATE_DIR/archive" --stage-site
+      - name: Show source health
+        if: always()
+        shell: bash
+        run: |
+          if [ -f data/updates/site/update-summary.md ]; then
+            cat data/updates/site/update-summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - name: Save factual state
+        if: vars.UPDATES_ENABLED == 'true' && github.ref == 'refs/heads/main'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp data/updates/state.json "$STATE_DIR/state.json"
+          git -C "$STATE_DIR" config user.name 'github-actions[bot]'
+          git -C "$STATE_DIR" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$STATE_DIR" add -- state.json archive/
+          if ! git -C "$STATE_DIR" diff --cached --quiet; then
+            git -C "$STATE_DIR" commit -m 'Update public availability observations'
+            state_commit=$(git -C "$STATE_DIR" rev-parse HEAD)
+            git push origin "$state_commit":refs/heads/availability-data
+          fi
+      - name: Upload the staged site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: data/updates/site
+          retention-days: 1
+      - name: Flag degraded sources
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          state = json.loads(Path('data/updates/state.json').read_text())
+          for source in state['sources'].values():
+              if source['status'] in ('error', 'stale'):
+                  print(f"::warning::{source['name']} needs attention; see the source-health summary.")
+          PY
+
+  deploy:
+    if: vars.UPDATES_ENABLED == 'true' && github.ref == 'refs/heads/main'
+    needs: collect
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Publish validated site
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "nba-official",
+      "league": "nba",
+      "name": "NBA official injury reports",
+      "kind": "nba_daily_report",
+      "enabled": true,
+      "url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_{day}_05_00PM.pdf",
+      "hosts": ["ak-static.cms.nba.com"],
+      "max_age_hours": 36,
+      "scope": "Daily 5 PM Eastern snapshot, collected after a 30-minute publication allowance. This is not the latest intraday report. Unsubmitted team reports are identified separately.",
+      "policy_reviewed": "2026-11-03",
+      "policy_url": "https://www.nba.com/termsofuse",
+      "policy_note": "Use the public report for factual research summaries only. No PDF, report prose, logos or deep links are republished. Check robots on every run."
+    },
+    {
+      "id": "ncaa-men-scac",
+      "league": "ncaa_mbb",
+      "name": "SCACCHoops conference listings",
+      "kind": "scac",
+      "enabled": true,
+      "url": "https://www.scacchoops.com/injuries.asp?Conference=Mid%2DAmerican",
+      "hosts": ["www.scacchoops.com"],
+      "max_age_hours": 36,
+      "scope": "Men's conference pages provided by SCACCHoops; not a complete NCAA injury registry. The source supplies no report dates, and listings may be old.",
+      "policy_reviewed": "2026-11-03",
+      "policy_url": "https://www.scacchoops.com/privacypolicy.asp",
+      "policy_note": "Existing project source; publish normalized facts only, never its details text. Check robots and pause between conference requests."
+    },
+    {
+      "id": "wnba-official",
+      "league": "wnba",
+      "name": "WNBA official injury reports",
+      "kind": "nba_daily_report",
+      "enabled": true,
+      "url": "https://ak-static.cms.nba.com/referee/wnba_injury/Injury-Report_{day}_05_00PM.pdf",
+      "hosts": ["ak-static.cms.nba.com"],
+      "active_months": [5, 6, 7, 8, 9, 10],
+      "team_names": {
+        "ATL": "Atlanta Dream", "CHI": "Chicago Sky", "CON": "Connecticut Sun",
+        "DAL": "Dallas Wings", "GSV": "Golden State Valkyries", "IND": "Indiana Fever",
+        "LAS": "Los Angeles Sparks", "LVA": "Las Vegas Aces", "MIN": "Minnesota Lynx",
+        "NYL": "New York Liberty", "PDX": "Portland Fire", "PHX": "Phoenix Mercury",
+        "SEA": "Seattle Storm", "TOR": "Toronto Tempo", "WAS": "Washington Mystics"
+      },
+      "max_age_hours": 36,
+      "scope": "Daily 5 PM Eastern report PDF during the configured May–October collection window. WNBA team mapping is separate from the NBA. Not the latest intraday report.",
+      "policy_reviewed": "2026-11-03",
+      "policy_url": "https://www.wnba.com/terms-of-use",
+      "policy_note": "Read only the public report PDF host, whose robots policy permits this path; do not crawl the restricted WNBA index. Publish normalized facts, not report text."
+    },
+    {
+      "id": "ncaa-women-acc",
+      "league": "ncaa_wbb",
+      "name": "ACC women's availability reports",
+      "kind": "pending",
+      "enabled": false,
+      "url": "https://theacc.com/sports/2025/11/14/availability-reporting-wbb.aspx",
+      "hosts": ["theacc.com", "par.hdintelligence-app.com"],
+      "max_age_hours": 36,
+      "scope": "ACC conference games only. Availability reports do not identify the medical reason for an absence.",
+      "reason": "The embedded provider returns HTML instead of a readable robots policy. Confirm permitted automated access and validate its feed before enabling.",
+      "policy_reviewed": "2026-11-03",
+      "policy_url": "https://sidearmsports.com/sports/2022/12/7/terms-of-service"
+    }
+  ]
+}

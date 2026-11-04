@@ -30,6 +30,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 |---|---|---|
 | Data | `fetch-data`, `fetch-reports`, `parse-reports`, `fetch-college` | Download the public sources into `data/`, which is not in the repository (see below) |
 | NCAA injury watch | `ncaa-injuries` | The current college injury list, from SCACCHoops' conference pages |
+| Availability updates | `updates --stage-site` | Collect daily NBA and seasonal WNBA report snapshots plus NCAA men's listings; validate and stage the current site without rerunning historical studies |
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
@@ -73,6 +74,33 @@ committed; the `fetch-*` steps rebuild it on your own machine.
 - **Your use:** if you run the download steps, follow each source's terms.
 - **Affiliation:** this project is not affiliated with the NBA, the NCAA, Covers, SCACCHoops or the sportsdataverse
   project. If you represent one of them and want something changed, please open an issue.
+
+## Automated availability updates
+
+The scheduled pipeline is defined in `.github/workflows/availability.yml`, with sources in
+`config/update_sources.json`. It checks once a day at 23:37 UTC, retains the last valid snapshot if
+a source fails, and stages a **Current availability** dashboard beside the historical studies.
+NBA and WNBA use the daily 5 PM Eastern report, not the latest intraday report. WNBA polling
+is configured for May–October. NCAA men's coverage comes from SCACCHoops; NCAA women's
+conference reporting is identified but not connected until permitted access is verified.
+
+This is source availability tracking, not live risk scoring or automatic news diagnosis.
+An unspecified absence is not assumed to be an injury, and first observed is not injury onset.
+Source dates, failed checks and gaps in coverage are visible on the page. The research
+results and risk board retain their existing cutoffs.
+
+GitHub Actions and Pages handle the job without AI calls or a paid API. The workflow saves
+only normalized facts to a separate `availability-data` branch and never commits raw downloads
+or automatically changes `main`. It remains a dry run until the `UPDATES_ENABLED` repository
+variable is set to `true` and Pages is configured for Actions. See
+[`specs/automated-updates.md`](specs/automated-updates.md) for the architecture, local commands,
+activation steps, source checks, costs and planned monthly research releases.
+
+Each collection also adds an immutable dated file under the data branch's `archive/` directory.
+The dashboard shows the latest state, while older observations remain available even after
+the working 90-day change list expires. A later diagnosis or status correction is a new
+observation, not an overwrite of the old one. These observations are separate from the frozen
+historical studies; adding a listing does not automatically add a confirmed injury to those studies.
 
 ## The injury-risk model
 

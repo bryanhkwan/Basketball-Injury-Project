@@ -87,7 +87,7 @@ def _join(fragments: list[dict]) -> str:
     return " ".join(w["text"] for w in sorted(fragments, key=lambda w: (round(w["top"]), w["x0"]))).strip()
 
 
-def parse_pdf(path: str | Path) -> dict:
+def parse_pdf(path: str | Path, team_names: dict[str, str] | None = None) -> dict:
     """{'stamp': ..., 'rows': [...], 'not_submitted': [...], 'problems': [...]} for one report."""
     path = Path(path)
     out: dict = dict(file=path.name, stamp=None, rows=[], not_submitted=[], problems=[])
@@ -140,7 +140,7 @@ def parse_pdf(path: str | Path) -> dict:
                 cells: dict[str, list[dict]] = {}
                 for w in anchor["fragments"]:
                     cells.setdefault(_column(w["x0"], columns) or "?", []).append(w)
-                _apply_group(state, cells, out["problems"], page_no)
+                _apply_group(state, cells, out["problems"], page_no, team_names)
                 if anchor["kind"] == "not_submitted":
                     out["not_submitted"].append(dict(game_date=state["game_date"], matchup=state["matchup"], team=state["team"]))
                     items.append(dict(kind="not_submitted", page=page_no, reason=_join(cells.get("reason", []))))
@@ -188,7 +188,7 @@ def _rejoin_wrapped(items: list[dict]) -> None:
                 item["reason"] = text[cut:]
 
 
-def _apply_group(state: dict, cells: dict, problems: list, page_no: int) -> None:
+def _apply_group(state: dict, cells: dict, problems: list, page_no: int, team_names=None) -> None:
     if "game_date" in cells:
         m = re.search(r"(\d{2}/\d{2}/\d{4})", _join(cells["game_date"]))
         if m:
@@ -205,7 +205,14 @@ def _apply_group(state: dict, cells: dict, problems: list, page_no: int) -> None
             problems.append(f"page {page_no}: unreadable matchup {_join(cells['matchup'])!r}")
     if "team" in cells:
         candidates = [c for c in (state["away"], state["home"]) if c]
-        code = teams.resolve_name(_join(cells["team"]), candidates or None)
+        text = _join(cells["team"])
+        if team_names is None:
+            code = teams.resolve_name(text, candidates or None)
+        else:
+            # Women's reports use different teams and tricodes. Never resolve them against NBA teams.
+            plain = lambda value: re.sub(r"[^a-z]", "", value.lower())
+            matches = [c for c in candidates if c in team_names and plain(text) == plain(team_names[c])]
+            code = matches[0] if len(matches) == 1 else None
         if code:
             state["team"] = code
         else:

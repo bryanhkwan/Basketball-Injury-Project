@@ -353,3 +353,33 @@
   .facts.compact div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .sources { padding: 0 4px; }
 }
+.update-intro { max-width: 76ch; margin-bottom: 20px; color: var(--muted); line-height: 1.6; }
+.update-intro p { margin: 6px 0; }
+.update-alert { color: var(--negative); }
+.update-leagues { margin-bottom: 20px; }
+.update-leagues button { min-height: 44px; min-width: 90px; }
+.update-health { margin-bottom: 20px; }
+.update-health .card { max-width: 900px; }
+.update-dates { display: flex; flex-wrap: wrap; gap: 16px 40px; margin: 16px 0; }
+.update-dates dt { font-size: 12px; color: var(--muted); margin-bottom: 5px; }
+.update-dates dd { margin: 0; font-size: 14px; }
+.update-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 22px 0 12px; }
+.update-filter label { font-size: 14px; font-weight: 600; }
+.update-filter input { min-height: 44px; max-width: 100%; width: 300px; padding: 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--ink); background: var(--surface); }
+.update-table { width: 100%; }
+.update-table td { vertical-align: top; }
+.update-table .sub { margin-top: 4px; }
+.update-method { margin: 24px 0; max-width: 76ch; color: var(--muted); line-height: 1.6; }
+.update-method summary { cursor: pointer; padding: 10px 0; font-weight: 600; color: var(--ink); }
+@media (max-width: 600px) {
+  .update-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .update-table tbody { display: block; }
+  .update-table tbody tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .update-table tbody tr:last-child { border-bottom: 0; }
+  .update-table tbody td { padding: 0; border: 0; }
+  .update-table td:nth-child(2) { text-align: right; }
+  .update-table td:nth-child(3), .update-table td:nth-child(4) { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+  .update-table td:nth-child(3) .sub { display: inline; margin-left: 6px; }
+  .update-filter { display: block; }
+  .update-filter input { display: block; width: 100%; margin-top: 8px; }
+}

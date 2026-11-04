@@ -9,7 +9,7 @@
   const $ = (s, root = document) => root.querySelector(s);
   const $$ = (s, root = document) => [...root.querySelectorAll(s)];
   const NAMES = { board: 'Risk board', players: 'Players', model: 'Model check', factors: 'What raises risk', when: 'When and who', types: 'Injury types',
-    how: 'How it happened', careers: 'After an injury', college: 'NBA vs college' };
+    how: 'How it happened', careers: 'After an injury', college: 'NBA vs college', updates: 'Current availability' };
   const KINDS = [['any', 'Any injury'], ['muscle', 'Muscles'], ['sprain', 'Ankles'], ['contact', 'Knocks'], ['knee', 'Knees'], ['back', 'Backs'], ['other', 'Other']];
   const fail = (el, err) => { el.innerHTML = `<div class="empty error">Couldn’t load this view: ${esc(err.message)}. Reload the page to try again.</div>`; };
   const segmented = (label, items, on) => `<div class="segmented" role="group" aria-label="${esc(label)}">${items.map(([k, t]) => `<button type="button" data-key="${k}" aria-pressed="${k === on}">${esc(t)}</button>`).join('')}</div>`;
@@ -973,7 +973,7 @@
   };
 
   // ======================================================================================================== router
-  const VIEWS = { board, players, model, factors, when, types, how, careers, college };
+  const VIEWS = { board, players, model, factors, when, types, how, careers, college, updates: window.AvailabilityView };
   const ready = {};
   async function route() {
     const [name = 'board', ...args] = location.hash.slice(1).split('/');

@@ -38,7 +38,7 @@ DATA = DOCS / "data"
 PROFILES = OUTPUTS / "profiles"
 AFTERMATH = OUTPUTS / "aftermath"
 NEWS = OUTPUTS / "news"
-ASSETS = ("site.css", "app.css", "charts.js", "site.js", "overview.js", "dashboard.js")
+ASSETS = ("site.css", "app.css", "charts.js", "site.js", "overview.js", "dashboard.js", "updates.js")
 MODES = {"before": dict(label="Before tip-off", question="a new injury in the next 5 games", short="next 5 games",
                         none="No new injury in the next 5 games"),
          "after": dict(label="After the game", question="missing the next game with a new injury", short="next game",
@@ -499,6 +499,8 @@ def social_card(log=print) -> Path | None:
 
 
 def build(log=print, card: bool = True) -> None:
+    from . import updates
+    updates.write_site_data(DATA / "updates.json")
     if (OUTPUTS / "dashboard" / "board.json").exists():
         write_data(log)
     else:

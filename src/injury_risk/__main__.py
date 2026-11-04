@@ -37,6 +37,11 @@ def main(argv=None) -> None:
                                              "the NBA -> outputs/college_aftermath/summary.json")
     sub.add_parser("ncaa-injuries", help="NCAA injury listings from SCACCHoops, with how long each has been up "
                                          "-> outputs/ncaa_injuries/listings.json")
+    p = sub.add_parser("updates", help="collect current availability; keep history and failed sources intact")
+    p.add_argument("--state", default="data/updates/state.json", help="the previous validated update state")
+    p.add_argument("--config", default="config/update_sources.json")
+    p.add_argument("--archive", default="data/updates/archive", help="append-only factual observation archive")
+    p.add_argument("--stage-site", action="store_true", help="package the published site and updates in data/updates/site")
     p = sub.add_parser("moments", help="what players were doing just before leaving a game they got hurt in "
                                        "-> outputs/moments/*")
     p.add_argument("--reuse", action="store_true", help="recompute the statistics from the saved moments instead of rebuilding them")
@@ -110,6 +115,13 @@ def main(argv=None) -> None:
     elif args.step == "ncaa-injuries":
         from . import ncaa_injuries
         print(json.dumps(ncaa_injuries.export()))
+    elif args.step == "updates":
+        from pathlib import Path
+        from . import updates
+        state = updates.export(state_path=Path(args.state), config=Path(args.config), archive=Path(args.archive))
+        if args.stage_site:
+            updates.stage_site(updates.LOCAL / "site", state_path=Path(args.state))
+        print(json.dumps({k: s["status"] for k, s in state["sources"].items()}))
     elif args.step == "moments":
         from . import moments
         print(json.dumps(moments.export(reuse=args.reuse)))
