@@ -129,6 +129,21 @@ NCAA championship reports are tournament coverage, not a year-round all-school f
 [SEC women's reports](https://www.secsports.com/wbbreports),
 [NCAA's 2026 tournament reporting program](https://www.ncaa.org/news/media-center-ncaa-releases-penalty-and-process-details-for-march-madness-player-availability-reports/).
 
+Checked again on November 4, 2026, across the conferences, with the job's reader and its robots rules; nothing can be
+enabled yet:
+- **HD Intelligence's host** (ACC, Big 12 and Big East women's pages embed `par.hdintelligence-app.com`): its robots.txt
+  still answers with the application's HTML page, so permission can't be read. The provider publishes no terms of use;
+  its privacy policy says published reports can be viewed without signing in but says nothing about automated reading.
+- **Blocked by robots:** the SEC's and NCAA.com's pages (their robots files exclude the AI user agents the reader also
+  checks for), and Conference USA's per-game PDFs, which sit in a path the Sidearm robots file disallows.
+- **Closest, not ready:** the Big Ten's football reports use `app.hdintelligence.com`, whose robots.txt is a 404
+  (nothing disallowed), and the Mountain West's use Faktor Sports, whose robots.txt has no rules; neither women's
+  basketball page is live yet, and neither host states terms. The conference sites' Sidearm terms limit reuse to
+  personal, noncommercial use.
+- **No listings elsewhere:** Covers, RotoWire, CBS Sports, ESPN and SCACCHoops have no women's college injury lists.
+- All these reports give a status only, no body part. What would unblock it: written permission from HD Intelligence or
+  a conference (its privacy policy lists a contact), or a real robots.txt on the host the reports come from.
+
 ## Run locally
 
 Set `PYTHONPATH=src`, install `requirements.txt`, then:

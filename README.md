@@ -140,8 +140,9 @@ over with its first report.
   reports of 121 of its 125 game days, read with the daily reader, gave 194 cases, and 99.7% of 1,759 listings matched
   a player. All 512 games the box scores mark as missed for injury, illness or a concussion, and that the report called
   an injury, fall inside a case; the ones it called an illness, rest or personal don't.
-- **Not yet:** not on the site; NCAA women, whose one identified source stays off until permission to read it is
-  confirmed; a case still open when a season ends isn't linked to the next season's.
+- **Not yet:** not on the site; NCAA women, where every conference report found on November 4, 2026 comes from a
+  provider whose robots.txt can't be read or a path robots.txt disallows, so it waits for written permission (see the
+  spec); a case still open when a season ends isn't linked to the next season's.
 
 ## The injury-risk model
 
