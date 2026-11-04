@@ -271,8 +271,30 @@ team's last game, so they belong to the next season; of the other 170, 157 have 
 return. The 13 missed: 7 started from a note date with no page saved during the absence, 5 were listed only after the
 one game they missed, and 1 was listed as undisclosed. 98.9% of the season's listed players matched an ESPN player.
 
-Not yet: nothing is published; open cases need carrying into the next season at the rollover. Next: review a week by
-hand, then publish and queue open cases for news research on the review schedule.
+#### WNBA cases (November 2026)
+
+The NBA's code path (`cases.league_part("wnba")`, the `wnba` part of `cases.json`): the `wnba-official` 5 PM reports,
+collected May to October, on stats.wnba.com's box scores, inactive lists and schedules from the same sportsdataverse
+releases (`sources.WNBA_FILES`). They are laid out like the NBA's, so `games.build_player_games` reads them, the box-score
+comments (coach's decision, injury/illness, not with team) mean the same, and the report's team codes are the box
+scores'. The season is the year of the latest archived WNBA report, or this year while it is collected; between
+seasons the part is empty with a note. `--fill` reads a missing game day's report only while the WNBA is collected.
+
+Check (`--wnba-check 2026`, into the ignored `data/updates/wnba-2026/`): the 5 PM reports of the 2026 season's 125
+game days, read with the daily job's reader; 4 had none at 5 PM (July 3 to 5 and July 28) and stay missing. 1,759
+listings, 99.7% matched (3 names unmatched), and 194 cases. The box scores, on their own, mark 555 missed games as
+injury, illness or concussion: all 512 the report called an injury fall inside a case, as do 15 of the 25 it didn't
+list; the 18 it called an illness, rest or personal reasons don't. 62 of the cases' 907 games were a coach's decision in
+the box score while the report listed the player out or questionable with an injury, which the rules count as injured.
+
+#### Seasons
+
+Each league's season follows its latest archived report or snapshot: the NBA's named by the year it ends, the WNBA's by
+its year, college by the year it ends with games from November (from May to October its listings stay with the season
+just finished). Reports outside the season's span are left out, so the archive can keep every season.
+
+Not yet: nothing is published; a case still open at a season's end isn't linked to the player's case in the next one.
+Next: review a week by hand, then publish and queue open cases for news research on the review schedule.
 
 1. **College women's coverage:** resolve permitted access to conference feeds, add per-feed
    fixtures and exact athlete/game IDs, and show coverage by conference before expanding.

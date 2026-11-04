@@ -165,5 +165,39 @@ class Cases(unittest.TestCase):
         self.assertEqual([d.isoformat() for d in cases.missing_days({DAYS[0], DAYS[2]}, sched, now, back=5)], [DAYS[3]])
 
 
+class Leagues(unittest.TestCase):
+    def test_the_wnba_between_seasons_has_no_cases_and_no_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            got = cases.league_part("wnba", Path(tmp), datetime.fromisoformat("2026-11-20T12:00:00+00:00"), refresh=False)
+        self.assertEqual((got["season"], got["source"], got["cases"]), (None, "wnba-official", []))
+
+    def test_only_the_seasons_reports_are_used(self):
+        sched, _ = season({})
+        inside = f"{DAYS[1]}T22:00:00+00:00"
+        self.assertEqual(list(cases.in_season({"2026-06-01T21:00:00+00:00": {}, inside: {}}, sched)), [inside])
+
+    def test_each_league_is_built_on_its_own_and_a_failure_is_recorded(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "cases.json"
+            with self.assertRaises(RuntimeError):   # no reports or snapshots to build from: flagged, after saving the rest
+                cases.export(Path(tmp) / "archive", out, now=datetime.fromisoformat("2026-11-20T12:00:00+00:00"), refresh=False,
+                             log=lambda *a, **k: None)
+            saved = json.loads(out.read_text(encoding="utf-8"))["leagues"]
+        self.assertEqual(sorted(saved), ["nba", "ncaa_mbb", "wnba"])
+        self.assertIn("note", saved["wnba"])
+        for league in ("nba", "ncaa_mbb"):
+            self.assertIn("error", saved[league])
+            self.assertNotIn("NameError", saved[league]["error"])
+
+    def test_case_ids_carry_the_league(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "a.json"
+            path.write_text(json.dumps(report(DAYS[1], [("Brown, Jaylen", "BOS", DAYS[1], "out", "injury", "ankle")])), encoding="utf-8")
+            observed, _ = cases.observed_reports(Path(tmp))
+        sched, pg = season({1: [DAYS[0], DAYS[2]]})
+        result = cases.build(observed, pg, sched, datetime.fromisoformat("2026-11-12T23:45:00+00:00"), league="wnba")
+        self.assertEqual([c["id"] for c in result["cases"]], [f"wnba-1-{DAYS[1].replace('-', '')}"])
+
+
 if __name__ == "__main__":
     unittest.main()

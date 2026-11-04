@@ -31,7 +31,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Data | `fetch-data`, `fetch-reports`, `parse-reports`, `fetch-college` | Download the public sources into `data/`, which is not in the repository (see below) |
 | NCAA injury watch | `ncaa-injuries` | The current college injury list, from SCACCHoops' conference pages |
 | Availability updates | `updates --stage-site` | Collect daily NBA and seasonal WNBA report snapshots plus NCAA men's listings; validate and stage the current site without rerunning historical studies |
-| Injury cases | `cases --fill` | Group the archived NBA and college men's observations into injury cases on the season's box scores, with the historical onset rules; run daily and kept on the data branch, off the site, while they are reviewed |
+| Injury cases | `cases --fill` | Group the archived NBA, WNBA and college men's observations into injury cases on the season's box scores, with the historical onset rules; run daily and kept on the data branch, off the site, while they are reviewed |
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
@@ -131,8 +131,17 @@ yet, or weren't found.
 - **Checked on history:** replaying 2021-22's 76 saved Covers pages as daily snapshots found 157 of the 170 absences
   the college study followed that season (4 or more games, or a serious injury); 134 opened on the same game, the rest
   a game or two later where Covers' note gave an earlier date than any saved page, and 155 had the same return.
-- **Not yet:** NBA and college men only; not on the site; open cases still need carrying into the next season when it
-  starts.
+
+WNBA cases are built like the NBA's, from the WNBA's official 5 PM reports, which the daily job reads from May to
+October, on stats.wnba.com's box scores (from the same data releases, laid out like the NBA's, with the reason a player
+sat out). Between seasons the WNBA part is empty. A season follows the latest report, so each league's next season takes
+over with its first report.
+- **Checked on the 2026 season** (`cases --wnba-check 2026`; the project has no WNBA injury history to replay): the 5 PM
+  reports of 121 of its 125 game days, read with the daily reader, gave 194 cases, and 99.7% of 1,759 listings matched
+  a player. All 512 games the box scores mark as missed for injury, illness or a concussion, and that the report called
+  an injury, fall inside a case; the ones it called an illness, rest or personal don't.
+- **Not yet:** not on the site; NCAA women, whose one identified source stays off until permission to read it is
+  confirmed; a case still open when a season ends isn't linked to the next season's.
 
 ## The injury-risk model
 

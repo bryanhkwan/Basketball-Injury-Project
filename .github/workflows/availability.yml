@@ -75,8 +75,8 @@ jobs:
           c = json.load(open(os.path.join(os.environ["STATE_DIR"], "cases.json"), encoding="utf-8"))
           print(f"\n## Injury cases (not published), built {c['generated_at']}")
           for league, part in c.get("leagues", {}).items():
-              if "error" in part:
-                  print(f"- {league}: not built ({part['error']})")
+              if "error" in part or "note" in part:
+                  print(f"- {league}: " + (f"not built ({part['error']})" if "error" in part else part["note"]))
                   continue
               states = ", ".join(f"{n} {s}" for s, n in sorted(Counter(x["state"] for x in part["cases"]).items()))
               filled = (f"; {len(part['reports_filled'])} past reports filled, {len(part['game_days_without_report'])} game days "

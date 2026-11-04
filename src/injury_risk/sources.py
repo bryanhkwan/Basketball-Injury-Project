@@ -35,6 +35,13 @@ COLLEGE_FILES = {
 }
 COLLEGE_SEASONS = tuple(range(2020, 2027))   # 2019-20 through 2025-26, the seasons with saved injury pages
 
+# The WNBA: stats.wnba.com's box scores, inactive lists and schedules, laid out like the NBA's (a season is its year)
+WNBA_FILES = {
+    "wnba_player_box": ("wnba_stats_player_boxscores", "player_boxscores_{season}.parquet"),
+    "wnba_inactive": ("wnba_stats_game_rosters", "game_rosters_{season}.parquet"),
+    "wnba_schedule": ("wnba_stats_schedules", "wnba_schedule_{season}.parquet"),
+}
+
 
 def season_path(kind: str, season: int):
     return SDV / kind / f"{kind}_{season}.parquet"
@@ -44,7 +51,7 @@ def fetch(seasons=DEFAULT_SEASONS, kinds=None, force: bool = False) -> list[dict
     """Download each (kind, season) file once; a cached file is kept unless ``force``."""
     results = []
     for kind in kinds or SEASON_FILES:
-        tag, pattern = SEASON_FILES[kind] if kind in SEASON_FILES else COLLEGE_FILES[kind]
+        tag, pattern = {**SEASON_FILES, **COLLEGE_FILES, **WNBA_FILES}[kind]
         for season in seasons:
             dest = season_path(kind, season)
             if dest.exists() and not force:

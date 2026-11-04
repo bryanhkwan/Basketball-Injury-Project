@@ -64,10 +64,11 @@ def _minutes(value) -> float:
         return 0.0
 
 
-def build_player_games(seasons, schedule: pd.DataFrame) -> pd.DataFrame:
+def build_player_games(seasons, schedule: pd.DataFrame, box: str = "player_box", inactive: str = "inactive") -> pd.DataFrame:
+    """``box``/``inactive``: the season files to read (the WNBA's are laid out like the NBA's)."""
     frames = []
     for season in seasons:
-        b = pd.read_parquet(sources.season_path("player_box", season))
+        b = pd.read_parquet(sources.season_path(box, season))
         b = b.rename(columns={"person_id": "player_id", "team_tricode": "team", "family_name": "last_name"})
         b["minutes"] = [_minutes(v) for v in b["minutes"]]
         b["starter"] = b["position"].fillna("").str.len() > 0
@@ -75,7 +76,7 @@ def build_player_games(seasons, schedule: pd.DataFrame) -> pd.DataFrame:
         b["status"] = np.where(b["minutes"] > 0, "played", "dnp")
         keep = ["game_id", "team", "player_id", "first_name", "last_name", "minutes", "starter", "comment", "status"]
         b = b[keep + list(BOX_STATS)].rename(columns=BOX_STATS)
-        i = pd.read_parquet(sources.season_path("inactive", season))
+        i = pd.read_parquet(sources.season_path(inactive, season))
         i = i.rename(columns={"team_abbreviation": "team"})[["game_id", "team", "player_id", "first_name", "last_name"]]
         i = i.assign(minutes=0.0, starter=False, comment="", status="inactive")
         both = pd.concat([b, i], ignore_index=True)

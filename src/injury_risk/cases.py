@@ -21,8 +21,10 @@ import pandas as pd
 from . import games, labels, reasons, sources
 from .paths import DATA, INTERIM, PROCESSED
 
-SEASON = 2027                 # 2026-27, the season the daily job follows
+SEASON = 2027                 # 2026-27, the NBA season the daily job follows
 SEASON_KINDS = ["player_box", "inactive", "schedule", "schedule_xwalk", "espn_schedule"]
+WNBA_KINDS = ["wnba_player_box", "wnba_inactive", "wnba_schedule"]
+REPORTS = {"nba": "nba-official", "wnba": "wnba-official"}   # the leagues with official 5 PM reports, and their sources
 LOCAL = DATA / "updates"
 DAILY_REVIEW_DAYS = 7         # a new case is checked every day for its first week, then weekly until the player returns
 FILL_DAYS = 30                # how far back a game day with no archived report is read from the league's site
@@ -64,15 +66,22 @@ def missing_days(have: set, sched: pd.DataFrame, now: datetime, back: int = FILL
     return [d for d in sorted(set(sched["game_date"].dt.date)) if today - timedelta(days=back) <= d < today and d.isoformat() not in have]
 
 
-def fill(days: list[date], archive: Path, log=print) -> tuple[list, list]:
+def fill(days: list[date], archive: Path, source: str = "nba-official", log=print) -> tuple[list, list]:
     """Read the missing days' 5 PM reports from the league's site, as the daily job reads them, into the archive."""
     from . import updates
     from .update_http import Client
-    spec = next(s for s in updates.load_config() if s["id"] == "nba-official")
+    spec = next(s for s in updates.load_config() if s["id"] == source)
     if not spec["enabled"]:
         return [], [dict(day=d.isoformat(), problem="source not enabled") for d in days]
     client = Client(spec["hosts"], LOCAL / "raw", budget=2 * len(days) + 5)
     return updates.fill_reports(spec, client, days, archive, log=log)
+
+
+def collecting(source: str, now: datetime) -> bool:
+    """Whether the daily job collects this source this month (the WNBA's only in its season)."""
+    from . import updates
+    spec = next(s for s in updates.load_config() if s["id"] == source)
+    return spec["enabled"] and now.astimezone(ET).month in spec.get("active_months", range(1, 13))
 
 
 def listings(kept: dict) -> pd.DataFrame:
@@ -131,7 +140,7 @@ def run_start(dates: np.ndarray, absence: np.ndarray, onset) -> np.datetime64:
 
 
 def build(reports: pd.DataFrame, pg: pd.DataFrame, sched: pd.DataFrame, now: datetime, season: int = SEASON,
-          skip=()) -> dict:
+          skip=(), league: str = "nba") -> dict:
     """The season's cases, the listings awaiting a game, and what needs a person to look at it. ``skip``: the
     (report, game day, team) of teams that hadn't submitted to a report (unsubmitted)."""
     matched = labels.match_players(reports, pg, sched)
@@ -170,7 +179,7 @@ def build(reports: pd.DataFrame, pg: pd.DataFrame, sched: pd.DataFrame, now: dat
             open_players.add(int(o.player_id))
         last = now_listed.sort_values("game_date").iloc[-1] if now_listed is not None else None
         cases.append(dict(
-            id=f"nba-{o.player_id}-{opened:%Y%m%d}", player_id=int(o.player_id),
+            id=f"{league}-{o.player_id}-{opened:%Y%m%d}", player_id=int(o.player_id),
             player=f"{names.at[o.player_id, 'first_name']} {names.at[o.player_id, 'last_name']}", team=o.team,
             opened=_day(opened), began_before_observations=bool(before), region=o.region, injury_type=o.injury_type,
             games_missed=int(o.games_missed), last_missed=_day(o.end_date), returned=_day(back), state=state,
@@ -203,33 +212,65 @@ def build(reports: pd.DataFrame, pg: pd.DataFrame, sched: pd.DataFrame, now: dat
                 review=review, observations_from=_day(coverage), box_scores_through=_day(box_through), reports=int(reports["report_at"].nunique()))
 
 
-def season_data(season: int = SEASON, refresh: bool = True) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """The season's schedule and player games, from the same data releases the history uses (refreshed daily)."""
+def wnba_schedule(season: int) -> pd.DataFrame:
+    """The WNBA season's games (games.build_schedule's columns, without the NBA's venues and team list)."""
+    s = pd.read_parquet(sources.season_path("wnba_schedule", season))
+    s = s[s["season_type"].isin(games.GAME_TYPES)].rename(columns={"home_team_abbreviation": "home", "away_team_abbreviation": "away"})
+    s = s.dropna(subset=["home", "away"])[["game_id", "season", "season_type", "game_date", "home", "away"]].copy()
+    s["game_date"] = pd.to_datetime(s["game_date"])
+    return s.sort_values(["game_date", "game_id"]).reset_index(drop=True)
+
+
+def season_data(season: int = SEASON, refresh: bool = True, league: str = "nba") -> tuple[pd.DataFrame, pd.DataFrame]:
+    """The season's schedule and player games, from the same data releases the history uses (refreshed daily). The
+    WNBA's files are laid out like the NBA's, so its players' games are built the same way."""
     if refresh:
-        for r in sources.fetch(seasons=(season,), kinds=SEASON_KINDS, force=True):
+        for r in sources.fetch(seasons=(season,), kinds=SEASON_KINDS if league == "nba" else WNBA_KINDS, force=True):
             if r["status"] not in ("downloaded", "cached"):
                 raise RuntimeError(f"could not download {r['kind']} for {season}: {r['status']}")
-    sched = games.build_schedule((season,))
-    return sched, games.build_player_games((season,), sched)
+    if league == "nba":
+        sched = games.build_schedule((season,))
+        return sched, games.build_player_games((season,), sched)
+    sched = wnba_schedule(season)
+    return sched, games.build_player_games((season,), sched, box="wnba_player_box", inactive="wnba_inactive")
 
 
-def nba(archive: Path, now: datetime, refresh: bool = True, fill_missing: bool = False, log=print) -> dict:
-    """cases.json's NBA part, after reading any game day's missing report (``fill_missing``)."""
-    sched, pg = season_data(refresh=refresh)
+def in_season(kept: dict, sched: pd.DataFrame) -> dict:
+    """The reports from the season's span (the archive keeps every season's)."""
+    first, last = sched["game_date"].min() - pd.Timedelta(days=7), sched["game_date"].max()
+    return {k: s for k, s in kept.items() if first <= pd.Timestamp(eastern_day(k)) <= last}
+
+
+def league_part(league: str, archive: Path, now: datetime, refresh: bool = True, fill_missing: bool = False, log=print) -> dict:
+    """cases.json's part for a league with official reports, after reading any recent game day's missing report
+    (``fill_missing``, while the league is collected). The season is that of the latest archived report, so a new one
+    takes over with its first report: the NBA's named by the year it ends (SEASON before any report), the WNBA's by its
+    year (this year's while it is collected, and none between seasons)."""
+    source = REPORTS[league]
+    kept, _ = archived_reports(archive, source)
+    latest = datetime.fromisoformat(max(kept)).astimezone(ET) if kept else None
+    if league == "nba":
+        season = latest.year + (latest.month >= 7) if latest else SEASON
+    else:
+        season = latest.year if latest else now.astimezone(ET).year if collecting(source, now) else None
+    if season is None:
+        return dict(season=None, source=source, cases=[], upcoming=[], review={},
+                    note="No reports collected yet; this league is collected only in its season.")
+    sched, pg = season_data(season, refresh, league)
     filled = []
-    if fill_missing:
-        kept, _ = archived_reports(archive)
+    if fill_missing and collecting(source, now):
         days = missing_days({eastern_day(k) for k in kept}, sched, now)
         if days:
-            filled, _ = fill(days, archive, log=log)
-    kept, corrected = archived_reports(archive)
+            filled, _ = fill(days, archive, source, log=log)
+    kept, corrected = archived_reports(archive, source)
+    kept = in_season(kept, sched)
     reports = listings(kept)
     if not len(reports):
-        raise ValueError(f"no NBA reports in {archive}")
-    result = build(reports, pg, sched, now, skip=unsubmitted(kept))
+        raise ValueError(f"no {league.upper()} reports for {season} in {archive}")
+    result = build(reports, pg, sched, now, season=season, skip=unsubmitted(kept), league=league)
     lacking = missing_days({eastern_day(k) for k in kept}, sched, now, back=366)
-    return dict(season="2026-27", source="nba-official", corrected_reports=corrected, reports_filled=filled,
-                game_days_without_report=[d.isoformat() for d in lacking], **result)
+    return dict(season=f"{season - 1}-{season % 100:02d}" if league == "nba" else str(season), source=source, corrected_reports=corrected,
+                reports_filled=filled, game_days_without_report=[d.isoformat() for d in lacking], **result)
 
 
 def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json", *, now: datetime | None = None,
@@ -237,7 +278,8 @@ def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json
     """Every league's cases in one file. A league that fails is recorded as failed, and the others are still built."""
     from . import college_cases
     now = now or datetime.now(timezone.utc)
-    parts = {"nba": lambda: nba(archive, now, refresh, fill_missing, log),
+    parts = {"nba": lambda: league_part("nba", archive, now, refresh, fill_missing, log),
+             "wnba": lambda: league_part("wnba", archive, now, refresh, fill_missing, log),
              "ncaa_mbb": lambda: college_cases.section(archive, now, refresh)}
     leagues = {}
     for league, make in parts.items():
@@ -268,7 +310,45 @@ def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json
     return out
 
 
-# --- the historical check -----------------------------------------------------------------------------------------
+# --- the historical checks ----------------------------------------------------------------------------------------
+
+def wnba_check(season: int = 2026, archive: Path | None = None, log=print) -> dict:
+    """The rules on a finished WNBA season, which the project has no history for. Each game day's 5 PM report is read
+    into a local archive with the daily job's reader (once), the season's cases are built, and they are set against what
+    the box scores say on their own: a game a player missed with an injury, illness or concussion comment should be in a
+    case unless the report called it an illness, and a case's games shouldn't be coach's decisions."""
+    source = REPORTS["wnba"]
+    archive = archive or LOCAL / f"wnba-{season}" / "archive"
+    sched, pg = season_data(season, refresh=True, league="wnba")
+    kept, _ = archived_reports(archive, source)
+    have = {eastern_day(k) for k in kept}
+    days = [d for d in sorted(set(sched["game_date"].dt.date)) if d.isoformat() not in have]
+    if days:
+        fill(days, archive, source, log=log)
+        kept, _ = archived_reports(archive, source)
+    kept = in_season(kept, sched)
+    reports = listings(kept)
+    end = (sched["game_date"].max() + pd.Timedelta(days=1)).tz_localize(timezone.utc).to_pydatetime()
+    result = build(reports, pg, sched, end, season=season, skip=unsubmitted(kept), league="wnba")
+    matched = labels.match_players(reports, pg, sched)
+    g = labels.classify_absences(pg[pg["season"] == season], game_entries(matched))
+    live = pd.DataFrame(result["cases"])
+    spans = {}
+    for c in live.itertuples(index=False):
+        spans.setdefault(c.player_id, []).append((pd.Timestamp(c.opened), pd.Timestamp(c.last_missed)))
+    g["in_case"] = [any(a <= d <= b for a, b in spans.get(p, [])) for p, d in zip(g["player_id"], g["game_date"])]
+    hurt = g[(g["status"] != "played") & g["comment"].str.contains("Injury/Illness|Concussion", case=False)]
+    told = hurt["reason_class"].fillna("not listed")
+    case_games = g[g["in_case"]]
+    out = dict(season=season, game_days=int(sched["game_date"].dt.date.nunique()), reports=len(kept),
+               game_days_without_report=len(set(sched["game_date"].dt.date.astype(str)) - {eastern_day(k) for k in kept}),
+               listings=len(reports), listings_matched=float(round(matched["player_id"].notna().mean(), 3)),
+               unmatched_names=result["review"]["unmatched"], cases=len(live), states=live["state"].value_counts().to_dict(),
+               box_injury_games=len(hurt), report_said={k: int(v) for k, v in told.value_counts().items()},
+               in_a_case={k: int(hurt.loc[told == k, "in_case"].sum()) for k in told.unique()},
+               case_games=len(case_games), case_games_coach=int(case_games["comment"].str.contains("Coach", case=False).sum()))
+    log(out)
+    return out
 
 def as_observed(report_rows: pd.DataFrame) -> pd.DataFrame:
     """Historical report rows as the daily job saves them: the 5 PM report, its time, and only the normalized facts

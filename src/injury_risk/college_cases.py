@@ -256,12 +256,23 @@ def build(listing_rows: pd.DataFrame, times: list[str], b: pd.DataFrame, now: da
                 listings_now=len(latest), matched_now=int(latest["player_id"].notna().sum()))
 
 
+def season_of(stamp: str) -> int:
+    """The season a snapshot belongs to, named by the year it ends. Games start in November; from May to October the
+    listings are left over, so they stay with the season just finished."""
+    day = datetime.fromisoformat(stamp).astimezone(cases.ET)
+    return day.year + 1 if day.month >= 11 else day.year
+
+
 def section(archive: Path, now: datetime, refresh: bool = True) -> dict:
-    """cases.json's college men's part."""
+    """cases.json's college men's part: the season of the latest snapshot, from its snapshots."""
     rows, times = snapshots(archive)
     if not times:
         raise ValueError(f"no {SOURCE} snapshots in {archive}")
-    return dict(season="2026-27", source=SOURCE, **build(rows, times, season_box(refresh=refresh), now))
+    season = season_of(times[-1])
+    keep = [t for t in times if season_of(t) == season]
+    rows = rows[rows["observed_at"].isin(set(keep))]
+    return dict(season=f"{season - 1}-{season % 100:02d}", source=SOURCE,
+                **build(rows, keep, season_box(season, refresh=refresh), now, season=season))
 
 
 # --- the historical check -----------------------------------------------------------------------------------------

@@ -50,6 +50,8 @@ def main(argv=None) -> None:
     p.add_argument("--replay", type=int, metavar="SEASON", help="instead: rebuild a past season's cases from its reports and compare them with its onsets")
     p.add_argument("--replay-college", type=int, metavar="SEASON",
                    help="instead: rebuild a past college season's cases from its saved Covers pages and compare them with the college study")
+    p.add_argument("--wnba-check", type=int, metavar="SEASON",
+                   help="instead: read a finished WNBA season's reports into data/updates/wnba-SEASON and check its cases against the box scores")
     p = sub.add_parser("moments", help="what players were doing just before leaving a game they got hurt in "
                                        "-> outputs/moments/*")
     p.add_argument("--reuse", action="store_true", help="recompute the statistics from the saved moments instead of rebuilding them")
@@ -131,6 +133,8 @@ def main(argv=None) -> None:
         elif args.replay_college:
             from . import college_cases
             college_cases.replay(args.replay_college)
+        elif args.wnba_check:
+            cases.wnba_check(args.wnba_check)
         else:
             cases.export(archive=Path(args.archive), output=Path(args.output), refresh=not args.no_refresh, fill_missing=args.fill)
     elif args.step == "updates":
