@@ -244,6 +244,33 @@ one (230 and 176). One case each season differs by a game because of a blank rea
 unknown, which can join a run of absences, while the history keeps it as "other". The one 2024-25 onset not found had
 its only injury listing in the next season.
 
+#### College men's cases (November 2026)
+
+`src/injury_risk/college_cases.py`, tests in `tests/test_college_cases.py`; built in the same run, as the `ncaa_mbb`
+part of `cases.json` (each league is its own part, and one failing is recorded without costing the others).
+
+- SCACCHoops has no dates, so a listing's time is when the daily job saw it. Teams are matched to ESPN team ids by
+  name among Division I teams (15 or more games in a season's box scores), with 11 hand-checked aliases covering every
+  name SCACCHoops had shown by November 4, 2026. Players are matched to ESPN athlete ids on the team's box scores this
+  season: the same name, else the one with that last name and first initial, else a close spelling (both reviewed).
+- At each team game, the listing in effect is the player's on the latest snapshot from that day or the 3 before it.
+  ESPN lists the whole roster in a college box score, so a player who sits out has a row; it doesn't say why, so a
+  missed game without a listing is unknown and can extend a run. Then the NBA's rules apply.
+- A listed player not on this season's box scores is not followed. The review list sorts them: on the team's box scores
+  last season only (an old listing, or a player not dressing), on a team with no game yet, or not found. A player
+  listed out who has played since the listing first appeared is reviewed as `listed_out_but_playing`, not a case.
+- The collector now reads an injury column its groups don't name the way the reports' reasons are read ("Lower Body",
+  "Chest", "Hernia": injuries; "Conditioning": management), and a disciplinary listing as not medical. They were
+  unknown before, so those listings show as changed once.
+
+Check on history (`--replay-college SEASON`): 2021-22's 76 saved Covers pages (`outputs/college_moments/
+listings_matched.parquet`), read as daily snapshots with the collector's categories, against the college study's
+absences that began that season (`outputs/college_aftermath/injuries.parquet`). Of 208, 38 came after the player's
+team's last game, so they belong to the next season; of the other 170, 157 have a case, 134 opened on the same game
+(20 one game later, 2 two later, where Covers' note gave an earlier date than any saved page) and 155 have the same
+return. The 13 missed: 7 started from a note date with no page saved during the absence, 5 were listed only after the
+one game they missed, and 1 was listed as undisclosed. 98.9% of the season's listed players matched an ESPN player.
+
 Not yet: nothing is published; open cases need carrying into the next season at the rollover. Next: review a week by
 hand, then publish and queue open cases for news research on the review schedule.
 

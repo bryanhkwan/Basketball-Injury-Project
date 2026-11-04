@@ -30,6 +30,7 @@ ROW_FIELDS = {"id", "league", "team", "player", "game_date", "status", "category
 SNAPSHOT_FIELDS = {"report_at", "observed_at", "sha256", "rows", "not_submitted", "pages_checked"}
 SOURCE_FIELDS = {"league", "name", "scope", "status", "message", "checked_at", "last_success_at", "max_age_hours", "snapshot"}
 PDF = re.compile(r"https://ak-static\.cms\.nba\.com/referee/injury/Injury-Report_(\d{4}-\d{2}-\d{2})_(\d{2})(?:_(\d{2}))?(AM|PM)\.pdf")
+NOT_MEDICAL = re.compile(r"disciplin|conduct|team rules|violation", re.I)
 ET = ZoneInfo("America/New_York")
 
 
@@ -182,6 +183,20 @@ def scac_status(text):
     raise SourceError("unrecognized availability status in conference listing")
 
 
+def scac_facts(injury):
+    """(category, region, injury type) from a conference listing's injury column, which names a body part, not a diagnosis."""
+    group = ncaa_injuries.group_of(injury)
+    category = {"Not injury related": "non_medical", "Undisclosed": "unknown", "Illness": "illness"}.get(group, "injury")
+    if group == "Other":
+        # a body part or condition the groups don't name ("Lower Body", "Chest", "Hernia") is read like a report's; a
+        # rules matter is not medical
+        category = "non_medical" if NOT_MEDICAL.search(injury) else reasons.classify("Injury/Illness - " + injury)["reason_class"]
+        if category not in CLASSES:
+            category = "unknown"
+    facts = reasons.classify("Injury/Illness - " + injury) if category == "injury" else {}
+    return category, facts.get("region"), facts.get("injury_type")
+
+
 def scac(source, client, now):
     body, _, digest = client.get(source["url"])
     page = body.decode("utf-8", "replace")
@@ -203,13 +218,9 @@ def scac(source, client, now):
         if not listings and "no injuries to report" not in page.lower():
             raise SourceError("conference page has neither listings nor an explicit empty report")
         for r in listings:
-            group = ncaa_injuries.group_of(r["injury"])
-            category = {"Not injury related": "non_medical", "Undisclosed": "unknown", "Illness": "illness"}.get(group, "injury")
-            if group == "Other":
-                category = "unknown"
-            facts = reasons.classify("Injury/Illness - " + r["injury"]) if category == "injury" else {}
+            category, region, injury_type = scac_facts(r["injury"])
             rows.append(row(source, player=r["player"], team=r["team"], status=scac_status(r["status"]), category=category,
-                            region=facts.get("region"), injury_type=facts.get("injury_type"), conference=conference))
+                            region=region, injury_type=injury_type, conference=conference))
     return dict(report_at=None, observed_at=stamp(now), sha256=hashlib.sha256("".join(hashes).encode()).hexdigest(),
                 rows=rows, not_submitted=[], pages_checked=len(groups))
 

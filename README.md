@@ -31,7 +31,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Data | `fetch-data`, `fetch-reports`, `parse-reports`, `fetch-college` | Download the public sources into `data/`, which is not in the repository (see below) |
 | NCAA injury watch | `ncaa-injuries` | The current college injury list, from SCACCHoops' conference pages |
 | Availability updates | `updates --stage-site` | Collect daily NBA and seasonal WNBA report snapshots plus NCAA men's listings; validate and stage the current site without rerunning historical studies |
-| Injury cases | `cases --fill` | Group the archived NBA observations into injury cases on the season's box scores, with the historical onset rules; run daily and kept on the data branch, off the site, while they are reviewed |
+| Injury cases | `cases --fill` | Group the archived NBA and college men's observations into injury cases on the season's box scores, with the historical onset rules; run daily and kept on the data branch, off the site, while they are reviewed |
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
@@ -120,7 +120,19 @@ archive began) were filled. The cases are saved as `cases.json` beside `state.js
   leaves out a return that came after another absence, which the cases add (230 in 2025-26). One case each season
   differs by a game because the daily data saves a blank reason ("-") as unknown, which the history keeps as "other";
   the 2024-25 onset not found had its only injury listing the next season.
-- **Not yet:** NBA only; not on the site; open cases still need carrying into the next season when it starts.
+
+College men's cases come from the daily SCACCHoops snapshots the same way (`src/injury_risk/college_cases.py`). Each
+listing is matched to its ESPN team and player, and at each of the team's games the listing in effect is the one on the
+latest snapshot from that day or the three before it. ESPN's college box scores list the whole roster, so a player who
+sits out still has a row, but they don't say why: a missed game without a listing can extend a run, where in the NBA a
+coach's decision ends it. A listed player missing from this season's box scores isn't followed; the review list says
+whether they were on the team last season (an old listing, or a player not dressing), are on a team that hasn't played
+yet, or weren't found.
+- **Checked on history:** replaying 2021-22's 76 saved Covers pages as daily snapshots found 157 of the 170 absences
+  the college study followed that season (4 or more games, or a serious injury); 134 opened on the same game, the rest
+  a game or two later where Covers' note gave an earlier date than any saved page, and 155 had the same return.
+- **Not yet:** NBA and college men only; not on the site; open cases still need carrying into the next season when it
+  starts.
 
 ## The injury-risk model
 

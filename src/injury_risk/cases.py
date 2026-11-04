@@ -213,9 +213,8 @@ def season_data(season: int = SEASON, refresh: bool = True) -> tuple[pd.DataFram
     return sched, games.build_player_games((season,), sched)
 
 
-def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json", *, now: datetime | None = None,
-           refresh: bool = True, fill_missing: bool = False, log=print) -> dict:
-    now = now or datetime.now(timezone.utc)
+def nba(archive: Path, now: datetime, refresh: bool = True, fill_missing: bool = False, log=print) -> dict:
+    """cases.json's NBA part, after reading any game day's missing report (``fill_missing``)."""
     sched, pg = season_data(refresh=refresh)
     filled = []
     if fill_missing:
@@ -229,18 +228,43 @@ def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json
         raise ValueError(f"no NBA reports in {archive}")
     result = build(reports, pg, sched, now, skip=unsubmitted(kept))
     lacking = missing_days({eastern_day(k) for k in kept}, sched, now, back=366)
-    out = dict(schema_version=1, generated_at=now.isoformat(timespec="seconds"), season="2026-27", corrected_reports=corrected,
-               rules=("A case opens at the first game missed in a run of injury absences (box scores and the reports) and ends "
-                      "with the run, at a game played or missed for another reason; the return is the next game played. Off the "
-                      "team's latest report is not a return. Reviewed daily for 7 days, then weekly, until the case ends."),
-               reports_filled=filled, game_days_without_report=[d.isoformat() for d in lacking], **result)
+    return dict(season="2026-27", source="nba-official", corrected_reports=corrected, reports_filled=filled,
+                game_days_without_report=[d.isoformat() for d in lacking], **result)
+
+
+def export(archive: Path = LOCAL / "archive", output: Path = LOCAL / "cases.json", *, now: datetime | None = None,
+           refresh: bool = True, fill_missing: bool = False, log=print) -> dict:
+    """Every league's cases in one file. A league that fails is recorded as failed, and the others are still built."""
+    from . import college_cases
+    now = now or datetime.now(timezone.utc)
+    parts = {"nba": lambda: nba(archive, now, refresh, fill_missing, log),
+             "ncaa_mbb": lambda: college_cases.section(archive, now, refresh)}
+    leagues = {}
+    for league, make in parts.items():
+        try:
+            leagues[league] = make()
+        except Exception as error:   # a source or data release failing must not cost the other leagues their cases
+            leagues[league] = dict(error=f"{type(error).__name__}: {error}"[:300])
+    out = dict(schema_version=2, generated_at=now.isoformat(timespec="seconds"),
+               rules=("A case opens at the first game missed in a run of injury absences (box scores, with the listing in effect "
+                      "at each game) and ends with the run, at a game played or missed for another reason; the return is the next "
+                      "game played. Off the latest listing is not a return. Reviewed daily for 7 days, then weekly, until the case "
+                      "ends. College box scores don't say why a player sat out, so there a missed game without a listing can "
+                      "extend a run."),
+               leagues=leagues)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    states = pd.Series([c["state"] for c in result["cases"]]).value_counts().to_dict()
-    log({"cases": len(result["cases"]), "states": states, "upcoming": len(result["upcoming"]), "unmatched": len(result["review"]["unmatched"]),
-         "uncertain": len(result["review"]["uncertain"]), "reports": result["reports"], "reports_filled": len(filled),
-         "game_days_without_report": len(lacking), "observations_from": result["observations_from"],
-         "box_scores_through": result["box_scores_through"], "output": str(output)})
+    for league, part in leagues.items():
+        if "error" in part:
+            log({"league": league, "error": part["error"]})
+            continue
+        log({"league": league, "cases": len(part["cases"]), "states": pd.Series([c["state"] for c in part["cases"]]).value_counts().to_dict(),
+             "upcoming": len(part["upcoming"]),
+             **{k: sum(map(len, v.values())) if isinstance(v, dict) else len(v) for k, v in part["review"].items()},
+             **{k: (len(v) if isinstance(v, list) else v) for k, v in part.items() if k not in ("cases", "upcoming", "review")}})
+    failed = [k for k, v in leagues.items() if "error" in v]
+    if failed:
+        raise RuntimeError(f"cases not built for {', '.join(failed)}; the others were saved to {output}")
     return out
 
 

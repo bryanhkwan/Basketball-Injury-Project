@@ -68,14 +68,20 @@ jobs:
           if [ -f data/updates/site/update-summary.md ]; then
             cat data/updates/site/update-summary.md >> "$GITHUB_STEP_SUMMARY"
           fi
-          if [ "${{ steps.cases.outcome }}" = success ]; then
+          if [ -f "$STATE_DIR/cases.json" ]; then
             python - >> "$GITHUB_STEP_SUMMARY" <<'PY'
           import json, os
           from collections import Counter
           c = json.load(open(os.path.join(os.environ["STATE_DIR"], "cases.json"), encoding="utf-8"))
-          states = ", ".join(f"{n} {s}" for s, n in sorted(Counter(x["state"] for x in c["cases"]).items()))
-          print(f"\n## Injury cases (not published)\n{len(c['cases'])} NBA cases ({states}); {len(c['upcoming'])} waiting on a game; "
-                f"{len(c['reports_filled'])} past reports filled; {len(c['game_days_without_report'])} game days without a report.")
+          print(f"\n## Injury cases (not published), built {c['generated_at']}")
+          for league, part in c.get("leagues", {}).items():
+              if "error" in part:
+                  print(f"- {league}: not built ({part['error']})")
+                  continue
+              states = ", ".join(f"{n} {s}" for s, n in sorted(Counter(x["state"] for x in part["cases"]).items()))
+              filled = (f"; {len(part['reports_filled'])} past reports filled, {len(part['game_days_without_report'])} game days "
+                        "without a report") if "reports_filled" in part else ""
+              print(f"- {league}: {len(part['cases'])} cases ({states}); {len(part['upcoming'])} waiting on a game{filled}.")
           PY
           fi
       - name: Save factual state
