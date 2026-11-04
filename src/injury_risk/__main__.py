@@ -42,6 +42,11 @@ def main(argv=None) -> None:
     p.add_argument("--config", default="config/update_sources.json")
     p.add_argument("--archive", default="data/updates/archive", help="append-only factual observation archive")
     p.add_argument("--stage-site", action="store_true", help="package the published site and updates in data/updates/site")
+    p = sub.add_parser("cases", help="group the archived NBA observations into injury cases on the season's box scores (local; not published)")
+    p.add_argument("--archive", default="data/updates/archive", help="the observation archive, e.g. a copy of the availability-data branch's")
+    p.add_argument("--output", default="data/updates/cases.json")
+    p.add_argument("--no-refresh", action="store_true", help="use the season files already downloaded")
+    p.add_argument("--replay", type=int, metavar="SEASON", help="instead: rebuild a past season's cases from its reports and compare them with its onsets")
     p = sub.add_parser("moments", help="what players were doing just before leaving a game they got hurt in "
                                        "-> outputs/moments/*")
     p.add_argument("--reuse", action="store_true", help="recompute the statistics from the saved moments instead of rebuilding them")
@@ -115,6 +120,13 @@ def main(argv=None) -> None:
     elif args.step == "ncaa-injuries":
         from . import ncaa_injuries
         print(json.dumps(ncaa_injuries.export()))
+    elif args.step == "cases":
+        from pathlib import Path
+        from . import cases
+        if args.replay:
+            cases.replay(args.replay)
+        else:
+            cases.export(archive=Path(args.archive), output=Path(args.output), refresh=not args.no_refresh)
     elif args.step == "updates":
         from pathlib import Path
         from . import updates

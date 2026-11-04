@@ -147,7 +147,8 @@ the published `docs/data/updates.json`. It does not fetch anything itself.
 
 ## Activate on GitHub
 
-The workflows are prepared locally; they are not live until published and enabled.
+Done November 3–4, 2026: Pages deploys from Actions, `UPDATES_ENABLED` is `true`, and the first two cloud runs
+were verified. Since then a push to `main` also collects and deploys. The steps are kept for setting it up again.
 Repository instructions require the owner's request before committing or pushing.
 
 1. Commit and push the reviewed code to `main` when authorized.
@@ -206,6 +207,35 @@ This avoids a permanent lock that would preserve an early, incomplete diagnosis.
 avoids paying for daily news research on every old case. The implemented append-only
 observation archive provides the foundation; the case identity and news-review layer is
 still a separate extension.
+
+#### Built so far: a local NBA case builder (November 2026)
+
+`python -m injury_risk cases --archive <dir>` (`src/injury_risk/cases.py`, tests in `tests/test_cases.py`):
+
+- Reads every NBA report in an archive. A report read twice counts once, from its first observation; a report
+  republished under the same time with other rows replaces it from when it was observed.
+- Matches names to NBA player ids with `labels.match_players` (team, then season, then last name and initial, then a
+  close spelling) against the season's box scores and inactive lists. Unmatched and uncertain matches go to a review list.
+- Follows each player game by game with the historical rules (`labels.classify_absences`, `labels.find_onsets`). The
+  case id is the player and the first game missed, so new game dates on later reports don't create new cases.
+- States: `listed` (open, on the latest report), `off_report` (open, gone from the report without a game played, so
+  not a return) and `returned` (a box score shows the next game played). A case under way before the first archived
+  report, or at the player's first game, says so instead of guessing its start. Review: daily for 7 days, then weekly.
+- Listings to miss a game that has no box score yet wait as `upcoming` until the game is played.
+- Season files come from the same sportsdataverse releases as the history (updated daily, about 300 KB in all).
+  A December NBA Cup game whose teams aren't decided yet is left out of the schedule.
+
+Check on history (`--replay SEASON`): the 5 PM reports of 2025-26 and 2024-25, saved in the daily job's normalized
+format, reproduced 1,126 of 1,127 and 1,184 of 1,185 historical onsets with the same games missed and return dates,
+except where an injury ran into the next season. One case each season differs by a game because of a blank reason
+("-"): the daily data saves it as unknown, which can join a run of absences, while the history keeps it as "other".
+The one 2024-25 onset not found had its only injury listing in the next season.
+
+Not yet: the daily job doesn't run it; nothing is published; the season's first two weeks (October 20 to November 2)
+have no archived reports, so cases from them are marked as under way; open cases need carrying into the next season at
+the rollover; WNBA and NCAA have no case builder. Next: fill the first two weeks from the official 5 PM reports with the
+existing `fetch-reports` step, run `cases` in the workflow and save its output beside `state.json` (not on the site),
+review a week by hand, then publish and queue open cases for news research on the review schedule.
 
 1. **College women's coverage:** resolve permitted access to conference feeds, add per-feed
    fixtures and exact athlete/game IDs, and show coverage by conference before expanding.

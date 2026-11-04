@@ -26,6 +26,7 @@ def build_schedule(seasons) -> pd.DataFrame:
         s = pd.read_parquet(sources.season_path("schedule", season))
         s = s[s["season_type"].isin(GAME_TYPES)]
         s = s.rename(columns={"home_team_abbreviation": "home", "away_team_abbreviation": "away"})
+        s = s.dropna(subset=["home", "away"])   # a game whose teams aren't decided yet (an NBA Cup knockout slot)
         s = s[["game_id", "season", "season_type", "game_date", "home", "away"]].copy()
         x = pd.read_parquet(sources.season_path("schedule_xwalk", season), columns=["nba_game_id", "espn_game_id"])
         e = pd.read_parquet(sources.season_path("espn_schedule", season), columns=["game_id", "venue_address_city"])
