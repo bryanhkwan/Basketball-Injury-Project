@@ -1,6 +1,6 @@
 {
  "schema_version": 2,
- "generated_at": "2026-11-04T21:10:06+00:00",
+ "generated_at": "2026-11-04T21:23:13+00:00",
  "rules": "A case opens at the first game missed in a run of injury absences (box scores, with the listing in effect at each game) and ends with the run, at a game played or missed for another reason; the return is the next game played. Off the latest listing is not a return. Reviewed daily for 7 days, then weekly, until the case ends. College box scores don't say why a player sat out, so there a missed game without a listing can extend a run.",
  "leagues": {
   "nba": {
@@ -2946,6 +2946,14 @@
    "box_scores_through": "2026-11-02",
    "reports": 15
   },
+  "wnba": {
+   "season": null,
+   "source": "wnba-official",
+   "cases": [],
+   "upcoming": [],
+   "review": {},
+   "note": "No reports collected yet; this league is collected only in its season."
+  },
   "ncaa_mbb": {
    "season": "2026-27",
    "source": "ncaa-men-scac",
@@ -3684,7 +3692,7 @@
    },
    "observations_from": "2026-11-03",
    "box_scores_through": "2026-11-03",
-   "snapshots": 6,
+   "snapshots": 7,
    "listings_now": 178,
    "matched_now": 144
   }
