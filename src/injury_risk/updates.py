@@ -113,6 +113,35 @@ def nba_daily_report(source, client, now):
     return read_nba_pdf(source, client, now, when, source["url"].format(day=when.date().isoformat()))
 
 
+def fill_reports(source, client, days, archive, *, clock=None, log=print):
+    """Archive the 5 PM reports of past game days the daily job never read: the days before it began, or a day it failed.
+
+    Each report is its own observation, saved with the report's time and the time it was actually read, so the archive
+    stays a record of what was seen when. The latest state and its change log are left alone: a past report is not a
+    change. A day whose report can't be read is listed, never invented."""
+    clock = clock or (lambda: datetime.now(timezone.utc))
+    filled, missing = [], []
+    for day in days:
+        now = clock()
+        try:
+            fresh = read_nba_pdf(source, client, now, datetime(day.year, day.month, day.day, 17, tzinfo=ET),
+                                 source["url"].format(day=day.isoformat()))
+            validate_snapshot(fresh, source["league"], now)
+        except Exception as error:
+            message = str(error) if isinstance(error, (SourceError, ValueError)) else f"Parser failed ({type(error).__name__})"
+            missing.append(dict(day=day.isoformat(), problem=message[:220]))
+            continue
+        for r in fresh["rows"]:
+            r["first_seen"] = r["last_seen"] = stamp(now)
+        entry = dict(league=source["league"], name=source["name"], scope=source["scope"], max_age_hours=source["max_age_hours"],
+                     checked_at=stamp(now), last_success_at=stamp(now), snapshot=fresh, status="ok",
+                     message="A past day's report, read later to fill the archive; not the latest report.")
+        archive_run(dict(schema_version=1, generated_at=stamp(now), sources={source["id"]: entry}, events=[]), archive, now=now)
+        filled.append(day.isoformat())
+    log(f"{source['id']}: {len(filled)} past reports filled, {len(missing)} not found", flush=True)
+    return filled, missing
+
+
 def read_nba_pdf(source, client, now, when, pdf_url):
     body, path, digest = client.get(pdf_url)
     if not body.startswith(b"%PDF"):

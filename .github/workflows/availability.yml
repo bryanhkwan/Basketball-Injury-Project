@@ -55,12 +55,28 @@ jobs:
           fi
       - name: Collect, validate, archive and stage
         run: python -m injury_risk updates --archive "$STATE_DIR/archive" --stage-site
+      # Kept beside the observations on the data branch while they are reviewed; not part of the site.
+      # A failure here leaves the availability update and the site untouched.
+      - name: Build injury cases, filling report days the archive lacks
+        id: cases
+        continue-on-error: true
+        run: python -m injury_risk cases --archive "$STATE_DIR/archive" --fill --output "$STATE_DIR/cases.json"
       - name: Show source health
         if: always()
         shell: bash
         run: |
           if [ -f data/updates/site/update-summary.md ]; then
             cat data/updates/site/update-summary.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+          if [ "${{ steps.cases.outcome }}" = success ]; then
+            python - >> "$GITHUB_STEP_SUMMARY" <<'PY'
+          import json, os
+          from collections import Counter
+          c = json.load(open(os.path.join(os.environ["STATE_DIR"], "cases.json"), encoding="utf-8"))
+          states = ", ".join(f"{n} {s}" for s, n in sorted(Counter(x["state"] for x in c["cases"]).items()))
+          print(f"\n## Injury cases (not published)\n{len(c['cases'])} NBA cases ({states}); {len(c['upcoming'])} waiting on a game; "
+                f"{len(c['reports_filled'])} past reports filled; {len(c['game_days_without_report'])} game days without a report.")
+          PY
           fi
       - name: Save factual state
         if: vars.UPDATES_ENABLED == 'true' && github.ref == 'refs/heads/main'
@@ -71,6 +87,7 @@ jobs:
           git -C "$STATE_DIR" config user.name 'github-actions[bot]'
           git -C "$STATE_DIR" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git -C "$STATE_DIR" add -- state.json archive/
+          if [ -f "$STATE_DIR/cases.json" ]; then git -C "$STATE_DIR" add -- cases.json; fi
           if ! git -C "$STATE_DIR" diff --cached --quiet; then
             git -C "$STATE_DIR" commit -m 'Update public availability observations'
             state_commit=$(git -C "$STATE_DIR" rev-parse HEAD)
@@ -92,6 +109,9 @@ jobs:
               if source['status'] in ('error', 'stale'):
                   print(f"::warning::{source['name']} needs attention; see the source-health summary.")
           PY
+      - name: Flag a failed case build
+        if: steps.cases.outcome == 'failure'
+        run: echo "::warning::The injury cases could not be built; the availability update was saved without them."
 
   deploy:
     if: vars.UPDATES_ENABLED == 'true' && github.ref == 'refs/heads/main'

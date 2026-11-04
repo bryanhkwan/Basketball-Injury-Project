@@ -147,6 +147,28 @@ class StateTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 U.read_state(path, NOW)
 
+    def test_filled_reports_are_late_observations_and_a_missing_day_is_not_invented(self):
+        from datetime import date
+        from unittest.mock import patch
+        spec = dict(SPEC, url="https://example.com/{day}.pdf")
+
+        def read(source, client, now, when, url):
+            if "2026-10-21" in url:
+                raise SourceError("source returned HTTP 404")
+            return dict(report_at=U.stamp(when), observed_at=U.stamp(now), sha256="b" * 64, not_submitted=[], pages_checked=1,
+                        rows=[U.row(spec, player="Test Player", team="BOS", status="out", category="injury", region="knee",
+                                    game_date="2026-10-20")])
+        with patch.object(U, "read_nba_pdf", side_effect=read), tempfile.TemporaryDirectory() as folder:
+            filled, missing = U.fill_reports(spec, None, [date(2026, 10, 20), date(2026, 10, 21)], Path(folder), clock=lambda: NOW,
+                                             log=lambda *a, **k: None)
+            files = list(Path(folder).rglob("*.json"))
+            self.assertEqual((filled, [m["day"] for m in missing], len(files)), (["2026-10-20"], ["2026-10-21"], 1))
+            saved = json.loads(files[0].read_text(encoding="utf-8"))
+        self.assertEqual(set(saved), {"schema_version", "generated_at", "sources"})   # no change log: a past report is not news
+        snap = saved["sources"]["test-nba"]["snapshot"]
+        self.assertEqual((snap["report_at"], snap["observed_at"]), ("2026-10-20T21:00:00+00:00", U.stamp(NOW)))
+        self.assertEqual(snap["rows"][0]["first_seen"], U.stamp(NOW))
+
     def test_no_raw_evidence_in_public_export(self):
         result = U.public_data(run())
         text = json.dumps(result)

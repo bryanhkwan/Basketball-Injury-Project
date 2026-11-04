@@ -46,6 +46,7 @@ def main(argv=None) -> None:
     p.add_argument("--archive", default="data/updates/archive", help="the observation archive, e.g. a copy of the availability-data branch's")
     p.add_argument("--output", default="data/updates/cases.json")
     p.add_argument("--no-refresh", action="store_true", help="use the season files already downloaded")
+    p.add_argument("--fill", action="store_true", help="first read the 5 PM reports of past game days the archive lacks (up to 30 days back)")
     p.add_argument("--replay", type=int, metavar="SEASON", help="instead: rebuild a past season's cases from its reports and compare them with its onsets")
     p = sub.add_parser("moments", help="what players were doing just before leaving a game they got hurt in "
                                        "-> outputs/moments/*")
@@ -126,7 +127,7 @@ def main(argv=None) -> None:
         if args.replay:
             cases.replay(args.replay)
         else:
-            cases.export(archive=Path(args.archive), output=Path(args.output), refresh=not args.no_refresh)
+            cases.export(archive=Path(args.archive), output=Path(args.output), refresh=not args.no_refresh, fill_missing=args.fill)
     elif args.step == "updates":
         from pathlib import Path
         from . import updates

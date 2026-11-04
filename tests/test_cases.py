@@ -16,16 +16,18 @@ PLAYERS = {1: ("Jaylen", "Brown", "BOS"), 2: ("Jalen", "Brunson", "NYK"), 3: ("D
 AHEAD = ["2026-11-14"]                                       # scheduled, not yet played: no box score
 
 
-def season(played):
-    """A schedule and player games: ``played`` maps player id -> the game days they played (the rest they sat out)."""
+def season(played, coach=None):
+    """A schedule and player games: ``played`` maps player id -> the game days they played (the rest they sat out);
+    ``coach``: player id -> the days they sat on the bench by the coach's decision."""
     sched = pd.DataFrame(dict(game_id=[f"g{i}" for i in range(len(DAYS + AHEAD))], season=2027, season_type="regular-season",
                               game_date=pd.to_datetime(DAYS + AHEAD), home="BOS", away="NYK"))
     rows = []
     for pid, (first, last, team) in PLAYERS.items():
         for gid, day in zip(sched["game_id"], DAYS):
-            on = day in played.get(pid, DAYS)
+            on, bench = day in played.get(pid, DAYS), day in (coach or {}).get(pid, [])
             rows.append(dict(game_id=gid, team=team, player_id=pid, first_name=first, last_name=last, season=2027,
-                             game_date=pd.Timestamp(day), status="played" if on else "inactive", comment=""))
+                             game_date=pd.Timestamp(day), status="played" if on else ("dnp" if bench else "inactive"),
+                             comment="DNP - Coach's Decision" if bench else ""))
     return sched, pd.DataFrame(rows)
 
 
@@ -38,14 +40,14 @@ def report(day, rows, observed=None, sha="a" * 64):
         report_at=at, observed_at=observed or f"{day}T23:40:00+00:00", sha256=sha, rows=listed, not_submitted=[], pages_checked=1))})
 
 
-def run(reports, played, now="2026-11-12T23:45:00+00:00"):
+def run(reports, played, now="2026-11-12T23:45:00+00:00", coach=None):
     with tempfile.TemporaryDirectory() as tmp:
         for i, r in enumerate(reports):
             path = Path(tmp) / "2026" / "11" / f"{i:03d}.json"
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(json.dumps(r), encoding="utf-8")
         observed, corrected = cases.observed_reports(Path(tmp))
-    sched, pg = season(played)
+    sched, pg = season(played, coach)
     return cases.build(observed, pg, sched, datetime.fromisoformat(now)), observed, corrected
 
 
@@ -133,6 +135,34 @@ class Cases(unittest.TestCase):
         result, _, _ = run(reports, {})
         self.assertEqual(result["review"]["unmatched"], ["Nobody, Someone (BOS)"])
         self.assertEqual(result["cases"], [])
+
+    def test_a_coaches_decision_ends_the_case_and_the_return_is_the_next_game_played(self):
+        reports = [report(DAYS[1], [("Brown, Jaylen", "BOS", DAYS[1], "out", "injury", "ankle")])]
+        result, _, _ = run(reports, {1: [DAYS[0], DAYS[3], DAYS[4], DAYS[5]]}, coach={1: [DAYS[2]]})
+        c = case(result, "Jaylen Brown")
+        self.assertEqual((c["games_missed"], c["last_missed"], c["returned"], c["state"], c["ended_with"], c["review"]),
+                         (1, DAYS[1], DAYS[3], "returned", "coach", None))
+
+    def test_a_case_ended_by_another_absence_without_a_game_played_is_ended(self):
+        reports = [report(DAYS[1], [("Brown, Jaylen", "BOS", DAYS[1], "out", "injury", "ankle")]),
+                   report(DAYS[2], [("Brown, Jaylen", "BOS", DAYS[2], "out", "non_medical", None)])]
+        result, _, _ = run(reports, {1: [DAYS[0]]})
+        c = case(result, "Jaylen Brown")
+        self.assertEqual((c["state"], c["returned"], c["ended_with"], c["review"]), ("ended", None, "non_medical", None))
+
+    def test_a_team_is_judged_by_the_latest_report_that_covered_its_games(self):
+        sched = pd.DataFrame(dict(game_date=pd.to_datetime(["2026-11-04", "2026-11-05"]), home=["BOS", "LAL"], away=["NYK", "GSW"]))
+        first, second = "2026-11-04T22:00:00+00:00", "2026-11-05T22:00:00+00:00"
+        reports = pd.DataFrame(dict(report_at=[first, first, second], game_date=["2026-11-04", "2026-11-05", "2026-11-05"]))
+        # the second report lists only the next day's game, and Golden State hadn't submitted to it
+        got = cases.latest_reports(reports, sched, skip={(second, "2026-11-05", "GSW")})
+        self.assertEqual(got, {"BOS": first, "NYK": first, "LAL": second, "GSW": first})
+
+    def test_game_days_without_a_report_are_found_within_the_window(self):
+        sched, _ = season({})
+        now = datetime.fromisoformat("2026-11-11T02:00:00+00:00")   # the evening of November 10, Eastern
+        self.assertEqual([d.isoformat() for d in cases.missing_days({DAYS[0], DAYS[2]}, sched, now)], [DAYS[1], DAYS[3]])
+        self.assertEqual([d.isoformat() for d in cases.missing_days({DAYS[0], DAYS[2]}, sched, now, back=5)], [DAYS[3]])
 
 
 if __name__ == "__main__":

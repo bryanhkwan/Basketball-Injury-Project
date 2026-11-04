@@ -31,7 +31,7 @@ Everything is one Python package, `src/injury_risk/`. Each step is a command: `p
 | Data | `fetch-data`, `fetch-reports`, `parse-reports`, `fetch-college` | Download the public sources into `data/`, which is not in the repository (see below) |
 | NCAA injury watch | `ncaa-injuries` | The current college injury list, from SCACCHoops' conference pages |
 | Availability updates | `updates --stage-site` | Collect daily NBA and seasonal WNBA report snapshots plus NCAA men's listings; validate and stage the current site without rerunning historical studies |
-| Injury cases | `cases` | Group the archived NBA observations into injury cases on the season's box scores, with the historical onset rules; local and unpublished while it is reviewed |
+| Injury cases | `cases --fill` | Group the archived NBA observations into injury cases on the season's box scores, with the historical onset rules; run daily and kept on the data branch, off the site, while they are reviewed |
 | Risk model | `build`, `train`, `board` | Labels and features, the model and its scores, and a nightly risk board |
 | Injury types | `causes` | Who gets which injuries, and when |
 | Injury moments | `moments`, `college-moments` | The NBA test, then the college test |
@@ -103,19 +103,24 @@ the working 90-day change list expires. A later diagnosis or status correction i
 observation, not an overwrite of the old one. These observations are separate from the frozen
 historical studies; adding a listing does not automatically add a confirmed injury to those studies.
 
-`python -m injury_risk cases --archive <the data branch's archive>` (`src/injury_risk/cases.py`) turns the archived
-NBA reports into injury cases. It matches each listing to a player and follows them game by game on the season's box
+The daily job then turns the archived NBA reports into injury cases (`python -m injury_risk cases`,
+`src/injury_risk/cases.py`). It matches each listing to a player and follows them game by game on the season's box
 scores (the same data releases, refreshed daily), with the historical onsets' rules: a case opens at the first game
-missed in a run of injury absences and ends at the next game the player played. A player who drops off the report
-without playing again stays open, and a case already under way when the archive began (November 3, 2026) says so
-instead of guessing its start. Each open case is due for review daily for its first week, then weekly. It writes
-`data/updates/cases.json` locally; nothing is published yet.
+missed in a run of injury absences and ends with the run, at a game the player played or missed for another reason (a
+coach's decision, rest, a G League assignment); the return is the next game they played. Whether a player is still
+listed is judged by their team's latest report, the newest one that covered the team's games, so a report about other
+teams' games doesn't take them off it. A player who drops off without playing again stays open, and a case already
+under way at a player's first game says so instead of guessing its start. Each open case is due for review daily for
+its first week, then weekly. A game day the archive has no report for, up to 30 days back, is read from the league's
+site and archived as a late observation; that is how the season's first two weeks (October 20 to November 2, before the
+archive began) were filled. The cases are saved as `cases.json` beside `state.json` on the data branch, not on the site.
 - **Checked on history:** replaying 2025-26's and 2024-25's 5 PM reports in the daily job's format reproduced 1,126 of
-  1,127 and 1,184 of 1,185 historical onsets, with the same games missed and return dates except where an injury ran
-  into the next season. One case each season differs by a game because the daily data saves a blank reason ("-") as
-  unknown, which the history keeps as "other"; the 2024-25 onset not found had its only injury listing the next season.
-- **Not yet:** NBA only; not run by the daily job; the season's first two weeks (October 20 to November 2) have no
-  archived reports; open cases still need carrying into the next season when it starts.
+  1,127 and 1,184 of 1,185 historical onsets, with the same games missed and last game missed except where an injury
+  ran into the next season. Every return the history records inside the season matches (896 in 2025-26); the history
+  leaves out a return that came after another absence, which the cases add (230 in 2025-26). One case each season
+  differs by a game because the daily data saves a blank reason ("-") as unknown, which the history keeps as "other";
+  the 2024-25 onset not found had its only injury listing the next season.
+- **Not yet:** NBA only; not on the site; open cases still need carrying into the next season when it starts.
 
 ## The injury-risk model
 
@@ -722,9 +727,8 @@ season opener.
 
 This isn't finished. Next:
 
-- **Injury cases on the site.** Fill in the season's first two weeks from the official reports, run `cases` in the
-  daily job, check a week of cases by hand, then show them, and queue open cases for news research on the review
-  schedule.
+- **Injury cases on the site.** Check a week of the daily cases by hand, then show them, and queue open cases for news
+  research on the review schedule.
 - **College injuries in the news.** The news research covered the NBA and the college players who reached it. The rest
   of the college players can be looked up the same way (`specs/injury-news.md`'s college tiers), under the same
   facts-only rules, though less is written about them: of 8 tried in the pilot, 3 turned up a diagnosis.
