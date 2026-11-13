@@ -1,6 +1,6 @@
 {
  "schema_version": 2,
- "generated_at": "2026-11-12T23:41:46+00:00",
+ "generated_at": "2026-11-13T23:41:15+00:00",
  "rules": "A case opens at the first game missed in a run of injury absences (box scores, with the listing in effect at each game) and ends with the run, at a game played or missed for another reason; the return is the next game played. Off the latest listing is not a return. Reviewed daily for 7 days, then weekly, until the case ends. College box scores don't say why a player sat out, so there a missed game without a listing can extend a run.",
  "leagues": {
   "nba": {
@@ -26,10 +26,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -95,10 +95,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -138,10 +138,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -161,10 +161,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -184,10 +184,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -207,10 +207,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-10"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 11,
+     "listings": 12,
      "new_injury": false,
      "review": "weekly"
     },
@@ -230,10 +230,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-10"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 10,
+     "listings": 11,
      "new_injury": false,
      "review": "weekly"
     },
@@ -276,10 +276,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -299,10 +299,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 11,
+     "listings": 12,
      "new_injury": false,
      "review": "weekly"
     },
@@ -345,10 +345,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-09"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -368,10 +368,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -391,10 +391,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-10"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 10,
+     "listings": 11,
      "new_injury": false,
      "review": "weekly"
     },
@@ -437,10 +437,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -460,10 +460,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -529,10 +529,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-10"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 11,
+     "listings": 12,
      "new_injury": false,
      "review": "weekly"
     },
@@ -575,10 +575,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-10"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 10,
+     "listings": 11,
      "new_injury": false,
      "review": "weekly"
     },
@@ -598,10 +598,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-09"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -690,10 +690,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:20+00:00",
-     "listings": 11,
+     "listings": 12,
      "new_injury": true,
      "review": "weekly"
     },
@@ -712,7 +712,7 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "Doubtful",
+      "status": "Out",
       "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:25+00:00",
@@ -759,10 +759,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 9,
+     "listings": 10,
      "new_injury": true,
      "review": "weekly"
     },
@@ -805,10 +805,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:30+00:00",
-     "listings": 9,
+     "listings": 10,
      "new_injury": true,
      "review": "weekly"
     },
@@ -828,10 +828,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:30+00:00",
-     "listings": 9,
+     "listings": 10,
      "new_injury": true,
      "review": "weekly"
     },
@@ -851,10 +851,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:30+00:00",
-     "listings": 9,
+     "listings": 10,
      "new_injury": true,
      "review": "weekly"
     },
@@ -874,10 +874,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -897,10 +897,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:36+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -920,10 +920,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:36+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -989,10 +989,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T20:52:36+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1058,10 +1058,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:43+00:00",
-     "listings": 7,
+     "listings": 8,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1081,10 +1081,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:43+00:00",
-     "listings": 6,
+     "listings": 7,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1127,10 +1127,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T23:40:22+00:00",
-     "listings": 5,
+     "listings": 6,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1196,10 +1196,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 4,
+     "listings": 5,
      "new_injury": true,
      "review": "daily"
     },
@@ -1311,10 +1311,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-09"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-05T23:39:38+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": true,
      "review": "daily"
     },
@@ -1334,10 +1334,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-09"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-05T23:39:38+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "daily"
     },
@@ -1380,10 +1380,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-08T23:39:43+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": true,
      "review": "daily"
     },
@@ -1422,12 +1422,9 @@
      "games_missed": 2,
      "last_missed": "2026-11-11",
      "returned": null,
-     "state": "listed",
+     "state": "off_report",
      "ended_with": null,
-     "latest_listing": {
-      "status": "Out",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-09T23:39:47+00:00",
      "listings": 2,
      "new_injury": true,
@@ -1472,10 +1469,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Questionable",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": true,
      "review": "daily"
     },
@@ -1494,7 +1491,7 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "Doubtful",
+      "status": "Out",
       "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
@@ -1564,10 +1561,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Probable",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": true,
      "review": "daily"
     },
@@ -1587,10 +1584,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -1629,12 +1626,9 @@
      "games_missed": 1,
      "last_missed": "2026-11-10",
      "returned": null,
-     "state": "listed",
+     "state": "off_report",
      "ended_with": null,
-     "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-10"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-10T23:39:41+00:00",
      "listings": 1,
      "new_injury": true,
@@ -1656,10 +1650,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-10T23:39:41+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1678,7 +1672,7 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "Doubtful",
+      "status": "Questionable",
       "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
@@ -1724,11 +1718,11 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "Out",
-      "game_date": "2026-11-11"
+      "status": "Questionable",
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1748,10 +1742,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1770,11 +1764,11 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "Out",
-      "game_date": "2026-11-11"
+      "status": "Probable",
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1794,10 +1788,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1879,8 +1873,8 @@
      "state": "ended",
      "ended_with": "non_medical",
      "latest_listing": {
-      "status": "Out",
-      "game_date": "2026-11-11"
+      "status": "Available",
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
      "listings": 9,
@@ -1925,8 +1919,8 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-11"
+      "status": "Probable",
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 9,
@@ -2009,7 +2003,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Available",
-      "game_date": "2026-11-12"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 4,
@@ -2090,7 +2084,10 @@
      "returned": "2026-10-24",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Probable",
+      "game_date": "2026-11-13"
+     },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 2,
      "new_injury": false,
@@ -2153,7 +2150,10 @@
      "returned": "2026-10-23",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-13"
+     },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 1,
      "new_injury": false,
@@ -2173,10 +2173,7 @@
      "returned": "2026-10-23",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 1,
      "new_injury": false,
@@ -2258,7 +2255,7 @@
      "ended_with": "non_medical",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 1,
@@ -2407,7 +2404,7 @@
      "ended_with": "non_medical",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 2,
@@ -2470,7 +2467,7 @@
      "ended_with": "non_medical",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-14"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
      "listings": 3,
@@ -2617,7 +2614,10 @@
      "returned": "2026-10-30",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-13"
+     },
      "first_observed": "2026-11-04T20:52:25+00:00",
      "listings": 3,
      "new_injury": true,
@@ -2777,10 +2777,7 @@
      "returned": "2026-11-08",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-10"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-04T20:52:28+00:00",
      "listings": 7,
      "new_injury": true,
@@ -2861,8 +2858,8 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-11"
+      "status": "Out",
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:28+00:00",
      "listings": 2,
@@ -2988,7 +2985,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:36+00:00",
      "listings": 1,
@@ -3212,10 +3209,7 @@
      "returned": "2026-11-11",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-04T20:52:38+00:00",
      "listings": 6,
      "new_injury": true,
@@ -3363,7 +3357,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:43+00:00",
      "listings": 2,
@@ -3446,7 +3440,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Available",
-      "game_date": "2026-11-09"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -3489,7 +3483,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-11"
+      "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T20:52:48+00:00",
      "listings": 1,
@@ -3671,7 +3665,7 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Doubtful",
+      "status": "Out",
       "game_date": "2026-11-13"
      },
      "first_observed": "2026-11-04T23:40:22+00:00",
@@ -3713,7 +3707,10 @@
      "returned": "2026-11-06",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-14"
+     },
      "first_observed": "2026-11-04T23:40:22+00:00",
      "listings": 1,
      "new_injury": true,
@@ -3793,10 +3790,7 @@
      "returned": "2026-11-11",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-06T23:40:00+00:00",
      "listings": 2,
      "new_injury": true,
@@ -3896,10 +3890,7 @@
      "returned": "2026-11-11",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Probable",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-09T23:39:47+00:00",
      "listings": 1,
      "new_injury": true,
@@ -3939,10 +3930,7 @@
      "returned": "2026-11-11",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-11"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-10T23:39:41+00:00",
      "listings": 1,
      "new_injury": true,
@@ -3961,6 +3949,36 @@
      "first_observed": "2026-11-12T23:40:12+00:00"
     },
     {
+     "player_id": 201939,
+     "player": "Stephen Curry",
+     "team": "GSW",
+     "game_date": "2026-11-13",
+     "status": "Out",
+     "region": "trunk",
+     "injury_type": "ligament",
+     "first_observed": "2026-11-13T23:39:41+00:00"
+    },
+    {
+     "player_id": 1627749,
+     "player": "Dejounte Murray",
+     "team": "NOP",
+     "game_date": "2026-11-13",
+     "status": "Out",
+     "region": "ankle",
+     "injury_type": "ligament",
+     "first_observed": "2026-11-13T23:39:41+00:00"
+    },
+    {
+     "player_id": 1630173,
+     "player": "Precious Achiuwa",
+     "team": "SAC",
+     "game_date": "2026-11-13",
+     "status": "Out",
+     "region": "ankle",
+     "injury_type": "soreness",
+     "first_observed": "2026-11-13T23:39:41+00:00"
+    },
+    {
      "player_id": 1630596,
      "player": "Evan Mobley",
      "team": "CLE",
@@ -3968,7 +3986,7 @@
      "status": "Out",
      "region": "foot",
      "injury_type": "ligament",
-     "first_observed": "2026-11-12T23:40:12+00:00"
+     "first_observed": "2026-11-13T23:39:41+00:00"
     },
     {
      "player_id": 1643410,
@@ -3978,7 +3996,7 @@
      "status": "Out",
      "region": "hand",
      "injury_type": "bone",
-     "first_observed": "2026-11-12T23:40:12+00:00"
+     "first_observed": "2026-11-13T23:39:41+00:00"
     }
    ],
    "review": {
@@ -3989,7 +4007,7 @@
    },
    "observations_from": "2026-10-20",
    "box_scores_through": "2026-11-11",
-   "reports": 24
+   "reports": 25
   },
   "wnba": {
    "season": null,
@@ -4020,29 +4038,8 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
-     "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
-     "new_injury": false,
-     "review": "weekly"
-    },
-    {
-     "id": "ncaa-mbb-4702626-20261102",
-     "player_id": 4702626,
-     "player": "Dawson Baker",
-     "team": "BYU",
-     "conference": "Big 12",
-     "opened": "2026-11-02",
-     "began_before_observations": true,
-     "region": "knee",
-     "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
-     "returned": null,
-     "state": "off_report",
-     "ended_with": null,
-     "latest_listing": null,
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
      "new_injury": false,
@@ -4065,7 +4062,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4089,7 +4086,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4113,7 +4110,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4137,7 +4134,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4161,7 +4158,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4178,17 +4175,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-06",
+     "games_missed": 3,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4209,7 +4206,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4233,7 +4230,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4257,7 +4254,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4274,17 +4271,17 @@
      "began_before_observations": true,
      "region": "other",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4304,8 +4301,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-12"
+      "status": "questionable",
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
@@ -4329,7 +4326,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4353,7 +4350,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4377,7 +4374,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4401,7 +4398,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4425,7 +4422,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4449,7 +4446,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4473,7 +4470,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
@@ -4497,7 +4494,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
@@ -4521,7 +4518,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4545,7 +4542,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4569,7 +4566,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4592,8 +4589,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-12"
+      "status": "questionable",
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4617,7 +4614,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4641,7 +4638,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4665,7 +4662,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4689,7 +4686,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4712,8 +4709,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "questionable",
-      "observed": "2026-11-12"
+      "status": "out",
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4737,7 +4734,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4761,7 +4758,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4785,7 +4782,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4809,7 +4806,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4833,7 +4830,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4857,7 +4854,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4881,7 +4878,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4898,17 +4895,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-06",
+     "games_missed": 3,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4929,7 +4926,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4953,7 +4950,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4977,7 +4974,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5001,7 +4998,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5025,7 +5022,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5049,7 +5046,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5066,17 +5063,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "questionable",
-      "observed": "2026-11-12"
+      "status": "out",
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5097,7 +5094,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5121,7 +5118,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5145,7 +5142,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5190,7 +5187,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5214,7 +5211,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5238,7 +5235,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5255,17 +5252,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5286,7 +5283,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5310,7 +5307,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5334,7 +5331,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5358,7 +5355,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5381,8 +5378,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-12"
+      "status": "questionable",
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5427,7 +5424,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5451,7 +5448,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5475,7 +5472,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5499,7 +5496,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5523,7 +5520,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5547,7 +5544,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5571,7 +5568,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
      "listings": 2,
@@ -5595,7 +5592,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5619,7 +5616,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5643,7 +5640,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5667,7 +5664,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5691,7 +5688,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5715,7 +5712,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5739,12 +5736,12 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
      "new_injury": true,
-     "review": "daily"
+     "review": "weekly"
     },
     {
      "id": "ncaa-mbb-5176150-20261105",
@@ -5763,12 +5760,12 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
      "new_injury": true,
-     "review": "daily"
+     "review": "weekly"
     },
     {
      "id": "ncaa-mbb-5239523-20261105",
@@ -5780,19 +5777,19 @@
      "began_before_observations": false,
      "region": "hand",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-08",
+     "games_missed": 3,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
-     "review": "daily"
+     "review": "weekly"
     },
     {
      "id": "ncaa-mbb-4711304-20261106",
@@ -5811,7 +5808,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 1,
@@ -5835,7 +5832,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
      "listings": 2,
@@ -5859,7 +5856,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 1,
@@ -5876,17 +5873,17 @@
      "began_before_observations": false,
      "region": "calf",
      "injury_type": "muscle_tendon",
-     "games_missed": 2,
-     "last_missed": "2026-11-09",
+     "games_missed": 3,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -5907,7 +5904,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-08T23:39:43+00:00",
      "listings": 1,
@@ -5931,7 +5928,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T16:33:52+00:00",
      "listings": 2,
@@ -5948,17 +5945,17 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 1,
-     "last_missed": "2026-11-07",
+     "games_missed": 2,
+     "last_missed": "2026-11-12",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-05T23:39:38+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -5979,7 +5976,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 1,
@@ -6003,7 +6000,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
@@ -6027,7 +6024,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-04T16:33:52+00:00",
      "listings": 2,
@@ -6051,7 +6048,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 1,
@@ -6075,7 +6072,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
      "listings": 1,
@@ -6099,12 +6096,57 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-12"
+      "observed": "2026-11-13"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
      "listings": 1,
      "new_injury": true,
      "review": "daily"
+    },
+    {
+     "id": "ncaa-mbb-4848640-20261112",
+     "player_id": 4848640,
+     "player": "Cade Phillips",
+     "team": "Texas A&M",
+     "conference": "SEC",
+     "opened": "2026-11-12",
+     "began_before_observations": false,
+     "region": "knee",
+     "injury_type": "other",
+     "games_missed": 1,
+     "last_missed": "2026-11-12",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "out",
+      "observed": "2026-11-13"
+     },
+     "first_observed": "2026-11-10T23:39:41+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "ncaa-mbb-4702626-20261102",
+     "player_id": 4702626,
+     "player": "Dawson Baker",
+     "team": "BYU",
+     "conference": "Big 12",
+     "opened": "2026-11-02",
+     "began_before_observations": true,
+     "region": "knee",
+     "injury_type": "other",
+     "games_missed": 3,
+     "last_missed": "2026-11-10",
+     "returned": "2026-11-12",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": null,
+     "first_observed": "2026-11-04T02:58:18+00:00",
+     "listings": 2,
+     "new_injury": false,
+     "review": null
     },
     {
      "id": "ncaa-mbb-5113388-20261102",
@@ -6163,7 +6205,10 @@
      "returned": "2026-11-11",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "questionable",
+      "observed": "2026-11-13"
+     },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
      "new_injury": false,
@@ -6307,8 +6352,7 @@
       "Oumar Koureissi (Texas Southern)",
       "Simeon Cottle (Kennesaw State)",
       "Tae Davis (Oklahoma)",
-      "Tibor Mirtic (Penn State)",
-      "Yaphet Moundi (San Jose State)"
+      "Tibor Mirtic (Penn State)"
      ]
     },
     "uncertain": [
@@ -6321,10 +6365,10 @@
     ]
    },
    "observations_from": "2026-11-03",
-   "box_scores_through": "2026-11-11",
-   "snapshots": 17,
+   "box_scores_through": "2026-11-12",
+   "snapshots": 18,
    "listings_now": 172,
-   "matched_now": 143
+   "matched_now": 144
   }
  }
 }
