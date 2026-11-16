@@ -1,6 +1,6 @@
 {
  "schema_version": 2,
- "generated_at": "2026-11-15T23:41:56+00:00",
+ "generated_at": "2026-11-16T23:41:33+00:00",
  "rules": "A case opens at the first game missed in a run of injury absences (box scores, with the listing in effect at each game) and ends with the run, at a game played or missed for another reason; the return is the next game played. Off the latest listing is not a return. Reviewed daily for 7 days, then weekly, until the case ends. College box scores don't say why a player sat out, so there a missed game without a listing can extend a run.",
  "leagues": {
   "nba": {
@@ -19,8 +19,8 @@
      "began_before_observations": true,
      "region": "calf",
      "injury_type": "muscle_tendon",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -42,17 +42,17 @@
      "began_before_observations": true,
      "region": "achilles",
      "injury_type": "muscle_tendon",
-     "games_missed": 13,
-     "last_missed": "2026-11-12",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 14,
+     "listings": 15,
      "new_injury": false,
      "review": "weekly"
     },
@@ -65,17 +65,17 @@
      "began_before_observations": true,
      "region": "back",
      "injury_type": "bone",
-     "games_missed": 13,
-     "last_missed": "2026-11-12",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 14,
+     "listings": 15,
      "new_injury": false,
      "review": "weekly"
     },
@@ -88,8 +88,8 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "surgery",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -131,8 +131,8 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "surgery",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -161,10 +161,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 13,
+     "listings": 14,
      "new_injury": false,
      "review": "weekly"
     },
@@ -177,8 +177,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "ligament",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -200,8 +200,8 @@
      "began_before_observations": true,
      "region": "achilles",
      "injury_type": "muscle_tendon",
-     "games_missed": 12,
-     "last_missed": "2026-11-13",
+     "games_missed": 13,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -223,8 +223,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "surgery",
-     "games_missed": 11,
-     "last_missed": "2026-11-13",
+     "games_missed": 12,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -253,10 +253,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-14"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
-     "listings": 13,
+     "listings": 14,
      "new_injury": false,
      "review": "weekly"
     },
@@ -276,10 +276,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 13,
+     "listings": 14,
      "new_injury": false,
      "review": "weekly"
     },
@@ -299,10 +299,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -315,17 +315,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "surgery",
-     "games_missed": 11,
-     "last_missed": "2026-11-12",
+     "games_missed": 12,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
-     "listings": 12,
+     "listings": 13,
      "new_injury": false,
      "review": "weekly"
     },
@@ -338,8 +338,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "bone",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -361,8 +361,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "surgery",
-     "games_missed": 13,
-     "last_missed": "2026-11-14",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -384,8 +384,8 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "surgery",
-     "games_missed": 11,
-     "last_missed": "2026-11-13",
+     "games_missed": 12,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -407,17 +407,17 @@
      "began_before_observations": true,
      "region": "hip",
      "injury_type": "soreness",
-     "games_missed": 13,
-     "last_missed": "2026-11-12",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 14,
+     "listings": 15,
      "new_injury": false,
      "review": "weekly"
     },
@@ -430,8 +430,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "soreness",
-     "games_missed": 13,
-     "last_missed": "2026-11-14",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -453,8 +453,8 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "surgery",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -476,17 +476,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "surgery",
-     "games_missed": 13,
-     "last_missed": "2026-11-12",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 14,
+     "listings": 15,
      "new_injury": false,
      "review": "weekly"
     },
@@ -522,8 +522,8 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "impact",
-     "games_missed": 12,
-     "last_missed": "2026-11-13",
+     "games_missed": 13,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -545,17 +545,17 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "bone",
-     "games_missed": 12,
-     "last_missed": "2026-11-12",
+     "games_missed": 13,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-17"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
-     "listings": 13,
+     "listings": 14,
      "new_injury": false,
      "review": "weekly"
     },
@@ -568,8 +568,8 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "surgery",
-     "games_missed": 11,
-     "last_missed": "2026-11-13",
+     "games_missed": 12,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -591,8 +591,8 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "ligament",
-     "games_missed": 13,
-     "last_missed": "2026-11-13",
+     "games_missed": 14,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -644,10 +644,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-14"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:20+00:00",
-     "listings": 11,
+     "listings": 12,
      "new_injury": false,
      "review": "weekly"
     },
@@ -683,8 +683,8 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "soreness",
-     "games_missed": 12,
-     "last_missed": "2026-11-13",
+     "games_missed": 13,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -744,29 +744,6 @@
      "review": "weekly"
     },
     {
-     "id": "nba-203500-20261026",
-     "player_id": 203500,
-     "player": "Steven Adams",
-     "team": "HOU",
-     "opened": "2026-10-26",
-     "began_before_observations": false,
-     "region": "calf",
-     "injury_type": "muscle_tendon",
-     "games_missed": 10,
-     "last_missed": "2026-11-13",
-     "returned": null,
-     "state": "listed",
-     "ended_with": null,
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-15"
-     },
-     "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 11,
-     "new_injury": true,
-     "review": "weekly"
-    },
-    {
      "id": "nba-1631096-20261026",
      "player_id": 1631096,
      "player": "Chet Holmgren",
@@ -775,8 +752,8 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "muscle_tendon",
-     "games_missed": 10,
-     "last_missed": "2026-11-13",
+     "games_missed": 11,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -798,8 +775,8 @@
      "began_before_observations": false,
      "region": "calf",
      "injury_type": "muscle_tendon",
-     "games_missed": 10,
-     "last_missed": "2026-11-13",
+     "games_missed": 11,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -821,8 +798,8 @@
      "began_before_observations": false,
      "region": "shoulder",
      "injury_type": "soreness",
-     "games_missed": 10,
-     "last_missed": "2026-11-13",
+     "games_missed": 11,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -867,8 +844,8 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "ligament",
-     "games_missed": 9,
-     "last_missed": "2026-11-13",
+     "games_missed": 10,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -890,8 +867,8 @@
      "began_before_observations": false,
      "region": "hamstring",
      "injury_type": "muscle_tendon",
-     "games_missed": 9,
-     "last_missed": "2026-11-13",
+     "games_missed": 10,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -913,17 +890,17 @@
      "began_before_observations": false,
      "region": "foot",
      "injury_type": "other",
-     "games_missed": 9,
-     "last_missed": "2026-11-12",
+     "games_missed": 10,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 10,
+     "listings": 11,
      "new_injury": true,
      "review": "weekly"
     },
@@ -936,8 +913,8 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "ligament",
-     "games_missed": 9,
-     "last_missed": "2026-11-14",
+     "games_missed": 10,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -966,10 +943,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-14"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:41+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -982,17 +959,17 @@
      "began_before_observations": false,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 8,
-     "last_missed": "2026-11-12",
+     "games_missed": 9,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1012,10 +989,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:43+00:00",
-     "listings": 8,
+     "listings": 9,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1051,17 +1028,17 @@
      "began_before_observations": false,
      "region": "ankle",
      "injury_type": "ligament",
-     "games_missed": 6,
-     "last_missed": "2026-11-13",
+     "games_missed": 7,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 7,
+     "listings": 8,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1074,8 +1051,8 @@
      "began_before_observations": false,
      "region": "back",
      "injury_type": "muscle_tendon",
-     "games_missed": 6,
-     "last_missed": "2026-11-13",
+     "games_missed": 7,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1097,8 +1074,8 @@
      "began_before_observations": false,
      "region": "other",
      "injury_type": "soreness",
-     "games_missed": 3,
-     "last_missed": "2026-11-12",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1127,33 +1104,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 5,
-     "new_injury": true,
-     "review": "weekly"
-    },
-    {
-     "id": "nba-1630567-20261106",
-     "player_id": 1630567,
-     "player": "Scottie Barnes",
-     "team": "TOR",
-     "opened": "2026-11-06",
-     "began_before_observations": false,
-     "region": "groin",
-     "injury_type": "muscle_tendon",
-     "games_missed": 4,
-     "last_missed": "2026-11-12",
-     "returned": null,
-     "state": "listed",
-     "ended_with": null,
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-15"
-     },
-     "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 5,
+     "listings": 6,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1166,17 +1120,17 @@
      "began_before_observations": false,
      "region": "head_neck",
      "injury_type": "ligament",
-     "games_missed": 4,
-     "last_missed": "2026-11-12",
+     "games_missed": 5,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-05T23:39:38+00:00",
-     "listings": 5,
+     "listings": 6,
      "new_injury": true,
      "review": "weekly"
     },
@@ -1189,8 +1143,8 @@
      "began_before_observations": false,
      "region": "hamstring",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-12",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1212,8 +1166,8 @@
      "began_before_observations": false,
      "region": "foot",
      "injury_type": "impact",
-     "games_missed": 4,
-     "last_missed": "2026-11-13",
+     "games_missed": 5,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1235,8 +1189,8 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "soreness",
-     "games_missed": 4,
-     "last_missed": "2026-11-13",
+     "games_missed": 5,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1258,8 +1212,8 @@
      "began_before_observations": false,
      "region": "hand",
      "injury_type": "ligament",
-     "games_missed": 4,
-     "last_missed": "2026-11-13",
+     "games_missed": 5,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1270,30 +1224,7 @@
      "first_observed": "2026-11-08T23:39:43+00:00",
      "listings": 5,
      "new_injury": true,
-     "review": "daily"
-    },
-    {
-     "id": "nba-1629656-20261109",
-     "player_id": 1629656,
-     "player": "Quentin Grimes",
-     "team": "LAL",
-     "opened": "2026-11-09",
-     "began_before_observations": false,
-     "region": "hand",
-     "injury_type": "ligament",
-     "games_missed": 2,
-     "last_missed": "2026-11-11",
-     "returned": null,
-     "state": "listed",
-     "ended_with": null,
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-15"
-     },
-     "first_observed": "2026-11-09T23:39:47+00:00",
-     "listings": 3,
-     "new_injury": true,
-     "review": "daily"
+     "review": "weekly"
     },
     {
      "id": "nba-1630530-20261109",
@@ -1342,26 +1273,6 @@
      "review": "daily"
     },
     {
-     "id": "nba-1641706-20261109",
-     "player_id": 1641706,
-     "player": "Brandon Miller",
-     "team": "CHA",
-     "opened": "2026-11-09",
-     "began_before_observations": false,
-     "region": "hip",
-     "injury_type": "muscle_tendon",
-     "games_missed": 2,
-     "last_missed": "2026-11-12",
-     "returned": null,
-     "state": "off_report",
-     "ended_with": null,
-     "latest_listing": null,
-     "first_observed": "2026-11-09T23:39:47+00:00",
-     "listings": 2,
-     "new_injury": true,
-     "review": "daily"
-    },
-    {
      "id": "nba-1643563-20261109",
      "player_id": 1643563,
      "player": "Richie Saunders",
@@ -1400,32 +1311,9 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-10T23:39:41+00:00",
-     "listings": 2,
-     "new_injury": true,
-     "review": "daily"
-    },
-    {
-     "id": "nba-1642349-20261111",
-     "player_id": 1642349,
-     "player": "Ajay Mitchell",
-     "team": "OKC",
-     "opened": "2026-11-11",
-     "began_before_observations": false,
-     "region": "ankle",
-     "injury_type": "ligament",
-     "games_missed": 2,
-     "last_missed": "2026-11-13",
-     "returned": null,
-     "state": "listed",
-     "ended_with": null,
-     "latest_listing": {
-      "status": "Questionable",
-      "game_date": "2026-11-15"
-     },
-     "first_observed": "2026-11-11T23:39:48+00:00",
      "listings": 3,
      "new_injury": true,
      "review": "daily"
@@ -1469,10 +1357,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": true,
      "review": "daily"
     },
@@ -1500,26 +1388,6 @@
      "review": "daily"
     },
     {
-     "id": "nba-2544-20261112",
-     "player_id": 2544,
-     "player": "LeBron James",
-     "team": "PHI",
-     "opened": "2026-11-12",
-     "began_before_observations": false,
-     "region": "back",
-     "injury_type": "other",
-     "games_missed": 1,
-     "last_missed": "2026-11-12",
-     "returned": null,
-     "state": "off_report",
-     "ended_with": null,
-     "latest_listing": null,
-     "first_observed": "2026-11-11T23:39:48+00:00",
-     "listings": 1,
-     "new_injury": true,
-     "review": "daily"
-    },
-    {
      "id": "nba-201939-20261113",
      "player_id": 201939,
      "player": "Stephen Curry",
@@ -1535,10 +1403,10 @@
      "ended_with": null,
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-13T23:39:41+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": true,
      "review": "daily"
     },
@@ -1574,8 +1442,8 @@
      "began_before_observations": false,
      "region": "ankle",
      "injury_type": "soreness",
-     "games_missed": 1,
-     "last_missed": "2026-11-13",
+     "games_missed": 2,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1729,8 +1597,8 @@
      "began_before_observations": false,
      "region": "ankle",
      "injury_type": "ligament",
-     "games_missed": 1,
-     "last_missed": "2026-11-14",
+     "games_missed": 2,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
@@ -1740,6 +1608,213 @@
      },
      "first_observed": "2026-11-13T23:39:41+00:00",
      "listings": 2,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1628368-20261115",
+     "player_id": 1628368,
+     "player": "De'Aaron Fox",
+     "team": "SAS",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "hip",
+     "injury_type": "muscle_tendon",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1629111-20261115",
+     "player_id": 1629111,
+     "player": "Jock Landale",
+     "team": "ATL",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "hip",
+     "injury_type": "soreness",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1629614-20261115",
+     "player_id": 1629614,
+     "player": "Andrew Nembhard",
+     "team": "IND",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "hip",
+     "injury_type": "muscle_tendon",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1629637-20261115",
+     "player_id": 1629637,
+     "player": "Jaxson Hayes",
+     "team": "UTA",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "knee",
+     "injury_type": "muscle_tendon",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1630559-20261115",
+     "player_id": 1630559,
+     "player": "Austin Reaves",
+     "team": "LAL",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "foot",
+     "injury_type": "bone",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1630583-20261115",
+     "player_id": 1630583,
+     "player": "Santi Aldama",
+     "team": "DAL",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "ankle",
+     "injury_type": "ligament",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1631172-20261115",
+     "player_id": 1631172,
+     "player": "Ousmane Dieng",
+     "team": "MIL",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "hand",
+     "injury_type": "bone",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1642848-20261115",
+     "player_id": 1642848,
+     "player": "Tre Johnson",
+     "team": "WAS",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "back",
+     "injury_type": "soreness",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-16"
+     },
+     "first_observed": "2026-11-14T23:39:44+00:00",
+     "listings": 2,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "nba-1643412-20261115",
+     "player_id": 1643412,
+     "player": "Kingston Flemings",
+     "team": "ATL",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "back",
+     "injury_type": "muscle_tendon",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
      "new_injury": true,
      "review": "daily"
     },
@@ -1818,8 +1893,8 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-15"
+      "status": "Out",
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:15+00:00",
      "listings": 1,
@@ -2009,10 +2084,7 @@
      "returned": "2026-10-24",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Probable",
-      "game_date": "2026-11-13"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 2,
      "new_injury": false,
@@ -2096,7 +2168,7 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Questionable",
+      "status": "Out",
       "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
@@ -2335,7 +2407,7 @@
      "ended_with": "non_medical",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:18+00:00",
      "listings": 2,
@@ -2505,7 +2577,10 @@
      "returned": "2026-10-25",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-16"
+     },
      "first_observed": "2026-11-04T20:52:23+00:00",
      "listings": 1,
      "new_injury": true,
@@ -2547,7 +2622,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:25+00:00",
      "listings": 3,
@@ -2818,6 +2893,29 @@
      "review": null
     },
     {
+     "id": "nba-203500-20261026",
+     "player_id": 203500,
+     "player": "Steven Adams",
+     "team": "HOU",
+     "opened": "2026-10-26",
+     "began_before_observations": false,
+     "region": "calf",
+     "injury_type": "muscle_tendon",
+     "games_missed": 10,
+     "last_missed": "2026-11-13",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-16"
+     },
+     "first_observed": "2026-11-04T02:58:18+00:00",
+     "listings": 10,
+     "new_injury": true,
+     "review": null
+    },
+    {
      "id": "nba-1627826-20261026",
      "player_id": 1627826,
      "player": "Ivica Zubac",
@@ -2899,7 +2997,7 @@
      "ended_with": "management",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-15"
+      "game_date": "2026-11-17"
      },
      "first_observed": "2026-11-04T20:52:33+00:00",
      "listings": 1,
@@ -3246,7 +3344,10 @@
      "returned": "2026-11-02",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-16"
+     },
      "first_observed": "2026-11-04T20:52:43+00:00",
      "listings": 1,
      "new_injury": true,
@@ -3310,7 +3411,7 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Questionable",
+      "status": "Doubtful",
       "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
@@ -3460,7 +3561,7 @@
      "ended_with": "played",
      "latest_listing": {
       "status": "Out",
-      "game_date": "2026-11-13"
+      "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-04T20:52:48+00:00",
      "listings": 1,
@@ -3521,7 +3622,10 @@
      "returned": "2026-11-07",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": null,
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-16"
+     },
      "first_observed": "2026-11-04T20:52:48+00:00",
      "listings": 2,
      "new_injury": true,
@@ -3564,10 +3668,7 @@
      "returned": "2026-11-04",
      "state": "returned",
      "ended_with": "played",
-     "latest_listing": {
-      "status": "Available",
-      "game_date": "2026-11-15"
-     },
+     "latest_listing": null,
      "first_observed": "2026-11-04T20:52:46+00:00",
      "listings": 1,
      "new_injury": true,
@@ -3797,7 +3898,7 @@
      "state": "returned",
      "ended_with": "played",
      "latest_listing": {
-      "status": "Questionable",
+      "status": "Out",
       "game_date": "2026-11-16"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
@@ -3822,6 +3923,26 @@
      "latest_listing": null,
      "first_observed": "2026-11-06T23:40:00+00:00",
      "listings": 2,
+     "new_injury": true,
+     "review": null
+    },
+    {
+     "id": "nba-1630567-20261106",
+     "player_id": 1630567,
+     "player": "Scottie Barnes",
+     "team": "TOR",
+     "opened": "2026-11-06",
+     "began_before_observations": false,
+     "region": "groin",
+     "injury_type": "muscle_tendon",
+     "games_missed": 4,
+     "last_missed": "2026-11-12",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": null,
+     "first_observed": "2026-11-06T23:40:00+00:00",
+     "listings": 4,
      "new_injury": true,
      "review": null
     },
@@ -3946,6 +4067,29 @@
      "review": null
     },
     {
+     "id": "nba-1629656-20261109",
+     "player_id": 1629656,
+     "player": "Quentin Grimes",
+     "team": "LAL",
+     "opened": "2026-11-09",
+     "began_before_observations": false,
+     "region": "hand",
+     "injury_type": "ligament",
+     "games_missed": 2,
+     "last_missed": "2026-11-11",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": {
+      "status": "Available",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-09T23:39:47+00:00",
+     "listings": 2,
+     "new_injury": true,
+     "review": null
+    },
+    {
      "id": "nba-1630170-20261109",
      "player_id": 1630170,
      "player": "Devin Vassell",
@@ -3957,6 +4101,26 @@
      "games_missed": 2,
      "last_missed": "2026-11-11",
      "returned": "2026-11-13",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": null,
+     "first_observed": "2026-11-09T23:39:47+00:00",
+     "listings": 2,
+     "new_injury": true,
+     "review": null
+    },
+    {
+     "id": "nba-1641706-20261109",
+     "player_id": 1641706,
+     "player": "Brandon Miller",
+     "team": "CHA",
+     "opened": "2026-11-09",
+     "began_before_observations": false,
+     "region": "hip",
+     "injury_type": "muscle_tendon",
+     "games_missed": 2,
+     "last_missed": "2026-11-12",
+     "returned": "2026-11-15",
      "state": "returned",
      "ended_with": "played",
      "latest_listing": null,
@@ -4149,6 +4313,29 @@
      "review": null
     },
     {
+     "id": "nba-1642349-20261111",
+     "player_id": 1642349,
+     "player": "Ajay Mitchell",
+     "team": "OKC",
+     "opened": "2026-11-11",
+     "began_before_observations": false,
+     "region": "ankle",
+     "injury_type": "ligament",
+     "games_missed": 2,
+     "last_missed": "2026-11-13",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": {
+      "status": "Questionable",
+      "game_date": "2026-11-15"
+     },
+     "first_observed": "2026-11-11T23:39:48+00:00",
+     "listings": 2,
+     "new_injury": true,
+     "review": null
+    },
+    {
      "id": "nba-1642849-20261111",
      "player_id": 1642849,
      "player": "Nolan Traore",
@@ -4167,48 +4354,41 @@
      "listings": 1,
      "new_injury": true,
      "review": null
+    },
+    {
+     "id": "nba-2544-20261112",
+     "player_id": 2544,
+     "player": "LeBron James",
+     "team": "PHI",
+     "opened": "2026-11-12",
+     "began_before_observations": false,
+     "region": "back",
+     "injury_type": "other",
+     "games_missed": 1,
+     "last_missed": "2026-11-12",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": {
+      "status": "Out",
+      "game_date": "2026-11-16"
+     },
+     "first_observed": "2026-11-11T23:39:48+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": null
     }
    ],
    "upcoming": [
     {
-     "player_id": 1628368,
-     "player": "De'Aaron Fox",
-     "team": "SAS",
-     "game_date": "2026-11-15",
+     "player_id": 2544,
+     "player": "LeBron James",
+     "team": "PHI",
+     "game_date": "2026-11-16",
      "status": "Out",
-     "region": "hip",
-     "injury_type": "muscle_tendon",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    },
-    {
-     "player_id": 1629614,
-     "player": "Andrew Nembhard",
-     "team": "IND",
-     "game_date": "2026-11-15",
-     "status": "Out",
-     "region": "hip",
-     "injury_type": "muscle_tendon",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    },
-    {
-     "player_id": 1629637,
-     "player": "Jaxson Hayes",
-     "team": "UTA",
-     "game_date": "2026-11-15",
-     "status": "Out",
-     "region": "knee",
-     "injury_type": "muscle_tendon",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    },
-    {
-     "player_id": 1630559,
-     "player": "Austin Reaves",
-     "team": "LAL",
-     "game_date": "2026-11-15",
-     "status": "Out",
-     "region": "foot",
-     "injury_type": "bone",
-     "first_observed": "2026-11-15T23:40:21+00:00"
+     "region": "back",
+     "injury_type": "other",
+     "first_observed": "2026-11-16T23:40:00+00:00"
     },
     {
      "player_id": 1631097,
@@ -4218,17 +4398,7 @@
      "status": "Out",
      "region": "foot",
      "injury_type": "other",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    },
-    {
-     "player_id": 1631172,
-     "player": "Ousmane Dieng",
-     "team": "MIL",
-     "game_date": "2026-11-15",
-     "status": "Out",
-     "region": "hand",
-     "injury_type": "bone",
-     "first_observed": "2026-11-15T23:40:21+00:00"
+     "first_observed": "2026-11-16T23:40:00+00:00"
     },
     {
      "player_id": 1641713,
@@ -4236,19 +4406,19 @@
      "team": "MEM",
      "game_date": "2026-11-16",
      "status": "Out",
-     "region": "other",
-     "injury_type": "other",
-     "first_observed": "2026-11-15T23:40:21+00:00"
+     "region": "foot",
+     "injury_type": "bone",
+     "first_observed": "2026-11-16T23:40:00+00:00"
     },
     {
-     "player_id": 1643412,
-     "player": "Kingston Flemings",
-     "team": "ATL",
-     "game_date": "2026-11-15",
+     "player_id": 1641740,
+     "player": "Jaylen Clark",
+     "team": "MIN",
+     "game_date": "2026-11-16",
      "status": "Out",
-     "region": "back",
+     "region": "hamstring",
      "injury_type": "muscle_tendon",
-     "first_observed": "2026-11-15T23:40:21+00:00"
+     "first_observed": "2026-11-16T23:40:00+00:00"
     }
    ],
    "review": {
@@ -4258,8 +4428,8 @@
     ]
    },
    "observations_from": "2026-10-20",
-   "box_scores_through": "2026-11-14",
-   "reports": 27
+   "box_scores_through": "2026-11-15",
+   "reports": 28
   },
   "wnba": {
    "season": null,
@@ -4290,7 +4460,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4314,7 +4484,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4331,17 +4501,17 @@
      "began_before_observations": true,
      "region": "achilles",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4362,7 +4532,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4386,7 +4556,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4410,7 +4580,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -4427,17 +4597,17 @@
      "began_before_observations": true,
      "region": "hamstring",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4451,17 +4621,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 4,
-     "last_missed": "2026-11-10",
+     "games_missed": 5,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4475,17 +4645,17 @@
      "began_before_observations": true,
      "region": "calf",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4506,7 +4676,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4530,7 +4700,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 1,
@@ -4553,8 +4723,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4571,17 +4741,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4602,7 +4772,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4619,17 +4789,17 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4643,17 +4813,17 @@
      "began_before_observations": true,
      "region": "calf",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4674,7 +4844,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4691,17 +4861,17 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-07",
+     "games_missed": 3,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4715,17 +4885,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-07",
+     "games_missed": 3,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 1,
+     "listings": 2,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4746,7 +4916,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4763,17 +4933,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4794,7 +4964,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4811,17 +4981,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4842,7 +5012,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4866,7 +5036,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4890,7 +5060,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4913,8 +5083,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4938,7 +5108,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -4955,17 +5125,17 @@
      "began_before_observations": true,
      "region": "hamstring",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -4979,17 +5149,17 @@
      "began_before_observations": true,
      "region": "foot",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5010,7 +5180,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5027,17 +5197,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5058,7 +5228,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5082,7 +5252,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5106,7 +5276,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5123,17 +5293,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5147,17 +5317,17 @@
      "began_before_observations": true,
      "region": "achilles",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5178,7 +5348,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5201,8 +5371,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5226,7 +5396,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5250,7 +5420,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5273,8 +5443,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5298,7 +5468,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5322,7 +5492,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5346,7 +5516,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5391,7 +5561,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5408,17 +5578,17 @@
      "began_before_observations": true,
      "region": "groin",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5439,7 +5609,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5463,7 +5633,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5487,7 +5657,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -5504,17 +5674,17 @@
      "began_before_observations": true,
      "region": "shoulder",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5535,7 +5705,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5559,7 +5729,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5583,7 +5753,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -5628,7 +5798,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -5652,7 +5822,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5675,8 +5845,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "questionable",
-      "observed": "2026-11-15"
+      "status": "out",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -5693,17 +5863,17 @@
      "began_before_observations": true,
      "region": "hand",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5717,17 +5887,17 @@
      "began_before_observations": true,
      "region": "leg",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-09",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5741,17 +5911,17 @@
      "began_before_observations": true,
      "region": "hand",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5765,37 +5935,16 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 2,
-     "new_injury": false,
-     "review": "weekly"
-    },
-    {
-     "id": "ncaa-mbb-5248294-20261103",
-     "player_id": 5248294,
-     "player": "Jacob Furphy",
-     "team": "Boston College",
-     "conference": "ACC",
-     "opened": "2026-11-03",
-     "began_before_observations": true,
-     "region": "knee",
-     "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-10",
-     "returned": null,
-     "state": "off_report",
-     "ended_with": null,
-     "latest_listing": null,
-     "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
      "new_injury": false,
      "review": "weekly"
@@ -5817,7 +5966,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -5841,7 +5990,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5858,17 +6007,17 @@
      "began_before_observations": true,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5889,7 +6038,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 4,
@@ -5906,17 +6055,17 @@
      "began_before_observations": true,
      "region": "achilles",
      "injury_type": "muscle_tendon",
-     "games_missed": 3,
-     "last_missed": "2026-11-11",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
-     "listings": 3,
+     "listings": 4,
      "new_injury": false,
      "review": "weekly"
     },
@@ -5937,7 +6086,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5961,7 +6110,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 3,
@@ -5978,17 +6127,17 @@
      "began_before_observations": false,
      "region": "hand",
      "injury_type": "other",
-     "games_missed": 3,
-     "last_missed": "2026-11-12",
+     "games_missed": 4,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": true,
      "review": "weekly"
     },
@@ -6009,7 +6158,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 1,
@@ -6033,7 +6182,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-06T23:40:00+00:00",
      "listings": 2,
@@ -6057,7 +6206,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 2,
@@ -6080,8 +6229,8 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
-      "status": "out",
-      "observed": "2026-11-15"
+      "status": "questionable",
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-08T23:39:43+00:00",
      "listings": 2,
@@ -6098,17 +6247,17 @@
      "began_before_observations": false,
      "region": "knee",
      "injury_type": "other",
-     "games_missed": 2,
-     "last_missed": "2026-11-12",
+     "games_missed": 3,
+     "last_missed": "2026-11-15",
      "returned": null,
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-05T23:39:38+00:00",
-     "listings": 2,
+     "listings": 3,
      "new_injury": true,
      "review": "weekly"
     },
@@ -6129,7 +6278,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T02:58:18+00:00",
      "listings": 2,
@@ -6153,7 +6302,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "questionable",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-04T16:33:52+00:00",
      "listings": 2,
@@ -6177,7 +6326,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-07T23:40:02+00:00",
      "listings": 2,
@@ -6201,7 +6350,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-10T23:39:41+00:00",
      "listings": 1,
@@ -6225,7 +6374,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-09T23:39:47+00:00",
      "listings": 1,
@@ -6249,7 +6398,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-11T23:39:48+00:00",
      "listings": 1,
@@ -6273,7 +6422,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-10T23:39:41+00:00",
      "listings": 1,
@@ -6297,7 +6446,7 @@
      "ended_with": null,
      "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-10T23:39:41+00:00",
      "listings": 1,
@@ -6320,8 +6469,56 @@
      "state": "listed",
      "ended_with": null,
      "latest_listing": {
+      "status": "questionable",
+      "observed": "2026-11-16"
+     },
+     "first_observed": "2026-11-14T23:39:44+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "ncaa-mbb-4433285-20261115",
+     "player_id": 4433285,
+     "player": "Mark Mitchell Jr.",
+     "team": "Missouri",
+     "conference": "SEC",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "concussion",
+     "injury_type": "concussion",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
+      "status": "questionable",
+      "observed": "2026-11-16"
+     },
+     "first_observed": "2026-11-15T23:40:21+00:00",
+     "listings": 1,
+     "new_injury": true,
+     "review": "daily"
+    },
+    {
+     "id": "ncaa-mbb-5314339-20261115",
+     "player_id": 5314339,
+     "player": "Luke Almodovar",
+     "team": "Memphis",
+     "conference": "AAC",
+     "opened": "2026-11-15",
+     "began_before_observations": false,
+     "region": "concussion",
+     "injury_type": "other",
+     "games_missed": 1,
+     "last_missed": "2026-11-15",
+     "returned": null,
+     "state": "listed",
+     "ended_with": null,
+     "latest_listing": {
       "status": "out",
-      "observed": "2026-11-15"
+      "observed": "2026-11-16"
      },
      "first_observed": "2026-11-14T23:39:44+00:00",
      "listings": 1,
@@ -6497,6 +6694,27 @@
      "review": null
     },
     {
+     "id": "ncaa-mbb-5248294-20261103",
+     "player_id": 5248294,
+     "player": "Jacob Furphy",
+     "team": "Boston College",
+     "conference": "ACC",
+     "opened": "2026-11-03",
+     "began_before_observations": true,
+     "region": "knee",
+     "injury_type": "other",
+     "games_missed": 3,
+     "last_missed": "2026-11-10",
+     "returned": "2026-11-15",
+     "state": "returned",
+     "ended_with": "played",
+     "latest_listing": null,
+     "first_observed": "2026-11-04T02:58:18+00:00",
+     "listings": 3,
+     "new_injury": false,
+     "review": null
+    },
+    {
      "id": "ncaa-mbb-5313939-20261103",
      "player_id": 5313939,
      "player": "Issac Williamson",
@@ -6602,35 +6820,7 @@
      "review": null
     }
    ],
-   "upcoming": [
-    {
-     "player_id": 4433285,
-     "player": "Mark Mitchell Jr.",
-     "team": "Missouri",
-     "status": "out",
-     "region": "concussion",
-     "injury_type": "concussion",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    },
-    {
-     "player_id": 5314339,
-     "player": "Luke Almodovar",
-     "team": "Memphis",
-     "status": "out",
-     "region": "concussion",
-     "injury_type": "other",
-     "first_observed": "2026-11-14T23:39:44+00:00"
-    },
-    {
-     "player_id": 5362459,
-     "player": "Luigi Suigo",
-     "team": "Villanova",
-     "status": "out",
-     "region": "knee",
-     "injury_type": "other",
-     "first_observed": "2026-11-15T23:40:21+00:00"
-    }
-   ],
+   "upcoming": [],
    "review": {
     "teams_not_matched": [],
     "unmatched": {
@@ -6667,16 +6857,13 @@
     "uncertain": [
      "Matthew Hodge (Villanova) -> Matt Hodge, by last_initial"
     ],
-    "listed_out_but_playing": [
-     "Godswill Erheriene (Incarnate Word)",
-     "Macaleab Rich (Arkansas Pine Bluff)"
-    ]
+    "listed_out_but_playing": []
    },
    "observations_from": "2026-11-03",
-   "box_scores_through": "2026-11-14",
-   "snapshots": 20,
-   "listings_now": 171,
-   "matched_now": 146
+   "box_scores_through": "2026-11-15",
+   "snapshots": 21,
+   "listings_now": 168,
+   "matched_now": 143
   }
  }
 }
